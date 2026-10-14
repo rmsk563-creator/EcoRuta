@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EcoRuta — Muévete mejor</title>
+  <meta name="description" content="EcoRuta compara caminar, bicicleta y transporte público con tiempo, costo y CO₂ para que elijas tu ruta en segundos.">
+  <meta name="theme-color" content="#0B5D46">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#contenido">Saltar al contenido</a>
+
+  <!-- ===== Header ===== -->
+  <header class="header" id="top">
+    <div class="container header__inner">
+      <a class="brand" href="#top" aria-label="EcoRuta, ir al inicio">
+        <img src="assets/logo-ecoruta.png" alt="" width="22" height="34">
+        <span>EcoRuta</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Principal">
+        <ul class="nav__list">
+          <li><a href="#como-funciona">Cómo funciona</a></li>
+          <li><a href="#comparar">Comparar</a></li>
+          <li><a href="#impacto">Impacto</a></li>
+          <li><a href="#preguntas">Preguntas</a></li>
+        </ul>
+        <a class="btn btn--primary btn--sm" href="#avisame">Avísame</a>
+      </nav>
+      <button class="menu-btn" id="menuBtn" aria-controls="nav" aria-expanded="false" aria-label="Abrir menú">
+        <svg class="i-open" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <svg class="i-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <!-- ===== Hero ===== -->
+    <section class="hero" id="inicio">
+      <div class="container hero__grid">
+        <div class="hero__copy">
+          <span class="eyebrow"><span class="dot"></span>Próximamente en iOS y Android</span>
+          <h1>Muévete mejor. Decide con <span class="hl">tiempo, costo e impacto.</span></h1>
+          <p class="lead">EcoRuta compara caminar, bicicleta y transporte público con los mismos tres indicadores —tiempo, costo y CO₂— para que elijas tu ruta en segundos.</p>
+          <div class="hero__ctas">
+            <a class="btn btn--primary" href="#avisame">Avísame cuando salga</a>
+            <a class="btn btn--ghost" href="#como-funciona">Ver cómo funciona</a>
+          </div>
+          <ul class="hero__chips" aria-label="Modos que compara">
+            <li class="chip chip--walk"><svg width="16" height="16" aria-hidden="true"><use href="#ic-walk"/></svg>Caminar</li>
+            <li class="chip chip--bike"><svg width="16" height="16" aria-hidden="true"><use href="#ic-bike"/></svg>Bicicleta</li>
+            <li class="chip chip--bus"><svg width="16" height="16" aria-hidden="true"><use href="#ic-bus"/></svg>Transporte público</li>
+          </ul>
+        </div>
+
+        <!-- Mockup de la app -->
+        <div class="hero__visual" aria-hidden="true">
+          <div class="phone">
+            <div class="phone__screen">
+              <div class="phone__status"><span>9:41</span><span class="phone__notch"></span><span>●●●</span></div>
+              <div class="phone__search">
+                <svg width="16" height="16"><use href="#ic-pin"/></svg>
+                <div><small>Destino</small><strong>Plaza San Martín</strong></div>
+              </div>
+              <div class="phone__map">
+                <svg viewBox="0 0 300 220" preserveAspectRatio="xMidYMid slice">
+                  <rect width="300" height="220" fill="#E4EEE8"/>
+                  <path d="M0 60h300M0 140h300M70 0v220M190 0v220M250 0v220" stroke="#fff" stroke-width="10"/>
+                  <path d="M0 100h300M130 0v220" stroke="#fff" stroke-width="5"/>
+                  <rect x="200" y="150" width="40" height="50" rx="6" fill="#CFE6D7"/>
+                  <rect x="12" y="12" width="46" height="36" rx="6" fill="#CFE6D7"/>
+                  <path d="M40 190 C 70 160, 70 140, 130 140 S 190 110, 190 60 S 230 40, 250 30" fill="none" stroke="#169C9C" stroke-width="6" stroke-linecap="round"/>
+                  <path d="M40 190 C 90 200, 130 170, 190 140 S 240 60, 250 30" fill="none" stroke="#2388C9" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 9" opacity=".8"/>
+                  <circle cx="40" cy="190" r="8" fill="#fff" stroke="#0B5D46" stroke-width="4"/>
+                  <circle cx="250" cy="30" r="9" fill="#0B5D46"/><circle cx="250" cy="30" r="3.5" fill="#fff"/>
+                </svg>
+              </div>
+              <div class="sheet">
+                <div class="sheet__handle"></div>
+                <p class="sheet__title">3 opciones para tu ruta</p>
+                <div class="mini mini--rec">
+                  <span class="mini__ic bike"><svg width="16" height="16"><use href="#ic-bike"/></svg></span>
+                  <div class="mini__txt"><strong>Bicicleta</strong><span class="tag tag--green">Recomendada</span></div>
+                  <div class="mini__m"><b>32 min</b><span>S/ 0 · −1.5 kg</span></div>
+                </div>
+                <div class="mini">
+                  <span class="mini__ic bus"><svg width="16" height="16"><use href="#ic-bus"/></svg></span>
+                  <div class="mini__txt"><strong>Transporte</strong><span class="tag tag--blue">Más rápida</span></div>
+                  <div class="mini__m"><b>28 min</b><span>S/ 3.20 · −1.0 kg</span></div>
+                </div>
+                <div class="mini">
+                  <span class="mini__ic walk"><svg width="16" height="16"><use href="#ic-walk"/></svg></span>
+                  <div class="mini__txt"><strong>Caminar</strong><span class="tag tag--soft">Más económica</span></div>
+                  <div class="mini__m"><b>1 h 50</b><span>S/ 0 · −1.5 kg</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="float-card">
+            <span class="float-card__ic"><svg width="18" height="18"><use href="#ic-leaf"/></svg></span>
+            <div><strong>−1.5 kg CO₂</strong><small>evitados en este viaje</small></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Problema ===== -->
+    <section class="section" id="problema" aria-labelledby="problema-t">
+      <div class="container">
+        <div class="section__head">
+          <p class="kicker">El problema</p>
+          <h2 id="problema-t">Elegir una ruta no siempre significa comparar lo mismo</h2>
+          <p class="sub">Puedes ver varias alternativas, pero tiempo, costo e impacto ambiental casi nunca aparecen con la misma jerarquía.</p>
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <span class="card__num">01</span>
+            <h3>Hoy</h3>
+            <p>Cada app prioriza un objetivo distinto: pedir un viaje, navegar o consultar el transporte. La información existe, pero cambia de formato según el servicio.</p>
+          </article>
+          <article class="card">
+            <span class="card__num">02</span>
+            <h3>El problema</h3>
+            <p>No hay una experiencia enfocada en comparar caminata, bicicleta y transporte público con los mismos tres indicadores.</p>
+          </article>
+          <article class="card card--accent">
+            <span class="card__num">03</span>
+            <h3>La oportunidad</h3>
+            <p>Una interfaz centrada en el mapa que facilite la comparación y haga visible el impacto de cada decisión de movilidad.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Cómo funciona ===== -->
+    <section class="section section--white" id="como-funciona" aria-labelledby="como-t">
+      <div class="container">
+        <div class="section__head">
+          <p class="kicker">Cómo funciona</p>
+          <h2 id="como-t">Tu ruta, decidida en tres pasos</h2>
+        </div>
+        <ol class="steps">
+          <li class="step">
+            <span class="step__ic"><svg width="24" height="24"><use href="#ic-search"/></svg></span>
+            <span class="step__n">Paso 1</span>
+            <h3>Ingresa tu destino</h3>
+            <p>Escribe a dónde vas o elige un lugar frecuente. EcoRuta toma tu ubicación como punto de partida.</p>
+          </li>
+          <li class="step">
+            <span class="step__ic"><svg width="24" height="24"><use href="#ic-compare"/></svg></span>
+            <span class="step__n">Paso 2</span>
+            <h3>Compara tres opciones</h3>
+            <p>Caminar, bicicleta y transporte público aparecen en tarjetas con tiempo, costo y CO₂ al mismo nivel de lectura.</p>
+          </li>
+          <li class="step">
+            <span class="step__ic"><svg width="24" height="24"><use href="#ic-route"/></svg></span>
+            <span class="step__n">Paso 3</span>
+            <h3>Elige y avanza</h3>
+            <p>Inicia la ruta con indicaciones paso a paso y, al llegar, mira el resumen de lo que ahorraste.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ===== Comparar ===== -->
+    <section class="section" id="comparar" aria-labelledby="comparar-t">
+      <div class="container">
+        <div class="section__head">
+          <p class="kicker">Comparación</p>
+          <h2 id="comparar-t">Tres modos. Tres indicadores. Una misma jerarquía.</h2>
+          <p class="route-chip"><svg width="16" height="16" aria-hidden="true"><use href="#ic-pin"/></svg>Ejemplo: Parque Kennedy, Miraflores → Plaza San Martín, Cercado de Lima · 9 km aprox.</p>
+        </div>
+        <div class="modes">
+          <article class="mode mode--bike mode--rec">
+            <header class="mode__head">
+              <span class="mode__ic"><svg width="24" height="24" aria-hidden="true"><use href="#ic-bike"/></svg></span>
+              <h3>Bicicleta</h3>
+              <span class="tag tag--green">Recomendada</span>
+            </header>
+            <dl class="metrics">
+              <div><dt><svg width="16" height="16" aria-hidden="true"><use href="#ic-clock"/></svg>Tiempo</dt><dd>32 min</dd></div>
+              <div><dt><span class="sol" aria-hidden="true">S/</span>Costo</dt><dd>S/ 0.00</dd></div>
+              <div><dt><svg width="16" height="16" aria-hidden="true"><use href="#ic-leaf"/></svg>CO₂ evitado</dt><dd>1.5 kg</dd></div>
+            </dl>
+            <p class="mode__note">El mejor equilibrio entre tiempo, costo e impacto.</p>
+          </article>
+          <article class="mode mode--bus">
+            <header class="mode__head">
+              <span class="mode__ic"><svg width="24" height="24" aria-hidden="true"><use href="#ic-bus"/></svg></span>
+              <h3>Transporte público</h3>
+              <span class="tag tag--blue">Más rápida</span>
+            </header>
+            <dl class="metrics">
+              <div><dt><svg width="16" height="16" aria-hidden="true"><use href="#ic-clock"/></svg>Tiempo</dt><dd>28 min</dd></div>
+              <div><dt><span class="sol" aria-hidden="true">S/</span>Costo</dt><dd>S/ 3.20</dd></div>
+              <div><dt><svg width="16" height="16" aria-hidden="true"><use href="#ic-leaf"/></svg>CO₂ evitado</dt><dd>1.0 kg</dd></div>
+            </dl>
+            <p class="mode__note">Llegas antes y compartes el viaje.</p>
+          </article>
+          <article class="mode mode--walk">
+            <header class="mode__head">
+              <span class="mode__ic"><svg width="24" height="24" aria-hidden="true"><use href="#ic-walk"/></svg></span>
+              <h3>Caminar</h3>
+              <span class="tag tag--soft">Más económica</span>
+            </header>
+            <dl class="metrics">
+              <div><dt><svg width="16" height="16" aria-hidden="true"><use href="#ic-clock"/></svg>Tiempo</dt><dd>1 h 50 min</dd></div>
+              <div><dt><span class="sol" aria-hidden="true">S/</span>Costo</dt><dd>S/ 0.00</dd></div>
+              <div><dt><svg width="16" height="16" aria-hidden="true"><use href="#ic-leaf"/></svg>CO₂ evitado</dt><dd>1.5 kg</dd></div>
+            </dl>
+            <p class="mode__note">Cero costo y cero emisiones, ideal para tramos cortos.</p>
+          </article>
+        </div>
+        <p class="footnote">Valores aproximados con fines ilustrativos. El CO₂ evitado se calcula frente al mismo trayecto en auto particular.</p>
+      </div>
+    </section>
+
+    <!-- ===== Impacto ===== -->
+    <section class="impact" id="impacto" aria-labelledby="impacto-t">
+      <div class="container impact__grid">
+        <div>
+          <p class="kicker kicker--light">Impacto acumulado</p>
+          <h2 id="impacto-t">Cada viaje suma. EcoRuta te lo muestra.</h2>
+          <p class="impact__lead">Después de cada ruta, EcoRuta guarda cuánto CO₂ evitaste y cuánto dinero ahorraste. Así ves tus hábitos de movilidad mes a mes.</p>
+          <ul class="stats">
+            <li><strong>18 kg</strong><span>CO₂ evitado</span></li>
+            <li><strong>S/ 96</strong><span>ahorrados</span></li>
+            <li><strong>22</strong><span>viajes sostenibles</span></li>
+          </ul>
+          <p class="impact__note">Ejemplo de resumen mensual.</p>
+        </div>
+        <div class="impact__card" aria-hidden="true">
+          <div class="impact__card-head"><strong>Octubre</strong><span>CO₂ evitado por semana</span></div>
+          <div class="bars">
+            <div class="bar" style="--h:45%"><span>3.2</span><i>S1</i></div>
+            <div class="bar" style="--h:62%"><span>4.4</span><i>S2</i></div>
+            <div class="bar" style="--h:55%"><span>3.9</span><i>S3</i></div>
+            <div class="bar bar--hi" style="--h:92%"><span>6.5</span><i>S4</i></div>
+          </div>
+          <div class="impact__split">
+            <span><i class="sw walk"></i>Caminar 30%</span>
+            <span><i class="sw bike"></i>Bici 45%</span>
+            <span><i class="sw bus"></i>Transporte 25%</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Para quién ===== -->
+    <section class="section section--white" id="para-quien" aria-labelledby="quien-t">
+      <div class="container">
+        <div class="section__head">
+          <p class="kicker">Para quién es</p>
+          <h2 id="quien-t">Para quienes se mueven por la ciudad todos los días</h2>
+        </div>
+        <div class="grid-3">
+          <article class="persona">
+            <span class="persona__ic walk"><svg width="22" height="22" aria-hidden="true"><use href="#ic-book"/></svg></span>
+            <h3>Estudiantes</h3>
+            <p>Trayectos diarios a clases con un presupuesto ajustado y ganas de ahorrar tiempo.</p>
+          </article>
+          <article class="persona">
+            <span class="persona__ic bus"><svg width="22" height="22" aria-hidden="true"><use href="#ic-brief"/></svg></span>
+            <h3>Trabajadores</h3>
+            <p>Personas que van y vuelven del trabajo y quieren decidir rápido la mejor opción del día.</p>
+          </article>
+          <article class="persona">
+            <span class="persona__ic bike"><svg width="22" height="22" aria-hidden="true"><use href="#ic-bike"/></svg></span>
+            <h3>Ciclistas y caminantes</h3>
+            <p>Quienes ya eligen moverse sin auto y quieren ver el impacto real de sus hábitos.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Preguntas ===== -->
+    <section class="section" id="preguntas" aria-labelledby="faq-t">
+      <div class="container container--narrow">
+        <div class="section__head">
+          <p class="kicker">Preguntas frecuentes</p>
+          <h2 id="faq-t">Lo que suelen preguntarnos</h2>
+        </div>
+        <div class="faq">
+          <details open>
+            <summary>¿EcoRuta ya está disponible?<svg width="20" height="20" aria-hidden="true"><use href="#ic-chev"/></svg></summary>
+            <p>Todavía no. EcoRuta es una propuesta en etapa de diseño. Deja tu correo y te avisaremos cuando esté lista para iOS y Android.</p>
+          </details>
+          <details>
+            <summary>¿Cómo se calcula el CO₂?<svg width="20" height="20" aria-hidden="true"><use href="#ic-chev"/></svg></summary>
+            <p>Estimamos el CO₂ evitado comparando tu ruta con el mismo trayecto en auto particular, usando factores de emisión promedio por kilómetro para cada modo. Es una estimación de referencia, no una medición exacta.</p>
+          </details>
+          <details>
+            <summary>¿Qué modos de transporte compara?<svg width="20" height="20" aria-hidden="true"><use href="#ic-chev"/></svg></summary>
+            <p>Caminata, bicicleta y transporte público. Los tres se muestran con los mismos indicadores para que la comparación sea justa.</p>
+          </details>
+          <details>
+            <summary>¿En qué ciudad funcionará?<svg width="20" height="20" aria-hidden="true"><use href="#ic-chev"/></svg></summary>
+            <p>La primera versión está pensada para Lima, con rutas y costos de referencia de la ciudad.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="cta" id="avisame" aria-labelledby="cta-t">
+      <div class="container">
+        <div class="cta__box">
+          <img class="cta__logo" src="assets/logo-ecoruta.png" alt="" width="52" height="80">
+          <h2 id="cta-t">Sé de los primeros en moverte mejor</h2>
+          <p>Próximamente en iOS y Android. Déjanos tu correo y te avisamos el día del lanzamiento.</p>
+          <form class="form" id="form" novalidate>
+            <label class="sr-only" for="email">Correo electrónico</label>
+            <input id="email" name="email" type="email" placeholder="tu@correo.com" autocomplete="email" required aria-describedby="form-msg">
+            <button class="btn btn--primary" type="submit">Avísame</button>
+          </form>
+          <p class="form__msg" id="form-msg" role="status" aria-live="polite"></p>
+          <p class="form__legal">Proyecto académico: este formulario es demostrativo y no guarda datos.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a class="brand brand--light" href="#top"><img src="assets/logo-ecoruta.png" alt="" width="22" height="34"><span>EcoRuta</span></a>
+        <p>Muévete mejor. Decide con tiempo, costo e impacto.</p>
+      </div>
+      <ul class="footer__links">
+        <li><a href="#como-funciona">Cómo funciona</a></li>
+        <li><a href="#comparar">Comparar</a></li>
+        <li><a href="#impacto">Impacto</a></li>
+        <li><a href="#preguntas">Preguntas</a></li>
+      </ul>
+      <p class="footer__legal">Proyecto académico · 2026<br>Diseño de Interfaces de Aplicaciones<br>Matias De La Cruz Jaramillo</p>
+    </div>
+  </footer>
+
+  <!-- ===== Íconos (SVG sprite) ===== -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="ic-walk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="2"/><path d="m9 21 2.5-6 2.5 2.5V21"/><path d="m11.5 15 1-6 3.5 3 3 1"/><path d="m12.5 9-3.5 2-1 3"/></symbol>
+      <symbol id="ic-bike" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></symbol>
+      <symbol id="ic-bus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="15" rx="3"/><path d="M4 11h16M8 3v8M16 3v8M7 18v3M17 18v3"/><circle cx="8" cy="14.5" r=".6" fill="currentColor"/><circle cx="16" cy="14.5" r=".6" fill="currentColor"/></symbol>
+      <symbol id="ic-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></symbol>
+      <symbol id="ic-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+      <symbol id="ic-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol>
+      <symbol id="ic-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+      <symbol id="ic-compare" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="4" rx="1.5"/><rect x="3" y="10" width="18" height="4" rx="1.5"/><rect x="3" y="16" width="18" height="4" rx="1.5"/></symbol>
+      <symbol id="ic-route" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></symbol>
+      <symbol id="ic-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
+      <symbol id="ic-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></symbol>
+      <symbol id="ic-brief" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
+    </defs>
+  </svg>
+
+  <script src="script.js"></script>
+</body>
+</html>
