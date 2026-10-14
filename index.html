@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
   <a class="skip" href="#contenido">Saltar al contenido</a>
@@ -29,7 +30,26 @@
           <li><a href="#impacto">Impacto</a></li>
           <li><a href="#preguntas">Preguntas</a></li>
         </ul>
-        <a class="btn btn--primary btn--sm" href="#avisame">Avísame</a>
+        <!-- Invitado -->
+        <div class="auth" data-show="guest">
+          <button class="btn btn--ghost btn--sm" type="button" data-auth-open="login">Iniciar sesión</button>
+          <button class="btn btn--primary btn--sm" type="button" data-auth-open="signup">Crear cuenta</button>
+        </div>
+        <!-- Sesión iniciada -->
+        <div class="user" data-show="user" hidden>
+          <button class="user__btn" id="userBtn" type="button" aria-expanded="false" aria-controls="userMenu">
+            <span class="avatar" data-user-initial aria-hidden="true">E</span>
+            <span class="user__hi">Hola, <strong data-user-name>tú</strong></span>
+            <svg class="user__chev" width="16" height="16" aria-hidden="true"><use href="#ic-chev"/></svg>
+          </button>
+          <div class="user__menu" id="userMenu" hidden>
+            <p class="user__email" data-user-email></p>
+            <a href="#mi-impacto">Mi impacto</a>
+            <button type="button" data-logout>
+              <svg width="16" height="16" aria-hidden="true"><use href="#ic-logout"/></svg>Cerrar sesión
+            </button>
+          </div>
+        </div>
       </nav>
       <button class="menu-btn" id="menuBtn" aria-controls="nav" aria-expanded="false" aria-label="Abrir menú">
         <svg class="i-open" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -47,7 +67,8 @@
           <h1>Muévete mejor. Decide con <span class="hl">tiempo, costo e impacto.</span></h1>
           <p class="lead">EcoRuta compara caminar, bicicleta y transporte público con los mismos tres indicadores —tiempo, costo y CO₂— para que elijas tu ruta en segundos.</p>
           <div class="hero__ctas">
-            <a class="btn btn--primary" href="#avisame">Avísame cuando salga</a>
+            <button class="btn btn--primary" type="button" data-auth-open="signup" data-show="guest">Crear cuenta gratis</button>
+            <a class="btn btn--primary" href="#mi-impacto" data-show="user" hidden>Ver mi impacto</a>
             <a class="btn btn--ghost" href="#como-funciona">Ver cómo funciona</a>
           </div>
           <ul class="hero__chips" aria-label="Modos que compara">
@@ -73,10 +94,10 @@
                   <path d="M0 100h300M130 0v220" stroke="#fff" stroke-width="5"/>
                   <rect x="200" y="150" width="40" height="50" rx="6" fill="#CFE6D7"/>
                   <rect x="12" y="12" width="46" height="36" rx="6" fill="#CFE6D7"/>
-                  <path d="M40 190 C 70 160, 70 140, 130 140 S 190 110, 190 60 S 230 40, 250 30" fill="none" stroke="#169C9C" stroke-width="6" stroke-linecap="round"/>
-                  <path d="M40 190 C 90 200, 130 170, 190 140 S 240 60, 250 30" fill="none" stroke="#2388C9" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 9" opacity=".8"/>
-                  <circle cx="40" cy="190" r="8" fill="#fff" stroke="#0B5D46" stroke-width="4"/>
-                  <circle cx="250" cy="30" r="9" fill="#0B5D46"/><circle cx="250" cy="30" r="3.5" fill="#fff"/>
+                  <path class="route-alt" d="M40 190 C 90 200, 130 170, 190 140 S 240 60, 250 30" fill="none" stroke="#2388C9" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 9"/>
+                  <path class="route-main" pathLength="1" d="M40 190 C 70 160, 70 140, 130 140 S 190 110, 190 60 S 230 40, 250 30" fill="none" stroke="#169C9C" stroke-width="6" stroke-linecap="round"/>
+                  <circle class="pin pin--start" cx="40" cy="190" r="8" fill="#fff" stroke="#0B5D46" stroke-width="4"/>
+                  <g class="pin pin--end"><circle cx="250" cy="30" r="9" fill="#0B5D46"/><circle cx="250" cy="30" r="3.5" fill="#fff"/></g>
                 </svg>
               </div>
               <div class="sheet">
@@ -103,6 +124,32 @@
           <div class="float-card">
             <span class="float-card__ic"><svg width="18" height="18"><use href="#ic-leaf"/></svg></span>
             <div><strong>−1.5 kg CO₂</strong><small>evitados en este viaje</small></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Mi impacto (solo con sesión iniciada) ===== -->
+    <section class="mine" id="mi-impacto" aria-labelledby="mine-t" data-show="user" hidden>
+      <div class="container">
+        <div class="mine__box">
+          <div class="mine__head">
+            <span class="avatar avatar--lg" data-user-initial aria-hidden="true">E</span>
+            <div>
+              <p class="kicker">Tu panel</p>
+              <h2 id="mine-t">Hola, <span data-user-name>tú</span>. Este es tu impacto.</h2>
+              <p class="mine__note">Datos de ejemplo hasta que la app esté disponible.</p>
+            </div>
+            <span class="badge"><svg width="14" height="14" aria-hidden="true"><use href="#ic-check"/></svg>Acceso anticipado activo</span>
+          </div>
+          <ul class="mine__stats">
+            <li><span class="mine__ic walk"><svg width="20" height="20" aria-hidden="true"><use href="#ic-leaf"/></svg></span><strong>4.6 kg</strong><span>CO₂ evitado este mes</span></li>
+            <li><span class="mine__ic bus"><span class="sol" aria-hidden="true">S/</span></span><strong>S/ 24</strong><span>ahorrados frente a taxi</span></li>
+            <li><span class="mine__ic bike"><svg width="20" height="20" aria-hidden="true"><use href="#ic-bike"/></svg></span><strong>Bicicleta</strong><span>tu modo más usado</span></li>
+          </ul>
+          <div class="goal">
+            <div class="goal__top"><span>Meta de octubre: 10 kg de CO₂ evitado</span><strong>46%</strong></div>
+            <div class="goal__bar" role="progressbar" aria-valuenow="46" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso de la meta mensual"><span style="--p:46%"></span></div>
           </div>
         </div>
       </div>
@@ -227,19 +274,19 @@
           <h2 id="impacto-t">Cada viaje suma. EcoRuta te lo muestra.</h2>
           <p class="impact__lead">Después de cada ruta, EcoRuta guarda cuánto CO₂ evitaste y cuánto dinero ahorraste. Así ves tus hábitos de movilidad mes a mes.</p>
           <ul class="stats">
-            <li><strong>18 kg</strong><span>CO₂ evitado</span></li>
-            <li><strong>S/ 96</strong><span>ahorrados</span></li>
-            <li><strong>22</strong><span>viajes sostenibles</span></li>
+            <li><strong data-count="18" data-suffix=" kg">18 kg</strong><span>CO₂ evitado</span></li>
+            <li><strong data-count="96" data-prefix="S/ ">S/ 96</strong><span>ahorrados</span></li>
+            <li><strong data-count="22">22</strong><span>viajes sostenibles</span></li>
           </ul>
           <p class="impact__note">Ejemplo de resumen mensual.</p>
         </div>
         <div class="impact__card" aria-hidden="true">
           <div class="impact__card-head"><strong>Octubre</strong><span>CO₂ evitado por semana</span></div>
           <div class="bars">
-            <div class="bar" style="--h:45%"><span>3.2</span><i>S1</i></div>
-            <div class="bar" style="--h:62%"><span>4.4</span><i>S2</i></div>
-            <div class="bar" style="--h:55%"><span>3.9</span><i>S3</i></div>
-            <div class="bar bar--hi" style="--h:92%"><span>6.5</span><i>S4</i></div>
+            <div class="bar" style="--h:45%;--i:0"><span>3.2</span><i>S1</i></div>
+            <div class="bar" style="--h:62%;--i:1"><span>4.4</span><i>S2</i></div>
+            <div class="bar" style="--h:55%;--i:2"><span>3.9</span><i>S3</i></div>
+            <div class="bar bar--hi" style="--h:92%;--i:3"><span>6.5</span><i>S4</i></div>
           </div>
           <div class="impact__split">
             <span><i class="sw walk"></i>Caminar 30%</span>
@@ -287,7 +334,11 @@
         <div class="faq">
           <details open>
             <summary>¿EcoRuta ya está disponible?<svg width="20" height="20" aria-hidden="true"><use href="#ic-chev"/></svg></summary>
-            <p>Todavía no. EcoRuta es una propuesta en etapa de diseño. Deja tu correo y te avisaremos cuando esté lista para iOS y Android.</p>
+            <p>Todavía no. EcoRuta es una propuesta en etapa de diseño. Crea tu cuenta para tener acceso anticipado cuando esté lista para iOS y Android.</p>
+          </details>
+          <details>
+            <summary>¿La cuenta es real?<svg width="20" height="20" aria-hidden="true"><use href="#ic-chev"/></svg></summary>
+            <p>En esta versión es una simulación de demostración: nada se envía a un servidor. Solo tu nombre y correo se guardan en este navegador para mantener la sesión; la contraseña nunca se guarda.</p>
           </details>
           <details>
             <summary>¿Cómo se calcula el CO₂?<svg width="20" height="20" aria-hidden="true"><use href="#ic-chev"/></svg></summary>
@@ -306,19 +357,23 @@
     </section>
 
     <!-- ===== CTA ===== -->
-    <section class="cta" id="avisame" aria-labelledby="cta-t">
+    <section class="cta" id="acceso" aria-labelledby="cta-t">
       <div class="container">
         <div class="cta__box">
           <img class="cta__logo" src="assets/logo-ecoruta.png" alt="" width="52" height="80">
-          <h2 id="cta-t">Sé de los primeros en moverte mejor</h2>
-          <p>Próximamente en iOS y Android. Déjanos tu correo y te avisamos el día del lanzamiento.</p>
-          <form class="form" id="form" novalidate>
-            <label class="sr-only" for="email">Correo electrónico</label>
-            <input id="email" name="email" type="email" placeholder="tu@correo.com" autocomplete="email" required aria-describedby="form-msg">
-            <button class="btn btn--primary" type="submit">Avísame</button>
+          <h2 id="cta-t">Crea tu cuenta y sé de los primeros</h2>
+          <p>Próximamente en iOS y Android. Con tu cuenta tendrás acceso anticipado y tu propio panel de impacto.</p>
+          <form class="form" id="ctaForm" novalidate data-show="guest">
+            <label class="sr-only" for="ctaEmail">Correo electrónico</label>
+            <input id="ctaEmail" name="email" type="email" placeholder="tu@correo.com" autocomplete="email" aria-describedby="ctaMsg">
+            <button class="btn btn--primary" type="submit">Crear cuenta</button>
           </form>
-          <p class="form__msg" id="form-msg" role="status" aria-live="polite"></p>
-          <p class="form__legal">Proyecto académico: este formulario es demostrativo y no guarda datos.</p>
+          <p class="form__msg" id="ctaMsg" role="status" aria-live="polite" data-show="guest"></p>
+          <p class="cta__done" data-show="user" hidden>
+            <svg width="20" height="20" aria-hidden="true"><use href="#ic-check"/></svg>
+            Ya tienes acceso anticipado, <strong data-user-name>tú</strong>.
+          </p>
+          <p class="form__legal">Proyecto académico: la cuenta es una simulación y no se envían datos.</p>
         </div>
       </div>
     </section>
@@ -340,6 +395,96 @@
     </div>
   </footer>
 
+  <!-- ===== Modal de cuenta (simulación) ===== -->
+  <div class="modal" id="authModal" hidden>
+    <div class="modal__backdrop" data-auth-close></div>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+      <button class="modal__close" type="button" data-auth-close aria-label="Cerrar">
+        <svg width="20" height="20" aria-hidden="true"><use href="#ic-x"/></svg>
+      </button>
+
+      <div class="auth-view" id="authForms">
+        <img class="modal__logo" src="assets/logo-ecoruta.png" alt="" width="30" height="46">
+        <h2 id="authTitle">Bienvenido a EcoRuta</h2>
+        <p class="modal__sub">Accede a tu panel de impacto y al acceso anticipado.</p>
+
+        <div class="tabs" role="tablist" aria-label="Tipo de acceso">
+          <button class="tab" role="tab" id="tab-login" aria-controls="panel-login" aria-selected="true" type="button">Ingresar</button>
+          <button class="tab" role="tab" id="tab-signup" aria-controls="panel-signup" aria-selected="false" type="button" tabindex="-1">Crear cuenta</button>
+        </div>
+
+        <!-- Ingresar -->
+        <form class="auth-form" id="panel-login" role="tabpanel" aria-labelledby="tab-login" novalidate>
+          <div class="field">
+            <label for="login-email">Correo electrónico</label>
+            <input id="login-email" name="email" type="email" autocomplete="email" placeholder="tu@correo.com" aria-describedby="login-email-err">
+            <p class="field__err" id="login-email-err"></p>
+          </div>
+          <div class="field">
+            <label for="login-pass">Contraseña</label>
+            <div class="field__pw">
+              <input id="login-pass" name="password" type="password" autocomplete="current-password" placeholder="Mínimo 8 caracteres" aria-describedby="login-pass-err">
+              <button class="pw-toggle" type="button" aria-label="Mostrar contraseña" aria-pressed="false">
+                <svg class="i-eye" width="20" height="20" aria-hidden="true"><use href="#ic-eye"/></svg>
+                <svg class="i-eye-off" width="20" height="20" aria-hidden="true"><use href="#ic-eye-off"/></svg>
+              </button>
+            </div>
+            <p class="field__err" id="login-pass-err"></p>
+          </div>
+          <button class="link-btn" type="button" data-forgot>¿Olvidaste tu contraseña?</button>
+          <p class="auth-status" role="status" aria-live="polite"></p>
+          <button class="btn btn--primary btn--block" type="submit"><span class="btn__label">Ingresar</span><span class="spinner" aria-hidden="true"></span></button>
+          <p class="auth-switch">¿No tienes cuenta? <button class="link-btn" type="button" data-auth-tab="signup">Crear cuenta</button></p>
+        </form>
+
+        <!-- Crear cuenta -->
+        <form class="auth-form" id="panel-signup" role="tabpanel" aria-labelledby="tab-signup" novalidate hidden>
+          <div class="field">
+            <label for="signup-name">Nombre</label>
+            <input id="signup-name" name="name" type="text" autocomplete="given-name" placeholder="¿Cómo te llamas?" aria-describedby="signup-name-err">
+            <p class="field__err" id="signup-name-err"></p>
+          </div>
+          <div class="field">
+            <label for="signup-email">Correo electrónico</label>
+            <input id="signup-email" name="email" type="email" autocomplete="email" placeholder="tu@correo.com" aria-describedby="signup-email-err">
+            <p class="field__err" id="signup-email-err"></p>
+          </div>
+          <div class="field">
+            <label for="signup-pass">Contraseña</label>
+            <div class="field__pw">
+              <input id="signup-pass" name="password" type="password" autocomplete="new-password" placeholder="Mínimo 8 caracteres" aria-describedby="signup-pass-hint signup-pass-err">
+              <button class="pw-toggle" type="button" aria-label="Mostrar contraseña" aria-pressed="false">
+                <svg class="i-eye" width="20" height="20" aria-hidden="true"><use href="#ic-eye"/></svg>
+                <svg class="i-eye-off" width="20" height="20" aria-hidden="true"><use href="#ic-eye-off"/></svg>
+              </button>
+            </div>
+            <div class="pw-meter" aria-hidden="true"><span></span></div>
+            <p class="field__hint" id="signup-pass-hint">Usa 8 caracteres o más, con letras y números.</p>
+            <p class="field__err" id="signup-pass-err"></p>
+          </div>
+          <div class="field field--check">
+            <input id="signup-terms" name="terms" type="checkbox" aria-describedby="signup-terms-err">
+            <label for="signup-terms">Acepto los términos y la política de privacidad</label>
+            <p class="field__err" id="signup-terms-err"></p>
+          </div>
+          <p class="auth-status" role="status" aria-live="polite"></p>
+          <button class="btn btn--primary btn--block" type="submit"><span class="btn__label">Crear cuenta</span><span class="spinner" aria-hidden="true"></span></button>
+          <p class="auth-switch">¿Ya tienes cuenta? <button class="link-btn" type="button" data-auth-tab="login">Ingresar</button></p>
+        </form>
+      </div>
+
+      <!-- Éxito -->
+      <div class="auth-view auth-success" id="authSuccess" hidden>
+        <span class="success__ic"><svg width="32" height="32" aria-hidden="true"><use href="#ic-check"/></svg></span>
+        <h2 tabindex="-1" id="successTitle">¡Listo, <span data-user-name>tú</span>!</h2>
+        <p id="successText">Tu cuenta de acceso anticipado está activa.</p>
+        <a class="btn btn--primary btn--block" href="#mi-impacto" data-auth-close>Ver mi impacto</a>
+      </div>
+
+      <p class="modal__note">Simulación académica: no uses tu contraseña real. Nada se envía a un servidor.</p>
+    </div>
+  </div>
+
   <!-- ===== Íconos (SVG sprite) ===== -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
@@ -355,6 +500,11 @@
       <symbol id="ic-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
       <symbol id="ic-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></symbol>
       <symbol id="ic-brief" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
+      <symbol id="ic-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+      <symbol id="ic-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+      <symbol id="ic-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+      <symbol id="ic-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.7 5.1A10 10 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-2.2 3.2M6.6 6.6C3.9 8.4 2 12 2 12s3.5 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="m2 2 20 20"/></symbol>
+      <symbol id="ic-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></symbol>
     </defs>
   </svg>
 
