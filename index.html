@@ -67,8 +67,7 @@
           <h1>Muévete mejor. Decide con <span class="hl">tiempo, costo e impacto.</span></h1>
           <p class="lead">EcoRuta compara caminar, bicicleta y transporte público con los mismos tres indicadores —tiempo, costo y CO₂— para que elijas tu ruta en segundos.</p>
           <div class="hero__ctas">
-            <button class="btn btn--primary" type="button" data-auth-open="signup" data-show="guest">Crear cuenta gratis</button>
-            <a class="btn btn--primary" href="#mi-impacto" data-show="user" hidden>Ver mi impacto</a>
+            <a class="btn btn--primary" href="#comparar">Probar el comparador</a>
             <a class="btn btn--ghost" href="#como-funciona">Ver cómo funciona</a>
           </div>
           <ul class="hero__chips" aria-label="Modos que compara">
@@ -106,24 +105,24 @@
                 <div class="mini mini--rec">
                   <span class="mini__ic bike"><svg width="16" height="16"><use href="#ic-bike"/></svg></span>
                   <div class="mini__txt"><strong>Bicicleta</strong><span class="tag tag--green">Recomendada</span></div>
-                  <div class="mini__m"><b>32 min</b><span>S/ 0 · −1.5 kg</span></div>
+                  <div class="mini__m"><b>46 min</b><span>S/ 0 · −1.7 kg</span></div>
                 </div>
                 <div class="mini">
                   <span class="mini__ic bus"><svg width="16" height="16"><use href="#ic-bus"/></svg></span>
                   <div class="mini__txt"><strong>Transporte</strong><span class="tag tag--blue">Más rápida</span></div>
-                  <div class="mini__m"><b>28 min</b><span>S/ 3.20 · −1.0 kg</span></div>
+                  <div class="mini__m"><b>44 min</b><span>S/ 2.50 · −0.6 kg</span></div>
                 </div>
                 <div class="mini">
                   <span class="mini__ic walk"><svg width="16" height="16"><use href="#ic-walk"/></svg></span>
                   <div class="mini__txt"><strong>Caminar</strong><span class="tag tag--soft">Más económica</span></div>
-                  <div class="mini__m"><b>1 h 50</b><span>S/ 0 · −1.5 kg</span></div>
+                  <div class="mini__m"><b>2 h 06</b><span>S/ 0 · −1.7 kg</span></div>
                 </div>
               </div>
             </div>
           </div>
           <div class="float-card">
             <span class="float-card__ic"><svg width="18" height="18"><use href="#ic-leaf"/></svg></span>
-            <div><strong>−1.5 kg CO₂</strong><small>evitados en este viaje</small></div>
+            <div><strong>−1.7 kg CO₂</strong><small>evitados en este viaje</small></div>
           </div>
         </div>
       </div>
@@ -213,56 +212,73 @@
       </div>
     </section>
 
-    <!-- ===== Comparar ===== -->
+    <!-- ===== Comparador interactivo ===== -->
     <section class="section" id="comparar" aria-labelledby="comparar-t">
       <div class="container">
         <div class="section__head">
-          <p class="kicker">Comparación</p>
-          <h2 id="comparar-t">Tres modos. Tres indicadores. Una misma jerarquía.</h2>
-          <p class="route-chip"><svg width="16" height="16" aria-hidden="true"><use href="#ic-pin"/></svg>Ejemplo: Parque Kennedy, Miraflores → Plaza San Martín, Cercado de Lima · 9 km aprox.</p>
+          <p class="kicker">Prueba el comparador</p>
+          <h2 id="comparar-t">Elige tu ruta y compara en segundos</h2>
+          <p class="sub">Tres modos, tres indicadores y la misma jerarquía. Cambia el origen, el destino o lo que te importa hoy.</p>
         </div>
-        <div class="modes">
-          <article class="mode mode--bike mode--rec">
-            <header class="mode__head">
-              <span class="mode__ic"><svg width="24" height="24" aria-hidden="true"><use href="#ic-bike"/></svg></span>
-              <h3>Bicicleta</h3>
-              <span class="tag tag--green">Recomendada</span>
-            </header>
-            <dl class="metrics">
-              <div><dt><svg width="16" height="16" aria-hidden="true"><use href="#ic-clock"/></svg>Tiempo</dt><dd>32 min</dd></div>
-              <div><dt><span class="sol" aria-hidden="true">S/</span>Costo</dt><dd>S/ 0.00</dd></div>
-              <div><dt><svg width="16" height="16" aria-hidden="true"><use href="#ic-leaf"/></svg>CO₂ evitado</dt><dd>1.5 kg</dd></div>
-            </dl>
-            <p class="mode__note">El mejor equilibrio entre tiempo, costo e impacto.</p>
-          </article>
-          <article class="mode mode--bus">
-            <header class="mode__head">
-              <span class="mode__ic"><svg width="24" height="24" aria-hidden="true"><use href="#ic-bus"/></svg></span>
-              <h3>Transporte público</h3>
-              <span class="tag tag--blue">Más rápida</span>
-            </header>
-            <dl class="metrics">
-              <div><dt><svg width="16" height="16" aria-hidden="true"><use href="#ic-clock"/></svg>Tiempo</dt><dd>28 min</dd></div>
-              <div><dt><span class="sol" aria-hidden="true">S/</span>Costo</dt><dd>S/ 3.20</dd></div>
-              <div><dt><svg width="16" height="16" aria-hidden="true"><use href="#ic-leaf"/></svg>CO₂ evitado</dt><dd>1.0 kg</dd></div>
-            </dl>
-            <p class="mode__note">Llegas antes y compartes el viaje.</p>
-          </article>
-          <article class="mode mode--walk">
-            <header class="mode__head">
-              <span class="mode__ic"><svg width="24" height="24" aria-hidden="true"><use href="#ic-walk"/></svg></span>
-              <h3>Caminar</h3>
-              <span class="tag tag--soft">Más económica</span>
-            </header>
-            <dl class="metrics">
-              <div><dt><svg width="16" height="16" aria-hidden="true"><use href="#ic-clock"/></svg>Tiempo</dt><dd>1 h 50 min</dd></div>
-              <div><dt><span class="sol" aria-hidden="true">S/</span>Costo</dt><dd>S/ 0.00</dd></div>
-              <div><dt><svg width="16" height="16" aria-hidden="true"><use href="#ic-leaf"/></svg>CO₂ evitado</dt><dd>1.5 kg</dd></div>
-            </dl>
-            <p class="mode__note">Cero costo y cero emisiones, ideal para tramos cortos.</p>
-          </article>
+
+        <div class="cmp">
+          <!-- Controles -->
+          <form class="cmp__controls" id="cmpForm" aria-label="Datos del viaje">
+            <div class="cmp__route">
+              <div class="cmp__field">
+                <label for="cmpFrom"><span class="dot-pin dot-pin--from" aria-hidden="true"></span>Origen</label>
+                <select id="cmpFrom"></select>
+              </div>
+              <button class="cmp__swap" id="cmpSwap" type="button" aria-label="Intercambiar origen y destino">
+                <svg width="20" height="20" aria-hidden="true"><use href="#ic-swap"/></svg>
+              </button>
+              <div class="cmp__field">
+                <label for="cmpTo"><span class="dot-pin dot-pin--to" aria-hidden="true"></span>Destino</label>
+                <select id="cmpTo"></select>
+              </div>
+            </div>
+            <fieldset class="cmp__prio">
+              <legend>¿Qué te importa hoy?</legend>
+              <div class="seg" role="radiogroup">
+                <label><input type="radio" name="prio" value="tiempo"><span><svg width="16" height="16" aria-hidden="true"><use href="#ic-clock"/></svg>Tiempo</span></label>
+                <label><input type="radio" name="prio" value="ahorro" checked><span><span class="sol" aria-hidden="true">S/</span>Ahorro</span></label>
+                <label><input type="radio" name="prio" value="planeta"><span><svg width="16" height="16" aria-hidden="true"><use href="#ic-leaf"/></svg>Planeta</span></label>
+              </div>
+            </fieldset>
+          </form>
+
+          <div class="cmp__body">
+            <!-- Mapa -->
+            <div class="cmp__map" aria-hidden="true">
+              <svg id="cmpMap" viewBox="0 0 400 420" preserveAspectRatio="xMidYMid meet"></svg>
+              <p class="cmp__dist" id="cmpDist"></p>
+            </div>
+
+            <!-- Opciones -->
+            <div class="cmp__results">
+              <p class="cmp__why" id="cmpWhy" role="status" aria-live="polite"></p>
+              <div class="cmp__list" id="cmpList"></div>
+            </div>
+          </div>
+
+          <!-- Ahorro anual -->
+          <div class="annual">
+            <div class="annual__ctrl">
+              <label for="cmpTrips">Si haces este viaje <strong id="cmpTripsOut">10</strong> veces por semana en <strong id="cmpModeName">bicicleta</strong>…</label>
+              <input id="cmpTrips" type="range" min="1" max="14" step="1" value="10" aria-describedby="cmpAnnualNote">
+              <div class="annual__scale" aria-hidden="true"><span>1</span><span>7</span><span>14</span></div>
+            </div>
+            <div class="annual__res">
+              <div><strong id="cmpSave">S/ 0</strong><span>ahorrados al año frente al auto</span></div>
+              <div><strong id="cmpCo2">0 kg</strong><span>de CO₂ evitado al año</span></div>
+            </div>
+            <div class="annual__cta">
+              <button class="btn btn--primary" type="button" data-auth-open="signup" data-show="guest">Guarda tus rutas: crea tu cuenta</button>
+              <a class="btn btn--primary" href="#mi-impacto" data-show="user" hidden>Ver mi impacto</a>
+            </div>
+          </div>
+          <p class="footnote" id="cmpAnnualNote">Estimaciones de referencia: distancia en línea recta × 1.3; caminar 4.8 km/h, bici 14 km/h, transporte 17 km/h + 8 min de espera; pasaje S/ 2.50; auto S/ 0.60 por km. <a href="#faq-co2">¿Cómo calculamos el CO₂?</a></p>
         </div>
-        <p class="footnote">Valores aproximados con fines ilustrativos. El CO₂ evitado se calcula frente al mismo trayecto en auto particular.</p>
       </div>
     </section>
 
@@ -340,9 +356,16 @@
             <summary>¿La cuenta es real?<svg width="20" height="20" aria-hidden="true"><use href="#ic-chev"/></svg></summary>
             <p>En esta versión es una simulación de demostración: nada se envía a un servidor. Solo tu nombre y correo se guardan en este navegador para mantener la sesión; la contraseña nunca se guarda.</p>
           </details>
-          <details>
+          <details id="faq-co2">
             <summary>¿Cómo se calcula el CO₂?<svg width="20" height="20" aria-hidden="true"><use href="#ic-chev"/></svg></summary>
-            <p>Estimamos el CO₂ evitado comparando tu ruta con el mismo trayecto en auto particular, usando factores de emisión promedio por kilómetro para cada modo. Es una estimación de referencia, no una medición exacta.</p>
+            <p>Comparamos tu ruta con el mismo trayecto en auto a gasolina con una persona:</p>
+            <p class="formula">CO₂ evitado = distancia × (0.165 − factor del modo)</p>
+            <ul class="factors">
+              <li><span>Auto a gasolina</span><strong>0.165 kg CO₂e/km</strong></li>
+              <li><span>Bus urbano (por pasajero)</span><strong>0.108 kg CO₂e/km</strong></li>
+              <li><span>Caminar y bicicleta</span><strong>0 kg</strong></li>
+            </ul>
+            <p>Usamos los factores de conversión del Gobierno del Reino Unido (DESNZ, 2024) como referencia mientras validamos datos locales de Lima. Es una estimación, no una medición exacta.</p>
           </details>
           <details>
             <summary>¿Qué modos de transporte compara?<svg width="20" height="20" aria-hidden="true"><use href="#ic-chev"/></svg></summary>
@@ -500,6 +523,7 @@
       <symbol id="ic-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
       <symbol id="ic-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></symbol>
       <symbol id="ic-brief" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
+      <symbol id="ic-swap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4v16M7 4 3 8M7 4l4 4M17 20V4M17 20l-4-4M17 20l4-4"/></symbol>
       <symbol id="ic-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></symbol>
       <symbol id="ic-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
       <symbol id="ic-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>

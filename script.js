@@ -273,7 +273,8 @@
     document.documentElement.classList.add('js-motion');
 
     // Elementos que aparecen con un leve desplazamiento (escalonados dentro de cada grupo)
-    const groups = ['.section__head', '.grid-3 > *', '.steps > *', '.modes > *', '.faq > *', '.impact__grid > *', '.cta__box', '.footnote'];
+    // Solo elementos de apoyo (gráficos e imágenes): el texto aparece de inmediato (NN/g)
+    const groups = ['.impact__card', '.cmp__map'];
     groups.forEach((sel) => {
       $$(sel).forEach((el) => {
         el.setAttribute('data-reveal', '');
@@ -314,4 +315,178 @@
     };
     requestAnimationFrame(step);
   }
+})();
+
+/* =========================================================
+   Comparador interactivo (datos de referencia, sin servidor)
+   ========================================================= */
+(function () {
+  const $ = (s) => document.querySelector(s);
+  if (!$('#cmpForm')) return;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Lugares de Lima (coordenadas aproximadas)
+  const PLACES = [
+    { id: 'kennedy', name: 'Parque Kennedy, Miraflores', short: 'P. Kennedy', lat: -12.1211, lng: -77.0297 },
+    { id: 'sanmartin', name: 'Plaza San Martín, Cercado', short: 'Pza. San Martín', lat: -12.0516, lng: -77.0347 },
+    { id: 'financiero', name: 'Centro Financiero, San Isidro', short: 'C. Financiero', lat: -12.0931, lng: -77.0262 },
+    { id: 'barranco', name: 'Plaza de Barranco', short: 'Barranco', lat: -12.1495, lng: -77.0217 },
+    { id: 'campo', name: 'Campo de Marte, Jesús María', short: 'Campo de Marte', lat: -12.0695, lng: -77.0436 },
+    { id: 'jockey', name: 'Jockey Plaza, Surco', short: 'Jockey Plaza', lat: -12.0857, lng: -76.9773 },
+    { id: 'sanmiguel', name: 'Plaza San Miguel, San Miguel', short: 'Pza. San Miguel', lat: -12.0772, lng: -77.0832 },
+  ];
+  // Supuestos de referencia
+  const K = {
+    road: 1.3,                         // factor de calles vs línea recta
+    speed: { walk: 4.8, bike: 14, bus: 17 }, // km/h
+    extra: { walk: 0, bike: 3, bus: 8 },     // min fijos (estacionar bici / espera)
+    fare: { walk: 0, bike: 0, bus: 2.5 },    // S/
+    co2: { car: 0.165, walk: 0, bike: 0, bus: 0.108 }, // kg CO2e por km (DESNZ 2024)
+    carCostKm: 0.6,                    // S/ por km en auto (combustible y desgaste)
+  };
+  const MODES = [
+    { id: 'walk', name: 'Caminar', icon: 'ic-walk', color: '#28B463', verb: 'caminando' },
+    { id: 'bike', name: 'Bicicleta', icon: 'ic-bike', color: '#169C9C', verb: 'en bici' },
+    { id: 'bus', name: 'Transporte público', icon: 'ic-bus', color: '#2388C9', verb: 'en transporte público' },
+  ];
+
+  const from = $('#cmpFrom'), to = $('#cmpTo'), list = $('#cmpList'), why = $('#cmpWhy'), map = $('#cmpMap');
+  PLACES.forEach((p) => { from.add(new Option(p.name, p.id)); to.add(new Option(p.name, p.id)); });
+  from.value = 'kennedy'; to.value = 'sanmartin';
+
+  let active = null; // modo dibujado en el mapa (null = recomendado)
+
+  const byId = (id) => PLACES.find((p) => p.id === id);
+  function km(a, b) {
+    const R = 6371, rad = Math.PI / 180;
+    const dLat = (b.lat - a.lat) * rad, dLng = (b.lng - a.lng) * rad;
+    const h = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * rad) * Math.cos(b.lat * rad) * Math.sin(dLng / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(h)) * K.road;
+  }
+  const fmtTime = (m) => { m = Math.round(m); if (m < 60) return m + ' min'; const h = Math.floor(m / 60), r = m % 60; return h + ' h ' + String(r).padStart(2, '0') + ' min'; };
+  const fmtCost = (c) => 'S/ ' + c.toFixed(2);
+  const fmtKg = (k) => k.toFixed(1) + ' kg';
+
+  function compute() {
+    const a = byId(from.value), b = byId(to.value);
+    const d = km(a, b);
+    const res = MODES.map((m) => ({
+      ...m,
+      time: d / K.speed[m.id] * 60 + K.extra[m.id],
+      cost: K.fare[m.id],
+      co2: d * (K.co2.car - K.co2[m.id]),
+    }));
+    // etiquetas objetivas (empate → la más rápida)
+    const best = (key, dir) => [...res].sort((x, y) => (dir * (x[key] - y[key])) || (x.time - y.time))[0].id;
+    const fastest = best('time', 1), cheapest = best('cost', 1), greenest = best('co2', -1);
+    const prio = document.querySelector('input[name="prio"]:checked').value;
+    const walk = res.find((r) => r.id === 'walk');
+    let rec;
+    if (prio === 'tiempo') rec = fastest;
+    else if (walk.time <= 25) rec = 'walk';
+    else rec = prio === 'ahorro' ? cheapest : greenest;
+    return { a, b, d, res, fastest, cheapest, greenest, prio, rec };
+  }
+
+  function whyText(c) {
+    const r = c.res.find((x) => x.id === c.rec), w = c.res.find((x) => x.id === 'walk');
+    if (c.prio === 'tiempo') return `Te recomendamos <strong>${r.name.toLowerCase()}</strong>: es la opción más rápida para este trayecto (${fmtTime(r.time)}).`;
+    if (r.id === 'walk') return `Es un trayecto corto: <strong>caminando</strong> llegas en ${fmtTime(r.time)}, sin gastar y sin emisiones.`;
+    if (c.prio === 'ahorro') return `Te recomendamos <strong>${r.name.toLowerCase()}</strong>: cuesta ${fmtCost(r.cost)} y llegas ${fmtTime(w.time - r.time)} antes que caminando.`;
+    return `Te recomendamos <strong>${r.name.toLowerCase()}</strong>: cero emisiones y evitas ${fmtKg(r.co2)} de CO₂ frente a ir en auto.`;
+  }
+
+  function render(animate) {
+    const c = compute();
+    const shown = active || c.rec;
+    why.innerHTML = whyText(c);
+    list.innerHTML = c.res.map((r) => {
+      const tags = [];
+      if (r.id === c.rec) tags.push('<span class="tag tag--green">Recomendada</span>');
+      if (r.id === c.fastest) tags.push('<span class="tag tag--blue">Más rápida</span>');
+      if (r.id === c.cheapest) tags.push('<span class="tag tag--soft">Más económica</span>');
+      if (r.id === c.greenest) tags.push('<span class="tag tag--soft">Más sostenible</span>');
+      const on = r.id === shown;
+      return `<button type="button" class="opt opt--${r.id}${r.id === c.rec ? ' is-rec' : ''}${animate ? ' is-updating' : ''}" data-mode="${r.id}" aria-pressed="${on}" aria-label="${r.name}: ${fmtTime(r.time)}, ${fmtCost(r.cost)}, ${fmtKg(r.co2)} de CO₂ evitado${r.id === c.rec ? ', recomendada' : ''}. Ver en el mapa">
+        <span class="opt__ic"><svg width="24" height="24" aria-hidden="true"><use href="#${r.icon}"/></svg></span>
+        <span class="opt__main"><span class="opt__name">${r.name}</span><span class="opt__tags">${tags.join('')}${on ? '<span class="opt__onmap">· En el mapa</span>' : ''}</span></span>
+        <span class="opt__metrics" aria-hidden="true">
+          <span><small>Tiempo</small><b>${fmtTime(r.time)}</b></span>
+          <span><small>Costo</small><b>${fmtCost(r.cost)}</b></span>
+          <span><small>CO₂ evitado</small><b>${fmtKg(r.co2)}</b></span>
+        </span>
+      </button>`;
+    }).join('');
+    $('#cmpDist').textContent = `${c.d.toFixed(1)} km aprox. · ${c.a.short} → ${c.b.short}`;
+    drawMap(c, shown);
+    annual(c, shown);
+  }
+
+  // ---------- Mapa ----------
+  const VW = 400, VH = 420, PAD = 48;
+  const lats = PLACES.map((p) => p.lat), lngs = PLACES.map((p) => p.lng);
+  const minLat = Math.min(...lats), maxLat = Math.max(...lats), minLng = Math.min(...lngs), maxLng = Math.max(...lngs);
+  const sc = Math.min((VW - 2 * PAD) / (maxLng - minLng), (VH - 2 * PAD) / (maxLat - minLat));
+  const ox = (VW - (maxLng - minLng) * sc) / 2, oy = (VH - (maxLat - minLat) * sc) / 2;
+  const P = (lat, lng) => [ox + (lng - minLng) * sc, oy + (maxLat - lat) * sc];
+  const COAST = [[-12.02, -77.16], [-12.075, -77.1], [-12.105, -77.058], [-12.125, -77.04], [-12.15, -77.028], [-12.2, -77.015]];
+  const coastPts = COAST.map(([la, ln]) => P(la, ln));
+  const seaPath = 'M' + coastPts.map((p) => p.map((v) => v.toFixed(1)).join(' ')).join(' L') + ` L-50 ${VH + 50} L-50 -50 Z`;
+  let grid = '';
+  for (let x = 20; x < VW; x += 46) grid += `<path d="M${x} 0V${VH}" stroke="#fff" stroke-width="${x % 92 === 20 ? 7 : 3}"/>`;
+  for (let y = 24; y < VH; y += 46) grid += `<path d="M0 ${y}H${VW}" stroke="#fff" stroke-width="${y % 92 === 24 ? 7 : 3}"/>`;
+  const OFFSET = { walk: 0.06, bike: -0.1, bus: 0.22 };
+  function curve(A, B, k) {
+    const mx = (A[0] + B[0]) / 2, my = (A[1] + B[1]) / 2, dx = B[0] - A[0], dy = B[1] - A[1];
+    const cx = mx - dy * k, cy = my + dx * k;
+    return `M${A[0].toFixed(1)} ${A[1].toFixed(1)} Q${cx.toFixed(1)} ${cy.toFixed(1)} ${B[0].toFixed(1)} ${B[1].toFixed(1)}`;
+  }
+  function drawMap(c, shown) {
+    const A = P(c.a.lat, c.a.lng), B = P(c.b.lat, c.b.lng);
+    const alts = MODES.filter((m) => m.id !== shown).map((m) => `<path class="map-route map-route--alt" d="${curve(A, B, OFFSET[m.id])}"/>`).join('');
+    const m = MODES.find((x) => x.id === shown);
+    const main = `<path class="map-route map-route--active" pathLength="1" d="${curve(A, B, OFFSET[shown])}" stroke="${m.color}"${reduceMotion ? ' style="stroke-dashoffset:0;animation:none"' : ''}/>`;
+    const dots = PLACES.map((p) => {
+      const [x, y] = P(p.lat, p.lng), on = p.id === c.a.id || p.id === c.b.id;
+      const anchor = x > VW - 90 ? 'end' : 'start', tx = anchor === 'end' ? x - 10 : x + 10;
+      return (on ? '' : `<circle cx="${x}" cy="${y}" r="4" fill="#8FA79B"/>`) + `<text class="map-label${on ? ' map-label--on' : ''}" x="${tx}" y="${y + 4}" text-anchor="${anchor}">${p.short}</text>`;
+    }).join('');
+    map.innerHTML = `<rect width="${VW}" height="${VH}" fill="#E4EEE8"/>${grid}
+      <path d="${seaPath}" fill="#CFE3EE"/><text x="18" y="${VH - 20}" class="map-label" fill="#5B8BA6" style="fill:#5B8BA6">Océano Pacífico</text>
+      ${alts}${main}${dots}
+      <circle cx="${A[0]}" cy="${A[1]}" r="9" fill="#fff" stroke="#0B5D46" stroke-width="4"/>
+      <circle cx="${B[0]}" cy="${B[1]}" r="10" fill="#0B5D46"/><circle cx="${B[0]}" cy="${B[1]}" r="4" fill="#fff"/>`;
+  }
+
+  // ---------- Ahorro anual ----------
+  const trips = $('#cmpTrips');
+  function annual(c, shown) {
+    const r = c.res.find((x) => x.id === shown), n = Number(trips.value);
+    const save = Math.max(0, (c.d * K.carCostKm - r.cost) * n * 52);
+    const co2 = r.co2 * n * 52;
+    $('#cmpTripsOut').textContent = n;
+    $('#cmpModeName').textContent = r.name.toLowerCase();
+    $('#cmpSave').textContent = 'S/ ' + Math.round(save).toLocaleString('es-PE');
+    $('#cmpCo2').textContent = Math.round(co2).toLocaleString('es-PE') + ' kg';
+  }
+
+  // ---------- Eventos ----------
+  function fixSame(changed) {
+    if (from.value === to.value) {
+      const other = changed === from ? to : from;
+      const idx = PLACES.findIndex((p) => p.id === other.value);
+      other.value = PLACES[(idx + 1) % PLACES.length].id;
+    }
+  }
+  from.addEventListener('change', () => { fixSame(from); active = null; render(true); });
+  to.addEventListener('change', () => { fixSame(to); active = null; render(true); });
+  $('#cmpSwap').addEventListener('click', () => { const t = from.value; from.value = to.value; to.value = t; active = null; render(true); });
+  document.querySelectorAll('input[name="prio"]').forEach((r) => r.addEventListener('change', () => { active = null; render(true); }));
+  list.addEventListener('click', (e) => {
+    const b = e.target.closest('.opt'); if (!b) return;
+    active = b.dataset.mode; render(false);
+    const nb = list.querySelector(`[data-mode="${active}"]`); if (nb) nb.focus();
+  });
+  trips.addEventListener('input', () => { const c = compute(); annual(c, active || c.rec); });
+  render(false);
 })();
