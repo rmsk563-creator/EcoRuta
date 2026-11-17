@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { App } from './App';
 import { PreferencesProvider } from './state/PreferencesContext';
+import { DataProvider } from './state/DataContext';
 
 vi.mock('./config/geoapify', async () => {
   const actual = await vi.importActual<typeof import('./config/geoapify')>('./config/geoapify');
@@ -19,7 +20,9 @@ function renderApp(initialPath = '/') {
   return render(
     <MemoryRouter initialEntries={[initialPath]}>
       <PreferencesProvider>
-        <App />
+        <DataProvider>
+          <App />
+        </DataProvider>
       </PreferencesProvider>
     </MemoryRouter>,
   );
