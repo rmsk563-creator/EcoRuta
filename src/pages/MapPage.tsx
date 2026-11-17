@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation as useRouterLocation } from 'react-router-dom';
+import { ExternalLinkAnchor } from '../components/ExternalLinkAnchor';
 import { PlaceSearchField } from '../components/map/PlaceSearchField';
 import { MapErrorBoundary } from '../components/map/MapErrorBoundary';
 import { isGeoapifyConfigured } from '../config/geoapify';
@@ -187,14 +188,14 @@ export function MapPage() {
             <p className="kicker">Configuración pendiente</p>
             <h2 id="provider-setup-title">Añade tu clave sin publicarla</h2>
             <ol>
-              <li>Crea una cuenta gratuita en <a href="https://myprojects.geoapify.com/" target="_blank" rel="noreferrer">Geoapify MyProjects</a>.</li>
+              <li>Crea una cuenta gratuita en <ExternalLinkAnchor href="https://myprojects.geoapify.com/">Geoapify MyProjects</ExternalLinkAnchor>.</li>
               <li>Crea un proyecto y copia la API key generada en la sección “API Keys”.</li>
               <li>Copia <code>.env.example</code> como <code>.env.local</code> y completa <code>VITE_GEOAPIFY_API_KEY</code>.</li>
               <li>Reinicia <code>npm run dev</code>. Vite lee variables de entorno solo al iniciar.</li>
             </ol>
             <div className="provider-setup__security">
               <CheckCircle2 aria-hidden="true" />
-              <p>Restringe la clave por HTTP referrer/origin y CORS. Usa <code>http://localhost:5173</code> durante desarrollo y añade solo los dominios reales que controles.</p>
+              <p>En web, restringe una clave dedicada por HTTP referrer/origin. En iOS, trata la clave compilada como pública, usa otra clave dedicada, controla su cuota y revisa su uso en Geoapify.</p>
             </div>
           </div>
         </section>

@@ -2,6 +2,7 @@ import { Bike, Check, Database, Download, Footprints, Moon, RotateCcw, ShieldChe
 import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
 import type { EcoRutaDataExport, ImportStrategy } from '../data/types';
 import { parseDataExportText } from '../data/validation';
+import { exportEcoRutaData } from '../services/platform/dataTransfer';
 import { useEcoRutaData } from '../state/DataContext';
 import { usePreferences, type DistanceUnitPreference, type PreferredMode, type ThemePreference } from '../state/PreferencesContext';
 
@@ -59,15 +60,12 @@ export function SettingsPage() {
   };
 
   const exportData = async () => {
-    const exported = await data.exportData();
-    const blob = new Blob([JSON.stringify(exported, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `ecoruta-datos-${new Date().toISOString().slice(0, 10)}.json`;
-    link.click();
-    URL.revokeObjectURL(url);
-    notify('Exportación creada. Guárdala en un lugar seguro.');
+    try {
+      await exportEcoRutaData(await data.exportData());
+      notify('Exportación creada. Guárdala en un lugar seguro.');
+    } catch (error) {
+      notify(error instanceof Error ? error.message : 'No se pudo exportar la copia JSON.');
+    }
   };
 
   const selectImport = async (event: ChangeEvent<HTMLInputElement>) => {

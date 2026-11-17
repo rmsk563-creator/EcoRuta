@@ -1,5 +1,6 @@
 import { ExternalLink, HeartHandshake, Leaf, MapPinned, ShieldCheck } from 'lucide-react';
 import { SiFacebook, SiTiktok, SiYoutube } from 'react-icons/si';
+import { ExternalLinkAnchor } from '../components/ExternalLinkAnchor';
 
 const socialLinks = [
   {
@@ -67,14 +68,14 @@ export function AboutPage() {
         </div>
         <div className="social-grid">
           {socialLinks.map(({ name, handle, href, icon: Icon, className }) => (
-            <a className={`social-card social-card--${className}`} href={href} target="_blank" rel="noreferrer" key={name}>
+            <ExternalLinkAnchor className={`social-card social-card--${className}`} href={href} key={name}>
               <span className="social-card__icon"><Icon aria-hidden="true" /></span>
               <span>
                 <strong>{name}</strong>
                 <small>{handle}</small>
               </span>
               <ExternalLink aria-hidden="true" />
-            </a>
+            </ExternalLinkAnchor>
           ))}
         </div>
       </section>

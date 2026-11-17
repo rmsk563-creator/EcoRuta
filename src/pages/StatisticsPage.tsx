@@ -1,5 +1,6 @@
 import { BarChart3, Bike, CarFront, Clock3, ExternalLink, Footprints, Leaf, Route } from 'lucide-react';
 import { useMemo, useState, type CSSProperties } from 'react';
+import { ExternalLinkAnchor } from '../components/ExternalLinkAnchor';
 import { CAR_CO2_KG_PER_KM, CAR_CO2_SOURCE_URL, calculatePeriodStatistics, type StatisticsPeriod } from '../data/statistics';
 import { useEcoRutaData } from '../state/DataContext';
 import { formatDistance, formatDuration } from '../utils/format';
@@ -64,7 +65,7 @@ export function StatisticsPage() {
 
           <section className="impact-card" aria-labelledby="impact-title">
             <div className="impact-card__icon"><CarFront aria-hidden="true" /></div>
-            <div><p className="kicker">Impacto estimado</p><h2 id="impact-title">Comparación con automóvil</h2><p>EcoRuta multiplica únicamente la distancia que marcaste como sustitución de automóvil por <strong>{CAR_CO2_KG_PER_KM.toLocaleString('es-PE')} kg de CO₂ por kilómetro</strong>. El factor corresponde a un vehículo M1 moderno a gasolina en la metodología oficial del Ministerio de Transportes y Comunicaciones del Perú.</p><dl><div><dt>Distancia declarada</dt><dd>{formatDistance(statistics.current.carReplacementMeters, 'kilometers')}</dd></div><div><dt>CO₂ potencialmente evitado</dt><dd>{statistics.current.avoidedCo2Kg.toLocaleString('es-PE', { maximumFractionDigits: 2 })} kg</dd></div></dl><p className="impact-disclaimer">Es una estimación de emisiones directas potenciales, no una medición ni una garantía ambiental. No incluye fabricación, congestión, clima ni ciclo de vida.</p><a className="text-link" href={CAR_CO2_SOURCE_URL} target="_blank" rel="noreferrer">Consultar metodología oficial <ExternalLink aria-hidden="true" /></a></div>
+            <div><p className="kicker">Impacto estimado</p><h2 id="impact-title">Comparación con automóvil</h2><p>EcoRuta multiplica únicamente la distancia que marcaste como sustitución de automóvil por <strong>{CAR_CO2_KG_PER_KM.toLocaleString('es-PE')} kg de CO₂ por kilómetro</strong>. El factor corresponde a un vehículo M1 moderno a gasolina en la metodología oficial del Ministerio de Transportes y Comunicaciones del Perú.</p><dl><div><dt>Distancia declarada</dt><dd>{formatDistance(statistics.current.carReplacementMeters, 'kilometers')}</dd></div><div><dt>CO₂ potencialmente evitado</dt><dd>{statistics.current.avoidedCo2Kg.toLocaleString('es-PE', { maximumFractionDigits: 2 })} kg</dd></div></dl><p className="impact-disclaimer">Es una estimación de emisiones directas potenciales, no una medición ni una garantía ambiental. No incluye fabricación, congestión, clima ni ciclo de vida.</p><ExternalLinkAnchor className="text-link" href={CAR_CO2_SOURCE_URL}>Consultar metodología oficial <ExternalLink aria-hidden="true" /></ExternalLinkAnchor></div>
           </section>
         </>
       )}
