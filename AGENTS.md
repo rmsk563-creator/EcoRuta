@@ -8,4 +8,3 @@
 6. Mantener accesibilidad, temas, safe areas y movimiento reducido al añadir pantallas.
 7. Ejecutar `npm run typecheck`, `npm test` y `npm run build` antes de cada commit funcional.
 8. Actualizar `ROADMAP.md`, `QA.md` y `CHANGELOG.md` al cerrar una fase.
-

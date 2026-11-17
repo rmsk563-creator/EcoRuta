@@ -20,4 +20,3 @@
 - Geoapify es el candidato inicial por permitir producción comercial en el plan gratuito, compatibilidad con MapLibre y cobertura unificada de tiles, geocodificación y routing.
 - Toda integración se implementará detrás de adaptadores para permitir cambio de proveedor.
 - Atribuciones de Geoapify, OpenStreetMap y OpenMapTiles permanecerán visibles donde corresponda.
-

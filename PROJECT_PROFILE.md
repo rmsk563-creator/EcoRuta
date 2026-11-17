@@ -51,4 +51,3 @@ Fase 2 compilada y probada el 16-11-2026. Siguiente gate: integrar Geoapify + Ma
 - Producción actual: <https://rmsk563-creator.github.io/EcoRuta/>
 - Repositorio: <https://github.com/rmsk563-creator/EcoRuta>
 - Desarrollo: `develop/mobile-app`
-

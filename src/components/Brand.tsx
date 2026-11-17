@@ -14,4 +14,3 @@ export function Brand({ compact = false }: BrandProps) {
     </span>
   );
 }
-

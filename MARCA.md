@@ -30,4 +30,3 @@ Transiciones de 120–220 ms para controles frecuentes. Entradas de pantalla dis
 ## Voz
 
 Clara, útil y honesta. Evitar promesas vagas, cifras sin fuente y lenguaje de culpa ambiental.
-

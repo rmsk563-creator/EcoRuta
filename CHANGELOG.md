@@ -24,4 +24,3 @@
 
 - Identidad EcoRuta, logo, dirección cromática y enfoque de sostenibilidad.
 - Versión publicada en `main`, sin cambios.
-

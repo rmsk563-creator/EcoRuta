@@ -33,4 +33,3 @@ export function AppNavigation({ mobile = false }: { mobile?: boolean }) {
     </nav>
   );
 }
-

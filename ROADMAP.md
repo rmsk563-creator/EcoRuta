@@ -28,4 +28,3 @@
 - ⏳ Persistencia, favoritos, historial y estadísticas.
 - ⏳ Privacidad, calidad, seguridad y pruebas ampliadas.
 - ⏳ Proyectos nativos y preparación de tiendas.
-

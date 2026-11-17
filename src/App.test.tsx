@@ -61,4 +61,3 @@ describe('EcoRuta app shell', () => {
     await waitFor(() => expect(screen.getByRole('radio', { name: /automático/i })).toHaveAttribute('aria-checked', 'true'));
   });
 });
-

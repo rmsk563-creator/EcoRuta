@@ -106,4 +106,3 @@ export function usePreferences() {
   if (!context) throw new Error('usePreferences must be used inside PreferencesProvider');
   return context;
 }
-
