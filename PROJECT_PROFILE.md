@@ -2,7 +2,7 @@
 
 ## Identidad
 
-EcoRuta · aplicación de movilidad sostenible · Production path · v0.3 · Fase 3 implementada con validación real pendiente de credencial.
+EcoRuta · aplicación de movilidad sostenible · Production path · v0.4 · Fase 4 implementada y verificada en navegador.
 
 ## Objetivo
 
@@ -32,12 +32,12 @@ Clara, urbana, serena, confiable y táctil. Verde profundo como marca, teal para
 
 - Fase 2: shell, navegación, temas, configuración y redes oficiales.
 - Fase 3: mapa, GPS, búsqueda, selección de puntos y comparación caminar/bicicleta integrados detrás de una API key.
-- Diferidas: favoritos, historial y estadísticas.
+- Fase 4: favoritos, historial explícito, estadísticas, impacto estimado, exportación/importación y borrado local.
 - Fuera de alcance inicial: cuentas, contraseñas, sincronización y ubicación en segundo plano.
 
 ## Datos y realidad
 
-Solo se muestran datos producidos por funciones reales. Sin API key, el planificador permanece en estado de configuración. Las distancias, duraciones y geometrías solo se renderizan desde respuestas válidas de Geoapify.
+Solo se muestran datos producidos por funciones reales. Sin API key, el planificador permanece en estado de configuración. Favoritos y recorridos viven únicamente en IndexedDB web o SQLite nativo. Una ruta consultada no entra al historial hasta una confirmación explícita.
 
 ## Restricciones
 
@@ -45,7 +45,7 @@ Sin Figma. `main` y GitHub Pages permanecen intactos. No publicar la rama de des
 
 ## Estado actual
 
-Fase 3 compilada y probada el 16-11-2026. Siguiente gate: añadir una clave Geoapify restringida y validar mapa, geocodificación, GPS y rutas reales en Lima; después probar en hardware.
+Fase 4 compilada y probada en navegador el 17-11-2026. Geoapify real fue validado con la clave local del propietario. Siguiente gate: generar proyectos nativos y verificar SQLite, GPS, importación/exportación y UI en iPhone/Android físicos.
 
 ## Enlaces
 

@@ -1,5 +1,52 @@
 # QA — EcoRuta
 
+## Fase 4
+
+**Ejecución:** 17 de noviembre de 2026.
+
+**Resultado en navegador:** persistencia, pantallas, cálculos y estados vacíos aprobados. SQLite y archivos nativos quedan pendientes de hardware.
+
+### Automatización
+
+- ✅ `npm run typecheck`
+- ✅ `npm test`: 22 pruebas aprobadas en 5 archivos antes del cierre documental.
+- ✅ `npm run build`: build de producción generado.
+- ✅ `npm audit --audit-level=high`: 0 vulnerabilidades conocidas.
+- ✅ `git diff --check`: sin errores después de normalizar EOF.
+
+### Persistencia y datos
+
+- Guardar, recuperar, renombrar y eliminar favoritos.
+- Cerrar y reabrir IndexedDB conservando favoritos y recorridos.
+- Separación entre ruta consultada y recorrido realizado.
+- Borrado conjunto de favoritos e historial.
+- Importación sin duplicados y rechazo de JSON mal formado.
+- Migración real de base IndexedDB v1 a v2.
+- Errores de cuota y restricción única traducidos.
+
+### Estadísticas e impacto
+
+- Totales de distancia, duración, caminar y bicicleta.
+- Filtros semanales y mensuales y comparación con periodo anterior.
+- Estadísticas en cero cuando no existen recorridos.
+- CO₂ calculado solo para recorridos declarados como sustitución de automóvil.
+
+### Responsive y consola
+
+- 360 × 800, Favoritos: sin overflow y navegación completa.
+- 390 × 844, Ajustes: sin overflow y navegación completa.
+- 768 × 1024, Historial: sin overflow.
+- 1440 × 1000, Estadísticas: sin overflow.
+- Excepciones runtime: 0.
+- Errores de consola: 0.
+
+### Pendiente de dispositivo real
+
+- SQLite nativo y migraciones iOS/Android.
+- Persistencia después de terminación forzada del proceso.
+- Exportación/importación mediante UI de archivos del sistema.
+- GPS, permisos, safe areas y teclado físico en hardware.
+
 ## Fase 3
 
 **Ejecución:** 16 de noviembre de 2026.

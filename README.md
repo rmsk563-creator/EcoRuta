@@ -4,9 +4,9 @@ Aplicación de movilidad sostenible para Lima, construida con React, TypeScript,
 
 ## Estado
 
-La Fase 3 incorpora el planificador real de EcoRuta: mapa MapLibre, búsqueda limitada a Lima, selección de puntos, GPS con permiso explícito y comparación de rutas Geoapify para caminar y bicicleta.
+La Fase 4 incorpora almacenamiento exclusivamente local, favoritos, historial de recorridos confirmados, estadísticas personales, impacto estimado y copias JSON manuales. El planificador de la Fase 3 conserva mapa MapLibre, búsqueda limitada a Lima, GPS con permiso explícito y rutas Geoapify para caminar y bicicleta.
 
-El planificador solo se activa cuando existe una API key configurada. Sin clave, EcoRuta muestra instrucciones y no genera mapas, rutas, distancias ni tiempos ficticios. Favoritos, historial y estadísticas continúan fuera de la interfaz hasta fases posteriores.
+El planificador solo se activa cuando existe una API key configurada. Sin clave, EcoRuta muestra instrucciones y no genera mapas, rutas, distancias ni tiempos ficticios. Una ruta consultada tampoco se guarda como realizada: el usuario debe confirmarla explícitamente.
 
 La versión publicada en GitHub Pages continúa en `main`. El desarrollo de la aplicación vive en `develop/mobile-app` y no está publicado.
 
@@ -59,10 +59,12 @@ npm run preview
 src/
 ├── components/    shell, navegación, búsqueda y mapa
 ├── config/        entorno y límites geográficos
+├── data/          repositorios, esquemas, migraciones, validación y estadísticas
 ├── hooks/         geolocalización con Capacitor
-├── pages/         Inicio, Mapa, Acerca y Ajustes
+├── navigation/    estado tipado para reutilizar favoritos e historial
+├── pages/         Inicio, Mapa, Favoritos, Historial, Estadísticas, Acerca y Ajustes
 ├── services/      adaptador Geoapify y control de solicitudes
-├── state/         preferencias persistentes
+├── state/         preferencias y datos locales persistentes
 ├── test/          entorno de pruebas
 ├── App.tsx
 ├── main.tsx
@@ -75,9 +77,15 @@ Geoapify es el proveedor inicial y MapLibre GL JS el renderer. La integración u
 
 Consulta [`GEOAPIFY_SETUP.md`](./GEOAPIFY_SETUP.md) para crear y restringir la clave. Las condiciones del proveedor están documentadas en [`GEOAPIFY_EVALUATION.md`](./GEOAPIFY_EVALUATION.md).
 
+## Datos locales
+
+La web usa IndexedDB mediante `idb`. En un contenedor Capacitor nativo, el repositorio selecciona SQLite mediante `@capacitor-community/sqlite`. Capacitor Preferences se reserva para alias, tema, movimiento, modalidad, unidades y privacidad.
+
+Consulta [`LOCAL_DATA.md`](./LOCAL_DATA.md) para conocer el esquema, los datos enviados a Geoapify, la importación/exportación y la metodología ambiental.
+
 ## Preparación nativa
 
-Capacitor ya dispone de CLI y configuración base. Los proyectos `ios/` y `android/` se crearán en el gate nativo posterior, cuando puedan abrirse y validarse con Xcode y Android Studio; todavía no forman parte de esta fase.
+Capacitor ya dispone de CLI, configuración base y adaptador SQLite. Los proyectos `ios/` y `android/` se crearán en el gate nativo posterior, cuando puedan abrirse y validarse con Xcode y Android Studio; la persistencia SQLite todavía no se declara verificada en hardware.
 
 ## Documentación
 
@@ -88,3 +96,4 @@ Capacitor ya dispone de CLI y configuración base. Los proyectos `ios/` y `andro
 - [`QA.md`](./QA.md)
 - [`GEOAPIFY_SETUP.md`](./GEOAPIFY_SETUP.md)
 - [`NATIVE_TESTING.md`](./NATIVE_TESTING.md)
+- [`LOCAL_DATA.md`](./LOCAL_DATA.md)

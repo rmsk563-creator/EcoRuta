@@ -24,12 +24,24 @@
 - ✅ Autocomplete Lima-only, geocodificación inversa y selección en mapa.
 - ✅ Rutas caminar/bicicleta, trazado, distancia y duración implementados.
 - ✅ Control de frecuencia, debounce, cancelación y caché temporal.
-- 🟡 Validación contra Geoapify real pendiente de API key restringida.
+- ✅ Geoapify real validado con mapa, geocodificación y rutas caminar/bicicleta.
 - 🟡 GPS y permisos nativos pendientes de iPhone/Android físicos.
 - ⏸️ Transporte público diferido hasta validar datos.
 
-## Fases 4–8
+## Fase 4 — Datos locales y actividad
 
-- ⏳ Persistencia, favoritos, historial y estadísticas.
+- ✅ Repositorio tipado con IndexedDB web y SQLite nativo seleccionable por plataforma.
+- ✅ Esquema v2, migraciones, validación y errores de cuota/disponibilidad.
+- ✅ Favoritos de lugares y rutas, edición, búsqueda, orden y eliminación.
+- ✅ Historial separado de rutas consultadas mediante registro explícito.
+- ✅ Filtros, detalle, eliminación y recálculo desde historial.
+- ✅ Estadísticas por semana, mes y año, comparación y gráficos interactivos.
+- ✅ Impacto potencial basado en sustitución declarada de automóvil y factor MTC.
+- ✅ Preferencias ampliadas, privacidad, borrado y exportación/importación JSON.
+- ✅ QA responsive y consola en navegador.
+- 🟡 SQLite, archivos y persistencia nativa pendientes de hardware iOS/Android.
+
+## Fases 5–8
+
 - ⏳ Privacidad, calidad, seguridad y pruebas ampliadas.
 - ⏳ Proyectos nativos y preparación de tiendas.

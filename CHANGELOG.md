@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.4.0 — Fase 4
+
+### Añadido
+
+- IndexedDB web y SQLite nativo detrás de repositorios tipados y seleccionados por plataforma.
+- Esquema v2 con migraciones, deduplicación, errores comprensibles y borrado granular.
+- Favoritos de lugares y rutas frecuentes con búsqueda, orden, edición y reapertura en mapa.
+- Historial exclusivo de recorridos confirmados, con filtros, detalle, eliminación y recálculo.
+- Estadísticas semanales, mensuales y anuales con comparación, modalidad y gráfico interactivo.
+- Estimación de CO₂ potencialmente evitado con factor oficial MTC y declaración previa de sustitución de automóvil.
+- Alias, modalidad preferida, unidades, privacidad de historial y gestión completa de datos.
+- Exportación e importación JSON con versión, tamaño máximo, validación y estrategias combinar/reemplazar.
+
+### Preservado
+
+- Mapa, GPS, temas, redes sociales, MapLibre y Geoapify de Fases 2 y 3.
+- `main` y GitHub Pages sin cambios.
+
+### Pendiente de dispositivo
+
+- Verificación de SQLite, selector/descarga de archivos y persistencia tras cierre en iPhone/Android físicos.
+- Revisión de obligaciones de exportación criptográfica derivadas de SQLCipher antes de distribuir en tiendas.
+
 ## 0.3.0 — Fase 3
 
 ### Añadido
