@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.5.0 — Fase 5
+
+### Añadido
+
+- Proyecto iOS generado con Capacitor 8.6.2, Swift Package Manager y destino mínimo iOS 15.
+- Icono y pantallas de inicio derivados del logo original de EcoRuta.
+- Permisos de ubicación con texto de uso visible para iOS.
+- Manifiesto de privacidad para Preferences y Filesystem.
+- Apertura nativa de enlaces HTTPS mediante Capacitor Browser.
+- Exportación JSON mediante Filesystem y la hoja nativa de compartir.
+- Pruebas de plataforma para enlaces seguros y limpieza del archivo de exportación.
+
+### Verificado en simulador
+
+- Compilación Xcode, apertura, navegación, MapLibre/Geoapify en WKWebView y atribuciones.
+- Búsqueda real, rutas a pie y bicicleta, trazado, permiso GPS y ubicación simulada.
+- Creación SQLite, favoritos, recorrido confirmado y persistencia después de terminar y reabrir.
+- Exportación mediante hoja nativa y persistencia del tema oscuro.
+
+### Pendiente de hardware
+
+- Firma e instalación en iPhone físico.
+- Importación JSON seleccionando manualmente un archivo en iOS.
+- GPS, safe areas, teclado, orientación y persistencia bajo condiciones reales.
+- Proyecto y pruebas Android; el entorno actual no tiene el toolchain requerido.
+
 ## 0.4.0 — Fase 4
 
 ### Añadido

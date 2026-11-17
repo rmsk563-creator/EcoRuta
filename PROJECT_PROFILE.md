@@ -2,7 +2,7 @@
 
 ## Identidad
 
-EcoRuta · aplicación de movilidad sostenible · Production path · v0.4 · Fase 4 implementada y verificada en navegador.
+EcoRuta · aplicación de movilidad sostenible · Production path · v0.5 · Fase 5 compilada y verificada en simulador iOS.
 
 ## Objetivo
 
@@ -33,6 +33,7 @@ Clara, urbana, serena, confiable y táctil. Verde profundo como marca, teal para
 - Fase 2: shell, navegación, temas, configuración y redes oficiales.
 - Fase 3: mapa, GPS, búsqueda, selección de puntos y comparación caminar/bicicleta integrados detrás de una API key.
 - Fase 4: favoritos, historial explícito, estadísticas, impacto estimado, exportación/importación y borrado local.
+- Fase 5: proyecto iOS, permisos, privacidad, SQLite, exportación nativa y apertura segura de enlaces.
 - Fuera de alcance inicial: cuentas, contraseñas, sincronización y ubicación en segundo plano.
 
 ## Datos y realidad
@@ -45,7 +46,7 @@ Sin Figma. `main` y GitHub Pages permanecen intactos. No publicar la rama de des
 
 ## Estado actual
 
-Fase 4 compilada y probada en navegador el 17-11-2026. Geoapify real fue validado con la clave local del propietario. Siguiente gate: generar proyectos nativos y verificar SQLite, GPS, importación/exportación y UI en iPhone/Android físicos.
+Fase 5 compilada y probada el 17-11-2026 en un simulador iPhone 18 Pro con iOS 27. MapLibre, Geoapify, permisos GPS, SQLite, persistencia tras reinicio, rutas reales y exportación nativa fueron observados en el simulador. La selección de un archivo para importar no pudo completarse mediante automatización y requiere interacción manual. El gate de iPhone físico y todo Android continúan pendientes.
 
 ## Enlaces
 

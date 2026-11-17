@@ -4,7 +4,7 @@ Aplicación de movilidad sostenible para Lima, construida con React, TypeScript,
 
 ## Estado
 
-La Fase 4 incorpora almacenamiento exclusivamente local, favoritos, historial de recorridos confirmados, estadísticas personales, impacto estimado y copias JSON manuales. El planificador de la Fase 3 conserva mapa MapLibre, búsqueda limitada a Lima, GPS con permiso explícito y rutas Geoapify para caminar y bicicleta.
+La Fase 5 incorpora el proyecto nativo iOS con permisos de ubicación, privacidad, SQLite, enlaces externos y exportación mediante la hoja de compartir. La Fase 4 mantiene favoritos, historial de recorridos confirmados, estadísticas personales, impacto estimado y copias JSON manuales. El planificador usa MapLibre, búsqueda limitada a Lima, GPS con permiso explícito y rutas Geoapify para caminar y bicicleta.
 
 El planificador solo se activa cuando existe una API key configurada. Sin clave, EcoRuta muestra instrucciones y no genera mapas, rutas, distancias ni tiempos ficticios. Una ruta consultada tampoco se guarda como realizada: el usuario debe confirmarla explícitamente.
 
@@ -14,6 +14,7 @@ La versión publicada en GitHub Pages continúa en `main`. El desarrollo de la a
 
 - Node.js 22 o superior.
 - npm 11 o superior recomendado.
+- Para iOS: macOS con Xcode compatible con Capacitor 8 e iOS 15 o superior.
 
 ## Ejecutar localmente
 
@@ -83,9 +84,25 @@ La web usa IndexedDB mediante `idb`. En un contenedor Capacitor nativo, el repos
 
 Consulta [`LOCAL_DATA.md`](./LOCAL_DATA.md) para conocer el esquema, los datos enviados a Geoapify, la importación/exportación y la metodología ambiental.
 
-## Preparación nativa
+## Ejecutar en iOS
 
-Capacitor ya dispone de CLI, configuración base y adaptador SQLite. Los proyectos `ios/` y `android/` se crearán en el gate nativo posterior, cuando puedan abrirse y validarse con Xcode y Android Studio; la persistencia SQLite todavía no se declara verificada en hardware.
+El proyecto `ios/` ya está generado y usa Swift Package Manager. Después de cada cambio web:
+
+```bash
+npm run build
+npx cap sync ios
+npx cap open ios
+```
+
+En Xcode selecciona el target **App**, configura tu equipo en **Signing & Capabilities**, elige un simulador o tu iPhone y pulsa **Run**. Si Apple no acepta `com.ecoruta.app` para tu equipo, cambia el identificador por uno único y actualiza también `appId` en `capacitor.config.ts` antes de sincronizar.
+
+La prueba en simulador confirmó SQLite, GPS simulado, mapas, rutas y exportación nativa. No sustituye la validación en un iPhone físico. Consulta [`NATIVE_TESTING.md`](./NATIVE_TESTING.md) para la instalación y la lista de aceptación.
+
+Android no fue generado porque este entorno todavía no dispone de Android Studio, JDK ni SDK/ADB. No hay pruebas Android aprobadas.
+
+## Seguridad de Geoapify en iOS
+
+`.env.local` permanece fuera de Git. Sin embargo, cualquier variable `VITE_` se incorpora al paquete de la aplicación y debe considerarse pública. Usa una clave Geoapify distinta para móvil, controla cuota y uso, y rótala si detectas abuso. Las restricciones de origen/referrer del navegador no protegen de la misma forma una aplicación nativa; una protección fuerte requeriría un servicio backend autorizado.
 
 ## Documentación
 

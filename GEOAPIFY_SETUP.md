@@ -40,14 +40,14 @@ http://localhost:5173
 http://IP_LOCAL_DE_TU_MAC:5173
 ```
 
-Para las futuras compilaciones Capacitor habrá que probar y autorizar los orígenes reales del WebView:
+Para las compilaciones Capacitor, WKWebView usa un origen local como:
 
 ```text
 capacitor://localhost
 https://localhost
 ```
 
-El valor CORS controla si el navegador puede leer la respuesta, pero no reemplaza una restricción de acceso. Configura también **Allowed origins/referrers**, revisa las estadísticas del proyecto y rota la clave si se expone.
+El valor CORS controla si WKWebView puede leer la respuesta, pero no convierte la clave en un secreto. Geoapify advierte que una clave incorporada en una aplicación móvil puede extraerse y que las restricciones de origen/referrer/IP no se aplican de forma equivalente a solicitudes nativas. Usa una clave separada para móvil, limita y vigila su cuota y rótala si se abusa. Si el riesgo exige ocultarla, el siguiente paso es un backend proxy aprobado; nunca una clave privada dentro del repositorio o del binario.
 
 ## Prueba controlada
 

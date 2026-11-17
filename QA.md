@@ -1,5 +1,50 @@
 # QA — EcoRuta
 
+## Fase 5
+
+**Ejecución:** 17 de noviembre de 2026.
+
+**Entorno:** Xcode 27.0, runtime iOS 27, simulador iPhone 18 Pro, Capacitor 8.6.2 y WKWebView. Las pruebas no equivalen a hardware físico.
+
+### Compilación y automatización
+
+- ✅ `npm run typecheck`.
+- ✅ `npm test`: 28 pruebas aprobadas en 8 archivos, incluidas exportación nativa, limpieza temporal y enlaces HTTPS.
+- ✅ `npm run build`: build Vite de producción generado.
+- ✅ `npx cap sync ios`: seis plugins sincronizados mediante Swift Package Manager.
+- ✅ `xcodebuild`: build Debug para `iphonesimulator` finalizado con `BUILD SUCCEEDED`.
+- ✅ `npm audit --omit=dev`: 0 vulnerabilidades en dependencias de producción.
+- ⚠️ La auditoría completa informa 6 avisos altos en la cadena de herramientas Vite/Vitest por `picomatch`; no hay avisos críticos. La corrección automática propuesta fuerza un cambio incompatible y no se aplicó sin una actualización controlada.
+
+### Funciones observadas en simulador
+
+- App abierta y navegable con nombre EcoRuta e icono generado desde el logo original.
+- Mapa real de Lima en WKWebView con controles y atribuciones Geoapify, OpenMapTiles y OpenStreetMap visibles.
+- Autocomplete real para Parque Kennedy y Campo de Marte.
+- Rutas reales a pie y bicicleta recibidas de Geoapify, con trazado, distancia y duración. La ejecución observó bicicleta 4,6 km / 17 min y caminata 4.713 m / 4.182 s.
+- Prompt nativo de ubicación con la descripción configurada; permiso concedido y posición Lima simulada recibida con precisión de 5 m.
+- SQLite creó `ecoruta_local_dataSQLite.db`, tablas `favorites` y `trips`, y `user_version` 2.
+- Dos favoritos y un recorrido confirmado persistieron después de terminar y volver a abrir la app.
+- La ruta consultada no entró al historial hasta pulsar **Registrar como realizado**.
+- Exportación JSON escribió un archivo temporal y abrió la hoja nativa con opciones de copiar y guardar en Archivos.
+- Tema oscuro persistió después de terminar y volver a abrir.
+
+### Seguridad y privacidad
+
+- `.env.local` sigue ignorado por Git y la clave local no aparece en archivos versionados.
+- `PrivacyInfo.xcprivacy` declara Preferences y Filesystem; no declara rastreo ni recolección por servidores propios.
+- Ambos textos de permiso de ubicación están presentes; no se implementa ubicación en segundo plano.
+- Las claves Vite compiladas no se consideran secretas. Se requiere una clave Geoapify dedicada para móvil, vigilancia de cuota y rotación.
+
+### Limitaciones
+
+- El selector de importación exige un gesto real de usuario en WKWebView; la automatización no completó una selección. Código y validación están preparados, pero la importación nativa no está aprobada.
+- La hoja de compartir se abrió, pero no se confirmó manualmente el guardado final en iCloud Drive o En mi iPhone.
+- Enlaces externos están cubiertos por pruebas automatizadas; falta observar SFSafariViewController en el iPhone físico.
+- GPS utilizó una ubicación simulada; señal, precisión, consumo y permisos reales siguen pendientes.
+- Firma, instalación, safe areas, teclado, rotación y ciclo de vida real deben validarse en el iPhone del propietario.
+- Android no se generó ni probó porque faltan Android Studio, JDK, SDK y ADB.
+
 ## Fase 4
 
 **Ejecución:** 17 de noviembre de 2026.

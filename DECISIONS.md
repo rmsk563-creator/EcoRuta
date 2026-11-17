@@ -47,3 +47,14 @@
 - El CO₂ potencial usa 0,200 kg/km para automóvil M1 moderno a gasolina según metodología MTC Perú 2025.
 - El cálculo ambiental se aplica solo cuando el usuario declara que habría usado automóvil y se presenta como estimación, no como medición.
 - La exportación manual usa JSON versionado y validado; no existe recuperación automática ni nube.
+
+## 2026-11-17 — Contenedor iOS Fase 5
+
+- El proyecto iOS usa Capacitor 8.6.2 y Swift Package Manager; CocoaPods no es necesario para los plugins actuales.
+- Se mantiene `com.ecoruta.app` como identificador base. La firma personal puede requerir un identificador único antes de instalar en un iPhone.
+- Los enlaces HTTPS se abren con Capacitor Browser en iOS; se rechazan esquemas externos no seguros.
+- La exportación nativa escribe temporalmente el JSON en caché, abre la hoja de compartir y elimina el archivo temporal al finalizar. La web conserva la descarga por Blob.
+- La importación conserva el selector HTML de archivos de WKWebView porque permite selección local con gesto real y reutiliza la validación existente. Su flujo completo queda pendiente de prueba manual.
+- El manifiesto de privacidad declara `UserDefaults` con razón `CA92.1` y marcas de tiempo de archivos con `C617.1`. No se declara rastreo ni recolección por servidores propios.
+- Una clave `VITE_` queda incorporada al bundle y no es secreta en iOS. Se usará una clave Geoapify exclusiva para móvil, con cuota vigilada y rotación; para protección fuerte se necesitaría un backend proxy aprobado.
+- Android se difiere hasta disponer de Android Studio, JDK y SDK. No se declara generado ni probado.

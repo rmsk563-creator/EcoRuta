@@ -42,7 +42,22 @@
 - ✅ Regresión MapLibre corregida y flujo real Geoapify repetido sin errores de consola.
 - 🟡 SQLite, archivos y persistencia nativa pendientes de hardware iOS/Android.
 
-## Fases 5–8
+## Fase 5 — iOS nativo
 
-- ⏳ Privacidad, calidad, seguridad y pruebas ampliadas.
-- ⏳ Proyectos nativos y preparación de tiendas.
+- ✅ Dependencias Capacitor 8 para iOS, navegador, archivos y compartir instaladas.
+- ✅ Proyecto Xcode generado con Swift Package Manager, identificador `com.ecoruta.app` e icono EcoRuta.
+- ✅ Descripciones de ubicación y manifiesto de privacidad configurados.
+- ✅ Build Debug para simulador completado con Xcode.
+- ✅ MapLibre, tiles Geoapify, atribuciones, búsqueda y rutas reales observados en WKWebView.
+- ✅ Prompt de ubicación, GPS simulado y precisión recibida mediante el plugin nativo.
+- ✅ SQLite creó la base v2 y conservó favoritos e historial tras terminar y volver a abrir la app.
+- ✅ Exportación JSON abrió la hoja nativa de compartir y el selector de Archivos.
+- ✅ Tema oscuro conservado tras reiniciar la aplicación.
+- 🟡 Importación mediante el selector iOS preparada, pero pendiente de una selección manual real.
+- 🟡 Firma, instalación y lista completa de pruebas en iPhone físico pendientes del propietario.
+- ⏸️ Android no generado: este Mac no tiene Android Studio, JDK ni SDK/ADB instalados.
+
+## Fases 6–8
+
+- ⏳ Pruebas físicas, accesibilidad y calidad ampliada.
+- ⏳ Preparación de distribución y tiendas, solo después de aprobar hardware real.
