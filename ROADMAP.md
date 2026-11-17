@@ -8,16 +8,17 @@
 
 ## Fase 2 — Interfaz profesional
 
-- 🟡 Migración React + TypeScript + Vite.
-- ⏳ Shell responsive y navegación.
-- ⏳ Temas claro, oscuro y automático.
-- ⏳ Configuración persistente.
-- ⏳ Acerca de EcoRuta y redes oficiales.
-- ⏳ Pruebas y QA visual.
+- ✅ Migración React + TypeScript + Vite.
+- ✅ Shell responsive y navegación.
+- ✅ Temas claro, oscuro y automático.
+- ✅ Configuración persistente.
+- ✅ Acerca de EcoRuta y redes oficiales verificadas.
+- ✅ Pruebas automatizadas y QA visual en navegador.
+- 🟡 Revisión en iPhone y Android físicos pendiente para el gate nativo.
 
 ## Fase 3 — Mapas, GPS y rutas
 
-- ⏳ Geoapify + MapLibre.
+- ⏳ Adaptadores Geoapify + MapLibre.
 - ⏳ Permisos y ubicación.
 - ⏳ Geocodificación y rutas caminar/bicicleta.
 - ⏸️ Transporte público diferido hasta validar datos.

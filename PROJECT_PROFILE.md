@@ -2,7 +2,7 @@
 
 ## Identidad
 
-EcoRuta · aplicación de movilidad sostenible · Production path · v0.2 · Fase 2 en construcción.
+EcoRuta · aplicación de movilidad sostenible · Production path · v0.2 · Fase 2 terminada en navegador.
 
 ## Objetivo
 
@@ -44,7 +44,7 @@ Sin Figma. `main` y GitHub Pages permanecen intactos. No publicar la rama de des
 
 ## Estado actual
 
-Arquitectura aprobada el 16-11-2026. Siguiente gate: interfaz Fase 2 compilada, probada y aprobada visualmente.
+Fase 2 compilada y probada el 16-11-2026. Siguiente gate: integrar Geoapify + MapLibre y validar rutas reales de caminar/bicicleta en Lima.
 
 ## Enlaces
 
