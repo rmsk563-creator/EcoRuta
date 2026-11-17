@@ -16,14 +16,23 @@ function renderApp(initialPath = '/') {
 }
 
 describe('EcoRuta app shell', () => {
-  it('shows only the implemented Phase 2 destinations', () => {
+  it('shows only implemented destinations', () => {
     renderApp();
 
     expect(screen.getByRole('heading', { name: /tu forma de moverte/i })).toBeInTheDocument();
     expect(screen.getAllByRole('link', { name: 'Inicio' })).not.toHaveLength(0);
+    expect(screen.getAllByRole('link', { name: 'Mapa' })).not.toHaveLength(0);
     expect(screen.getAllByRole('link', { name: 'Acerca' })).not.toHaveLength(0);
     expect(screen.getAllByRole('link', { name: 'Ajustes' })).not.toHaveLength(0);
-    expect(screen.queryByRole('link', { name: /mapa|rutas|favoritos|historial/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /favoritos|historial/i })).not.toBeInTheDocument();
+  });
+
+  it('explains how to configure Geoapify when the API key is absent', async () => {
+    renderApp('/map');
+
+    expect(await screen.findByRole('heading', { name: /conecta geoapify/i })).toBeInTheDocument();
+    expect(screen.getByText('VITE_GEOAPIFY_API_KEY')).toBeInTheDocument();
+    expect(screen.queryByLabelText(/mapa interactivo/i)).not.toBeInTheDocument();
   });
 
   it('navigates to the official social links', async () => {
