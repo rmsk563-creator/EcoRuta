@@ -18,9 +18,14 @@
 
 ## Fase 3 — Mapas, GPS y rutas
 
-- ⏳ Adaptadores Geoapify + MapLibre.
-- ⏳ Permisos y ubicación.
-- ⏳ Geocodificación y rutas caminar/bicicleta.
+- ✅ Adaptador Geoapify y renderer MapLibre con carga diferida.
+- ✅ Configuración segura mediante entorno y estado explícito sin clave.
+- ✅ Permisos, seguimiento GPS y errores de ubicación implementados.
+- ✅ Autocomplete Lima-only, geocodificación inversa y selección en mapa.
+- ✅ Rutas caminar/bicicleta, trazado, distancia y duración implementados.
+- ✅ Control de frecuencia, debounce, cancelación y caché temporal.
+- 🟡 Validación contra Geoapify real pendiente de API key restringida.
+- 🟡 GPS y permisos nativos pendientes de iPhone/Android físicos.
 - ⏸️ Transporte público diferido hasta validar datos.
 
 ## Fases 4–8

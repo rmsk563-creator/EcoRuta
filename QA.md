@@ -1,5 +1,55 @@
 # QA — EcoRuta
 
+## Fase 3
+
+**Ejecución:** 16 de noviembre de 2026.
+
+**Resultado:** implementación, pruebas unitarias, estado sin clave, manejo de clave rechazada y responsive aprobados. La validación end-to-end con datos reales está pendiente de una API key del propietario.
+
+### Automatización
+
+- ✅ `npm run typecheck`
+- ✅ `npm test`: 9 pruebas aprobadas en 2 archivos.
+- ✅ `npm run build`: build de producción generado.
+- ✅ `npm audit --audit-level=high`: 0 vulnerabilidades conocidas.
+- ✅ `git diff --check`: sin errores de whitespace.
+
+### Cobertura funcional comprobada
+
+- Navegación a Mapa y estado seguro cuando falta `VITE_GEOAPIFY_API_KEY`.
+- Autocomplete restringido a Perú y al rectángulo operativo de Lima.
+- Caché de búsquedas repetidas sin una segunda llamada.
+- Construcción correcta de solicitudes de rutas para caminar/bicicleta.
+- Uso exclusivo de distancia, tiempo y geometría recibidos en una respuesta válida.
+- Respuestas HTTP 429 convertidas en un aviso de cuota comprensible.
+- Respuestas de ruta mal formadas rechazadas sin inventar métricas.
+- Clave inválida produce HTTP 401 y un estado visual de error; no bloquea la interfaz.
+
+### Rendimiento
+
+- Página Mapa separada del bundle inicial.
+- MapLibre y su CSS se descargan solo cuando el planificador tiene una clave configurada.
+- Bundle inicial: aproximadamente 296 kB minificado / 95 kB gzip.
+- MapLibre queda en un chunk diferido de aproximadamente 1,08 MB minificado / 295 kB gzip.
+- Búsqueda con 420 ms de debounce, cancelación mediante `AbortController` y caché de memoria de 10 minutos.
+- Adaptador limitado a intervalos de 260 ms y 240 solicitudes por sesión; los tiles no están incluidos en ese contador.
+
+### Responsive visual
+
+- 390 × 844: aprobado, sin overflow horizontal.
+- 768 × 1024: aprobado, sin overflow horizontal.
+- 1440 × 1000: aprobado, sin overflow horizontal.
+- Estado sin clave: sin excepciones de consola.
+- Estado con clave inválida: único error observado fue el HTTP 401 esperado de Geoapify.
+- Navegación inferior, sidebar, inputs de 16 px, áreas táctiles y safe areas preservados.
+
+### Limitaciones verificables
+
+- No se usó una API key real, por lo que no se afirma que tiles, resultados de búsqueda o rutas de Lima hayan sido validados end-to-end.
+- GPS se implementó con `@capacitor/geolocation`, pero la señal, precisión y prompts requieren prueba en hardware.
+- Las atribuciones proceden del `style.json` de Geoapify; se verificarán visualmente cuando el mapa cargue con una clave válida.
+- Los proyectos nativos `ios/` y `android/` siguen diferidos al gate nativo.
+
 ## Fase 2
 
 **Ejecución:** 16 de noviembre de 2026.
