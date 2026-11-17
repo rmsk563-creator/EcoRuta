@@ -79,8 +79,15 @@ export class SQLiteEcoRutaRepository implements EcoRutaRepository {
   async putFavorite(favorite: Favorite) {
     if (!isFavorite(favorite)) throw new EcoRutaStorageError('validation', 'El favorito no contiene datos válidos.');
     try {
-      await (await this.db()).run(
-        'INSERT OR REPLACE INTO favorites (id, dedupe_key, kind, updated_at, payload) VALUES (?, ?, ?, ?, ?);',
+      const database = await this.db();
+      const duplicate = await database.query('SELECT id FROM favorites WHERE dedupe_key = ? LIMIT 1;', [favorite.dedupeKey]);
+      const duplicateId = (duplicate.values?.[0] as { id?: unknown } | undefined)?.id;
+      if (typeof duplicateId === 'string' && duplicateId !== favorite.id) {
+        throw new EcoRutaStorageError('duplicate', 'Este elemento ya está guardado.');
+      }
+      await database.run(
+        `INSERT INTO favorites (id, dedupe_key, kind, updated_at, payload) VALUES (?, ?, ?, ?, ?)
+         ON CONFLICT(id) DO UPDATE SET dedupe_key = excluded.dedupe_key, kind = excluded.kind, updated_at = excluded.updated_at, payload = excluded.payload;`,
         [favorite.id, favorite.dedupeKey, favorite.kind, favorite.updatedAt, JSON.stringify(favorite)],
       );
     } catch (error) {

@@ -75,6 +75,16 @@ describe('IndexedDbEcoRutaRepository', () => {
     await repository.close();
   });
 
+  it('clears favorites and trips together', async () => {
+    const repository = new IndexedDbEcoRutaRepository(databaseName);
+    await repository.putFavorite(createFavoritePlace(DESTINATION));
+    await repository.putTrip(createCompletedTrip(ORIGIN, DESTINATION, ROUTE, true));
+    await repository.clearAll();
+    expect(await repository.listFavorites()).toEqual([]);
+    expect(await repository.listTrips()).toEqual([]);
+    await repository.close();
+  });
+
   it('merges exports without duplicating favorites or trips', async () => {
     const repository = new IndexedDbEcoRutaRepository(databaseName);
     const favorite = createFavoriteRoute(ORIGIN, DESTINATION, 'bicycle');

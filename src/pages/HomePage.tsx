@@ -1,16 +1,18 @@
 import { ArrowRight, Bike, Eye, Footprints, Leaf, LockKeyhole, SlidersHorizontal, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useEcoRutaData } from '../state/DataContext';
 import { usePreferences } from '../state/PreferencesContext';
 
 export function HomePage() {
   const { preferences } = usePreferences();
+  const { favorites, trips } = useEcoRutaData();
 
   return (
     <div className="page home-page">
       <section className="hero-panel" aria-labelledby="home-title">
         <div className="hero-panel__copy">
           <p className="eyebrow"><Leaf aria-hidden="true" /> Movilidad sostenible en Lima</p>
-          <h1 id="home-title">Tu forma de moverte, con más intención.</h1>
+          <h1 id="home-title">{preferences.alias ? `${preferences.alias}, muévete` : 'Tu forma de moverte'}, con más intención.</h1>
           <p className="hero-panel__lead">
             Busca lugares en Lima y compara recorridos reales para caminar o usar bicicleta, sin crear una cuenta.
           </p>
@@ -56,15 +58,15 @@ export function HomePage() {
           <article className="summary-card">
             <span className="summary-card__icon"><Sparkles aria-hidden="true" /></span>
             <div>
-              <p>Movimiento</p>
-              <strong>{preferences.reduceMotion ? 'Reducido' : 'Completo'}</strong>
+              <p>Actividad registrada</p>
+              <strong>{trips.length} {trips.length === 1 ? 'recorrido' : 'recorridos'}</strong>
             </div>
           </article>
           <article className="summary-card">
             <span className="summary-card__icon"><LockKeyhole aria-hidden="true" /></span>
             <div>
-              <p>Almacenamiento</p>
-              <strong>Solo en este dispositivo</strong>
+              <p>Favoritos locales</p>
+              <strong>{favorites.length} guardados</strong>
             </div>
           </article>
         </div>

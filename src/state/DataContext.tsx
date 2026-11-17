@@ -47,7 +47,10 @@ export function DataProvider({ children }: { children: ReactNode }) {
       .then(async (source) => {
         opened = source;
         await source.initialize();
-        if (!active) return;
+        if (!active) {
+          await source.close();
+          return;
+        }
         repository.current = source;
         setEngine(source.engine);
         await refresh(source);
@@ -60,7 +63,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
       });
     return () => {
       active = false;
-      if (opened && repository.current !== opened) void opened.close();
+      if (opened) void opened.close();
     };
   }, [refresh]);
 

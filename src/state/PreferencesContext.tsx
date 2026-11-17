@@ -2,16 +2,27 @@ import { Preferences } from '@capacitor/preferences';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 
 export type ThemePreference = 'system' | 'light' | 'dark';
+export type PreferredMode = 'walk' | 'bicycle';
+export type DistanceUnitPreference = 'adaptive' | 'kilometers';
 
 export interface AppPreferences {
   theme: ThemePreference;
   reduceMotion: boolean;
+  alias: string;
+  preferredMode: PreferredMode;
+  distanceUnit: DistanceUnitPreference;
+  allowTripStorage: boolean;
 }
 
-const STORAGE_KEY = 'ecoruta.preferences.v1';
+const STORAGE_KEY = 'ecoruta.preferences.v2';
+const LEGACY_STORAGE_KEY = 'ecoruta.preferences.v1';
 const defaults: AppPreferences = {
   theme: 'system',
   reduceMotion: false,
+  alias: '',
+  preferredMode: 'walk',
+  distanceUnit: 'adaptive',
+  allowTripStorage: true,
 };
 
 interface PreferencesContextValue {
@@ -23,13 +34,18 @@ interface PreferencesContextValue {
 
 const PreferencesContext = createContext<PreferencesContextValue | null>(null);
 
-function isPreferences(value: unknown): value is AppPreferences {
-  if (!value || typeof value !== 'object') return false;
+function parsePreferences(value: unknown): AppPreferences | null {
+  if (!value || typeof value !== 'object') return null;
   const candidate = value as Partial<AppPreferences>;
-  return (
-    ['system', 'light', 'dark'].includes(candidate.theme ?? '') &&
-    typeof candidate.reduceMotion === 'boolean'
-  );
+  if (!['system', 'light', 'dark'].includes(candidate.theme ?? '') || typeof candidate.reduceMotion !== 'boolean') return null;
+  return {
+    theme: candidate.theme as ThemePreference,
+    reduceMotion: candidate.reduceMotion,
+    alias: typeof candidate.alias === 'string' ? candidate.alias.slice(0, 60) : '',
+    preferredMode: ['walk', 'bicycle'].includes(candidate.preferredMode ?? '') ? candidate.preferredMode as PreferredMode : 'walk',
+    distanceUnit: ['adaptive', 'kilometers'].includes(candidate.distanceUnit ?? '') ? candidate.distanceUnit as DistanceUnitPreference : 'adaptive',
+    allowTripStorage: typeof candidate.allowTripStorage === 'boolean' ? candidate.allowTripStorage : true,
+  };
 }
 
 function resolveTheme(preference: ThemePreference) {
@@ -43,11 +59,15 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let active = true;
-    Preferences.get({ key: STORAGE_KEY })
-      .then(({ value }) => {
-        if (!active || !value) return;
-        const parsed: unknown = JSON.parse(value);
-        if (isPreferences(parsed)) setPreferences(parsed);
+    Promise.all([Preferences.get({ key: STORAGE_KEY }), Preferences.get({ key: LEGACY_STORAGE_KEY })])
+      .then(async ([current, legacy]) => {
+        if (!active) return;
+        const raw = current.value ?? legacy.value;
+        if (!raw) return;
+        const parsed = parsePreferences(JSON.parse(raw) as unknown);
+        if (!parsed) return;
+        setPreferences(parsed);
+        if (!current.value && legacy.value) await Preferences.set({ key: STORAGE_KEY, value: JSON.stringify(parsed) });
       })
       .catch(() => undefined)
       .finally(() => {
@@ -89,7 +109,7 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
   );
 
   const resetPreferences = useCallback(async () => {
-    await Preferences.remove({ key: STORAGE_KEY });
+    await Promise.all([Preferences.remove({ key: STORAGE_KEY }), Preferences.remove({ key: LEGACY_STORAGE_KEY })]);
     setPreferences(defaults);
   }, []);
 

@@ -3,6 +3,7 @@ import {
   Bike,
   CheckCircle2,
   Footprints,
+  Heart,
   KeyRound,
   LoaderCircle,
   LocateFixed,
@@ -10,31 +11,24 @@ import {
   Navigation,
   RefreshCw,
   Route,
+  Save,
   Square,
 } from 'lucide-react';
-import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation as useRouterLocation } from 'react-router-dom';
 import { PlaceSearchField } from '../components/map/PlaceSearchField';
 import { isGeoapifyConfigured } from '../config/geoapify';
+import { createCompletedTrip, createFavoritePlace, createFavoriteRoute, toPlaceSelection } from '../data/factories';
 import { useDeviceLocation } from '../hooks/useDeviceLocation';
+import { isMapNavigationState } from '../navigation/mapState';
 import { calculateRoute, reverseGeocodeLima } from '../services/geoapify/client';
 import { getGeoapifyErrorMessage } from '../services/geoapify/errors';
 import type { Coordinates, EndpointRole, PlaceSelection, RouteMode, RouteResult } from '../services/geoapify/types';
+import { useEcoRutaData } from '../state/DataContext';
 import { usePreferences } from '../state/PreferencesContext';
+import { formatDistance, formatDuration } from '../utils/format';
 
 const MapCanvas = lazy(() => import('../components/map/MapCanvas').then((module) => ({ default: module.MapCanvas })));
-
-function formatDistance(meters: number) {
-  if (meters < 1000) return `${Math.round(meters)} m`;
-  return `${(meters / 1000).toLocaleString('es-PE', { maximumFractionDigits: 1 })} km`;
-}
-
-function formatDuration(seconds: number) {
-  const minutes = Math.max(1, Math.round(seconds / 60));
-  if (minutes < 60) return `${minutes} min`;
-  const hours = Math.floor(minutes / 60);
-  const remainder = minutes % 60;
-  return remainder ? `${hours} h ${remainder} min` : `${hours} h`;
-}
 
 function coordinatePlace(coordinates: Coordinates): PlaceSelection {
   const detail = `${coordinates.latitude.toFixed(5)}, ${coordinates.longitude.toFixed(5)}`;
@@ -43,16 +37,27 @@ function coordinatePlace(coordinates: Coordinates): PlaceSelection {
 
 export function MapPage() {
   const { preferences } = usePreferences();
+  const { saveFavorite, saveTrip } = useEcoRutaData();
+  const routerLocation = useRouterLocation();
   const location = useDeviceLocation();
   const [origin, setOrigin] = useState<PlaceSelection | null>(null);
   const [destination, setDestination] = useState<PlaceSelection | null>(null);
   const [activeEndpoint, setActiveEndpoint] = useState<EndpointRole>('destination');
   const [routes, setRoutes] = useState<RouteResult[]>([]);
-  const [selectedMode, setSelectedMode] = useState<RouteMode>('walk');
+  const [selectedMode, setSelectedMode] = useState<RouteMode>(preferences.preferredMode);
   const [routeLoading, setRouteLoading] = useState(false);
   const [pointLoading, setPointLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [recordConfirmation, setRecordConfirmation] = useState(false);
+  const [wouldReplaceCar, setWouldReplaceCar] = useState(false);
   const request = useRef<AbortController | null>(null);
+  const navigationApplied = useRef(false);
+
+  const selectedRoute = useMemo(
+    () => routes.find((route) => route.mode === selectedMode) ?? routes[0] ?? null,
+    [routes, selectedMode],
+  );
 
   const isDark = preferences.theme === 'dark' || (
     preferences.theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -64,6 +69,18 @@ export function MapPage() {
     setRoutes([]);
     setMessage('');
   }, []);
+
+  useEffect(() => {
+    if (navigationApplied.current || !isMapNavigationState(routerLocation.state)) return;
+    navigationApplied.current = true;
+    const state = routerLocation.state;
+    if (state.origin) setOrigin(toPlaceSelection(state.origin));
+    if (state.destination) setDestination(toPlaceSelection(state.destination));
+    if (state.preferredMode) setSelectedMode(state.preferredMode);
+    if (state.origin || state.destination) {
+      setMessage('Puntos cargados desde tus datos locales. Pulsa “Comparar rutas” para obtener estimaciones actuales.');
+    }
+  }, [routerLocation.state]);
 
   useEffect(() => {
     if (!location.position || location.status !== 'tracking') return;
@@ -118,9 +135,41 @@ export function MapPage() {
     const available = results.flatMap((result) => result.status === 'fulfilled' ? [result.value] : []);
     const failures = results.flatMap((result) => result.status === 'rejected' ? [getGeoapifyErrorMessage(result.reason)] : []);
     setRoutes(available);
+    if (available.length > 0 && !available.some((route) => route.mode === selectedMode)) setSelectedMode(available[0]!.mode);
     if (available.length === 0) setMessage(failures[0] || 'No se encontraron rutas sostenibles entre los puntos elegidos.');
     else if (failures.length > 0) setMessage(`Se calculó ${available.length === 1 ? 'una modalidad' : 'parte de la comparación'}. ${failures[0]}`);
     setRouteLoading(false);
+  };
+
+  const persistFavorite = async (kind: 'place' | 'route') => {
+    if (!destination || (kind === 'route' && (!origin || !selectedRoute))) return;
+    setSaving(true);
+    try {
+      const favorite = kind === 'place'
+        ? createFavoritePlace(destination)
+        : createFavoriteRoute(origin!, destination, selectedRoute!.mode);
+      await saveFavorite(favorite);
+      setMessage(kind === 'place' ? 'Destino guardado en Favoritos.' : 'Ruta guardada. Se recalculará cuando vuelvas a utilizarla.');
+    } catch {
+      setMessage('No se pudo guardar. Es posible que este favorito ya exista o que el almacenamiento no esté disponible.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const confirmCompletedTrip = async () => {
+    if (!origin || !destination || !selectedRoute) return;
+    setSaving(true);
+    try {
+      await saveTrip(createCompletedTrip(origin, destination, selectedRoute, wouldReplaceCar));
+      setRecordConfirmation(false);
+      setWouldReplaceCar(false);
+      setMessage('Recorrido registrado como realizado. Ya forma parte de tu historial y estadísticas.');
+    } catch {
+      setMessage('No se pudo registrar el recorrido en este dispositivo.');
+    } finally {
+      setSaving(false);
+    }
   };
 
   if (!isGeoapifyConfigured) {
@@ -219,12 +268,25 @@ export function MapPage() {
                   return (
                     <button key={route.mode} type="button" className={`route-card route-card--${route.mode}${active ? ' is-selected' : ''}`} onClick={() => setSelectedMode(route.mode)} aria-pressed={active}>
                       <span className="route-card__icon"><Icon aria-hidden="true" /></span>
-                      <span><strong>{route.mode === 'walk' ? 'Caminar' : 'Bicicleta'}</strong><small>{formatDistance(route.distanceMeters)}</small></span>
+                      <span><strong>{route.mode === 'walk' ? 'Caminar' : 'Bicicleta'}</strong><small>{formatDistance(route.distanceMeters, preferences.distanceUnit === 'kilometers' ? 'kilometers' : 'metric')}</small></span>
                       <b>{formatDuration(route.durationSeconds)}</b>
                     </button>
                   );
                 })}
               </div>
+              <div className="route-result-actions">
+                <button type="button" className="button button--quiet button--small" disabled={saving} onClick={() => void persistFavorite('place')}><Heart aria-hidden="true" /> Guardar destino</button>
+                <button type="button" className="button button--quiet button--small" disabled={saving || !selectedRoute} onClick={() => void persistFavorite('route')}><Save aria-hidden="true" /> Guardar ruta</button>
+                {preferences.allowTripStorage && <button type="button" className="button button--primary button--small" disabled={saving || !selectedRoute} onClick={() => setRecordConfirmation(true)}><Route aria-hidden="true" /> Registrar como realizado</button>}
+              </div>
+              {recordConfirmation && selectedRoute && (
+                <div className="record-confirmation" role="group" aria-label="Confirmar recorrido realizado">
+                  <strong>¿Realizaste este recorrido?</strong>
+                  <p>Se guardarán la fecha actual, origen, destino, modalidad, distancia y duración calculadas por Geoapify. Esto es distinto de consultar una ruta.</p>
+                  <label><input type="checkbox" checked={wouldReplaceCar} onChange={(event) => setWouldReplaceCar(event.target.checked)} /> Este recorrido sustituyó un viaje que habría hecho en automóvil</label>
+                  <div><button type="button" className="button button--quiet button--small" onClick={() => setRecordConfirmation(false)}>Cancelar</button><button type="button" className="button button--primary button--small" disabled={saving} onClick={() => void confirmCompletedTrip()}>{saving ? 'Guardando…' : 'Sí, registrar'}</button></div>
+                </div>
+              )}
               <p className="route-disclaimer">Estimaciones de Geoapify según su red disponible; las condiciones reales pueden variar.</p>
             </section>
           )}

@@ -29,7 +29,7 @@ export function AppShell() {
         <AppNavigation />
         <div className="sidebar__footer">
           <p>Preferencias locales</p>
-          <span>Sin cuenta · sin seguimiento</span>
+          <span>Sin cuenta · datos en el dispositivo</span>
         </div>
       </aside>
 
