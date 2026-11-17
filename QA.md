@@ -31,6 +31,8 @@
 - MapLibre y su CSS se descargan solo cuando el planificador tiene una clave configurada.
 - Bundle inicial: aproximadamente 296 kB minificado / 95 kB gzip.
 - MapLibre queda en un chunk diferido de aproximadamente 1,08 MB minificado / 295 kB gzip.
+- El worker de MapLibre se sirve como asset diferido separado de aproximadamente 519 kB y fue verificado en Vite.
+- Vite advierte que el chunk diferido de MapLibre supera 500 kB; no afecta el bundle inicial, pero queda como oportunidad de optimización futura.
 - Búsqueda con 420 ms de debounce, cancelación mediante `AbortController` y caché de memoria de 10 minutos.
 - Adaptador limitado a intervalos de 260 ms y 240 solicitudes por sesión; los tiles no están incluidos en ese contador.
 
@@ -41,6 +43,7 @@
 - 1440 × 1000: aprobado, sin overflow horizontal.
 - Estado sin clave: sin excepciones de consola.
 - Estado con clave inválida: único error observado fue el HTTP 401 esperado de Geoapify.
+- Worker de MapLibre conectado sin errores después de configurar `?worker&url`.
 - Navegación inferior, sidebar, inputs de 16 px, áreas táctiles y safe areas preservados.
 
 ### Limitaciones verificables

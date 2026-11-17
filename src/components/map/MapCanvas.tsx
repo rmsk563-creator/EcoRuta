@@ -1,6 +1,7 @@
 import * as maplibregl from 'maplibre-gl';
 import type { ErrorEvent as MapLibreErrorEvent, GeoJSONSource, Map as MapLibreMap, MapMouseEvent, Marker } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 import { useEffect, useRef } from 'react';
 import { getGeoapifyStyleUrl, LIMA_BOUNDS, LIMA_CENTER } from '../../config/geoapify';
 import type { Coordinates, EndpointRole, PlaceSelection, RouteMode, RouteResult } from '../../services/geoapify/types';
@@ -21,6 +22,8 @@ const ROUTE_STYLES: Record<RouteMode, { color: string; label: string }> = {
   walk: { color: '#087f5b', label: 'Ruta a pie' },
   bicycle: { color: '#1f78b4', label: 'Ruta en bicicleta' },
 };
+
+maplibregl.setWorkerUrl(workerUrl);
 
 function createMarker(label: string, kind: 'origin' | 'destination' | 'user') {
   const element = document.createElement('div');
