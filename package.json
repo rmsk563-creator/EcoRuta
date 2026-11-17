@@ -1,7 +1,7 @@
 {
   "name": "ecoruta",
   "private": true,
-  "version": "0.4.0",
+  "version": "0.5.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
@@ -13,9 +13,13 @@
   },
   "dependencies": {
     "@capacitor-community/sqlite": "^8.1.1",
+    "@capacitor/browser": "^8.0.5",
     "@capacitor/core": "^8.6.2",
+    "@capacitor/filesystem": "^8.1.5",
     "@capacitor/geolocation": "^8.2.4",
+    "@capacitor/ios": "^8.6.2",
     "@capacitor/preferences": "^8.0.1",
+    "@capacitor/share": "^8.0.3",
     "idb": "^8.0.4",
     "lucide-react": "^1.73.0",
     "maplibre-gl": "^6.18.0",
@@ -25,6 +29,7 @@
     "react-router-dom": "^7.18.5"
   },
   "devDependencies": {
+    "@capacitor/assets": "^4.0.0",
     "@capacitor/cli": "^8.6.2",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
