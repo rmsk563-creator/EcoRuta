@@ -2,19 +2,16 @@ import { Preferences } from '@capacitor/preferences';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 
 export type ThemePreference = 'system' | 'light' | 'dark';
-export type MobilityPreference = 'walk' | 'bicycle';
 
 export interface AppPreferences {
   theme: ThemePreference;
   reduceMotion: boolean;
-  mobility: MobilityPreference[];
 }
 
 const STORAGE_KEY = 'ecoruta.preferences.v1';
 const defaults: AppPreferences = {
   theme: 'system',
   reduceMotion: false,
-  mobility: ['walk', 'bicycle'],
 };
 
 interface PreferencesContextValue {
@@ -31,9 +28,7 @@ function isPreferences(value: unknown): value is AppPreferences {
   const candidate = value as Partial<AppPreferences>;
   return (
     ['system', 'light', 'dark'].includes(candidate.theme ?? '') &&
-    typeof candidate.reduceMotion === 'boolean' &&
-    Array.isArray(candidate.mobility) &&
-    candidate.mobility.every((mode) => mode === 'walk' || mode === 'bicycle')
+    typeof candidate.reduceMotion === 'boolean'
   );
 }
 

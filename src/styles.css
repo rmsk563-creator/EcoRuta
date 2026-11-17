@@ -397,6 +397,7 @@ h3 {
   background:
     linear-gradient(145deg, color-mix(in srgb, var(--surface-raised) 93%, var(--brand-soft)), var(--surface-raised));
   box-shadow: var(--shadow-sm);
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .hero-panel::after {
@@ -413,6 +414,7 @@ h3 {
 .hero-panel__copy {
   position: relative;
   z-index: 2;
+  min-width: 0;
   max-width: 650px;
 }
 
@@ -1291,8 +1293,8 @@ h3 {
   }
 
   .mobility-visual {
-    right: -22px;
-    width: 286px;
+    right: 8px;
+    width: 270px;
   }
 
   .section-heading {
