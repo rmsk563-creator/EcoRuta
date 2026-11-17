@@ -4,6 +4,16 @@ import { MemoryRouter } from 'react-router-dom';
 import { App } from './App';
 import { PreferencesProvider } from './state/PreferencesContext';
 
+vi.mock('./config/geoapify', async () => {
+  const actual = await vi.importActual<typeof import('./config/geoapify')>('./config/geoapify');
+
+  return {
+    ...actual,
+    geoapifyApiKey: '',
+    isGeoapifyConfigured: false,
+  };
+});
+
 function renderApp(initialPath = '/') {
   sessionStorage.setItem('ecoruta.splash.seen', 'true');
   return render(
