@@ -4,7 +4,7 @@
 
 ### Añadido
 
-- Arquitectura React + TypeScript + Vite preparada para Capacitor.
+- Arquitectura React + TypeScript + Vite con CLI y configuración base de Capacitor.
 - Shell mobile-first con sidebar en escritorio y navegación inferior en móvil/tableta.
 - Inicio, Acerca de y Ajustes con rutas funcionales.
 - Temas automático, claro y oscuro.

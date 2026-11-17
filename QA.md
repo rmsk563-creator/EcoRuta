@@ -12,6 +12,7 @@
 - ✅ `npm test`: 4 pruebas aprobadas.
 - ✅ `npm run build`: build de producción generado.
 - ✅ `npm audit --audit-level=high`: 0 vulnerabilidades conocidas.
+- ✅ Configuración de Capacitor reconocida por su CLI.
 
 ### Funcional
 

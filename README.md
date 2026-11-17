@@ -52,6 +52,10 @@ src/
 
 Geoapify es el proveedor inicial aprobado y MapLibre será el renderer. Sus condiciones y alternativas están documentadas en [`GEOAPIFY_EVALUATION.md`](./GEOAPIFY_EVALUATION.md). La integración comienza en Fase 3 y requerirá una clave restringida que nunca debe añadirse al repositorio.
 
+## Preparación nativa
+
+Capacitor ya dispone de CLI y configuración base. Los proyectos `ios/` y `android/` se crearán en el gate nativo posterior, cuando puedan abrirse y validarse con Xcode y Android Studio; todavía no forman parte de esta fase.
+
 ## Documentación
 
 - [`PROJECT_PROFILE.md`](./PROJECT_PROFILE.md)
