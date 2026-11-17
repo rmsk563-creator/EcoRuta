@@ -83,7 +83,7 @@ export function SettingsPage() {
             <div>
               <p className="kicker">Datos locales</p>
               <h2 id="data-title">Control de configuración</h2>
-              <p>Elimina el tema, movimiento y modalidades guardadas en este dispositivo.</p>
+              <p>Elimina el tema y la preferencia de movimiento guardados en este dispositivo.</p>
             </div>
           </div>
           {confirmReset ? (

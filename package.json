@@ -1,7 +1,7 @@
 {
   "name": "ecoruta",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
@@ -13,8 +13,10 @@
   },
   "dependencies": {
     "@capacitor/core": "^8.6.2",
+    "@capacitor/geolocation": "^8.2.4",
     "@capacitor/preferences": "^8.0.1",
     "lucide-react": "^1.73.0",
+    "maplibre-gl": "^6.18.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-icons": "^5.7.0",

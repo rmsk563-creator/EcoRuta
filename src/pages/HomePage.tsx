@@ -12,11 +12,11 @@ export function HomePage() {
           <p className="eyebrow"><Leaf aria-hidden="true" /> Movilidad sostenible en Lima</p>
           <h1 id="home-title">Tu forma de moverte, con más intención.</h1>
           <p className="hero-panel__lead">
-            Configura EcoRuta según tus hábitos y conserva tus preferencias en este dispositivo, sin crear una cuenta.
+            Busca lugares en Lima y compara recorridos reales para caminar o usar bicicleta, sin crear una cuenta.
           </p>
           <div className="hero-panel__actions">
-            <Link className="button button--primary" to="/settings">
-              Configurar EcoRuta <ArrowRight aria-hidden="true" />
+            <Link className="button button--primary" to="/map">
+              Planificar una ruta <ArrowRight aria-hidden="true" />
             </Link>
             <Link className="button button--quiet" to="/about">Conocer el proyecto</Link>
           </div>

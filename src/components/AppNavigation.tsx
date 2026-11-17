@@ -1,4 +1,4 @@
-import { House, Info, SlidersHorizontal, type LucideIcon } from 'lucide-react';
+import { House, Info, Map, SlidersHorizontal, type LucideIcon } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
 interface NavigationItem {
@@ -10,6 +10,7 @@ interface NavigationItem {
 
 const items: NavigationItem[] = [
   { to: '/', label: 'Inicio', icon: House, end: true },
+  { to: '/map', label: 'Mapa', icon: Map },
   { to: '/about', label: 'Acerca', icon: Info },
   { to: '/settings', label: 'Ajustes', icon: SlidersHorizontal },
 ];
