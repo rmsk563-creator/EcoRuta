@@ -35,7 +35,7 @@ function createMarker(label: string, kind: 'origin' | 'destination' | 'user') {
   return element;
 }
 
-function setMarker(
+export function updateMarker(
   current: Marker | null,
   map: MapLibreMap,
   coordinates: Coordinates | null,
@@ -46,9 +46,11 @@ function setMarker(
     current?.remove();
     return null;
   }
-  const marker = current ?? new maplibregl.Marker({ element: createMarker(label, kind), anchor: 'center' }).addTo(map);
-  marker.setLngLat([coordinates.longitude, coordinates.latitude]);
-  return marker;
+  const position: [number, number] = [coordinates.longitude, coordinates.latitude];
+  if (current) return current.setLngLat(position);
+  return new maplibregl.Marker({ element: createMarker(label, kind), anchor: 'center' })
+    .setLngLat(position)
+    .addTo(map);
 }
 
 function routeFeature(route: RouteResult) {
@@ -146,9 +148,9 @@ export function MapCanvas(props: MapCanvasProps) {
     const instance = map.current;
     if (!instance) return;
     const update = () => {
-      originMarker.current = setMarker(originMarker.current, instance, props.origin?.coordinates ?? null, 'A', 'origin');
-      destinationMarker.current = setMarker(destinationMarker.current, instance, props.destination?.coordinates ?? null, 'B', 'destination');
-      userMarker.current = setMarker(userMarker.current, instance, props.userLocation, '', 'user');
+      originMarker.current = updateMarker(originMarker.current, instance, props.origin?.coordinates ?? null, 'A', 'origin');
+      destinationMarker.current = updateMarker(destinationMarker.current, instance, props.destination?.coordinates ?? null, 'B', 'destination');
+      userMarker.current = updateMarker(userMarker.current, instance, props.userLocation, '', 'user');
       ensureRouteLayers(instance);
       (Object.keys(ROUTE_STYLES) as RouteMode[]).forEach((mode) => {
         const route = props.routes.find((candidate) => candidate.mode === mode);

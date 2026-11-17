@@ -17,6 +17,7 @@ import {
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation as useRouterLocation } from 'react-router-dom';
 import { PlaceSearchField } from '../components/map/PlaceSearchField';
+import { MapErrorBoundary } from '../components/map/MapErrorBoundary';
 import { isGeoapifyConfigured } from '../config/geoapify';
 import { createCompletedTrip, createFavoritePlace, createFavoriteRoute, toPlaceSelection } from '../data/factories';
 import { useDeviceLocation } from '../hooks/useDeviceLocation';
@@ -293,19 +294,21 @@ export function MapPage() {
         </aside>
 
         <section className="map-panel" aria-label="Selección sobre el mapa">
-          <Suspense fallback={<div className="map-loading" role="status"><LoaderCircle className="spin" aria-hidden="true" /> Cargando mapa de Lima…</div>}>
-            <MapCanvas
-              theme={isDark ? 'dark' : 'light'}
-              origin={origin}
-              destination={destination}
-              userLocation={location.position}
-              routes={routes}
-              selectedMode={selectedMode}
-              activeEndpoint={activeEndpoint}
-              onMapSelect={(coordinates) => void selectFromMap(coordinates)}
-              onError={setMessage}
-            />
-          </Suspense>
+          <MapErrorBoundary>
+            <Suspense fallback={<div className="map-loading" role="status"><LoaderCircle className="spin" aria-hidden="true" /> Cargando mapa de Lima…</div>}>
+              <MapCanvas
+                theme={isDark ? 'dark' : 'light'}
+                origin={origin}
+                destination={destination}
+                userLocation={location.position}
+                routes={routes}
+                selectedMode={selectedMode}
+                activeEndpoint={activeEndpoint}
+                onMapSelect={(coordinates) => void selectFromMap(coordinates)}
+                onError={setMessage}
+              />
+            </Suspense>
+          </MapErrorBoundary>
           {pointLoading && <div className="map-progress" role="status"><LoaderCircle className="spin" aria-hidden="true" /> Identificando el punto…</div>}
           {location.status === 'tracking' && (
             <div className="gps-status" role="status"><Navigation aria-hidden="true" /> GPS activo{location.accuracy ? ` · ±${Math.round(location.accuracy)} m` : ''}</div>

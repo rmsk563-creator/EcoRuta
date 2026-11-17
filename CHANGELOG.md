@@ -18,6 +18,12 @@
 - Mapa, GPS, temas, redes sociales, MapLibre y Geoapify de Fases 2 y 3.
 - `main` y GitHub Pages sin cambios.
 
+### Corregido
+
+- Inicialización de marcadores MapLibre con coordenadas antes de añadirlos al mapa.
+- Recuperación localizada ante errores de renderizado del mapa, sin dejar la aplicación completa en blanco.
+- Pruebas de regresión para el orden del marcador y el reintento del mapa.
+
 ### Pendiente de dispositivo
 
 - Verificación de SQLite, selector/descarga de archivos y persistencia tras cierre en iPhone/Android físicos.

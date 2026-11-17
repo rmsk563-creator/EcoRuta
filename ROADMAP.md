@@ -39,6 +39,7 @@
 - ✅ Impacto potencial basado en sustitución declarada de automóvil y factor MTC.
 - ✅ Preferencias ampliadas, privacidad, borrado y exportación/importación JSON.
 - ✅ QA responsive y consola en navegador.
+- ✅ Regresión MapLibre corregida y flujo real Geoapify repetido sin errores de consola.
 - 🟡 SQLite, archivos y persistencia nativa pendientes de hardware iOS/Android.
 
 ## Fases 5–8

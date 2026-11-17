@@ -9,7 +9,7 @@
 ### Automatización
 
 - ✅ `npm run typecheck`
-- ✅ `npm test`: 22 pruebas aprobadas en 5 archivos antes del cierre documental.
+- ✅ `npm test`: 25 pruebas aprobadas en 7 archivos, incluidas regresiones del marcador y recuperación del mapa.
 - ✅ `npm run build`: build de producción generado.
 - ✅ `npm audit --audit-level=high`: 0 vulnerabilidades conocidas.
 - ✅ `git diff --check`: sin errores después de normalizar EOF.
@@ -33,12 +33,23 @@
 
 ### Responsive y consola
 
-- 360 × 800, Favoritos: sin overflow y navegación completa.
-- 390 × 844, Ajustes: sin overflow y navegación completa.
-- 768 × 1024, Historial: sin overflow.
-- 1440 × 1000, Estadísticas: sin overflow.
+- 390 × 844, Favoritos: 2 tarjetas, navegación inferior completa y sin overflow.
+- 768 × 1024, Historial: 1 recorrido, navegación inferior completa y sin overflow.
+- 1440 × 1000, Estadísticas: 4 indicadores, sidebar completo y sin overflow.
 - Excepciones runtime: 0.
 - Errores de consola: 0.
+
+### Regresión MapLibre y flujo real
+
+- Corregido el orden del marcador: `setLngLat(...)` se ejecuta antes de `addTo(map)`.
+- Revisados todos los marcadores; origen, destino y GPS comparten la única función de inicialización.
+- El mapa queda aislado por un límite de errores con estado comprensible y acción **Reintentar mapa**.
+- Autocomplete Geoapify real aprobado para Plaza Mayor de Lima y Parque Kennedy.
+- Ruta a pie aprobada: 9,1 km y 2 h 15 min, según la respuesta recibida en la ejecución.
+- Ruta en bicicleta aprobada: 10 km y 37 min, según la respuesta recibida en la ejecución.
+- Una consulta mantuvo 0 favoritos y 0 recorridos; el historial solo cambió después de la confirmación explícita.
+- Guardado final: 2 favoritos y 1 recorrido; los mismos conteos persistieron tras recargar.
+- Exportación, eliminación total e importación restauraron correctamente 2 favoritos y 1 recorrido.
 
 ### Pendiente de dispositivo real
 
@@ -51,7 +62,7 @@
 
 **Ejecución:** 16 de noviembre de 2026.
 
-**Resultado:** implementación, pruebas unitarias, estado sin clave, manejo de clave rechazada y responsive aprobados. La validación end-to-end con datos reales está pendiente de una API key del propietario.
+**Resultado:** implementación, pruebas unitarias, estado sin clave, manejo de clave rechazada y responsive aprobados. La validación end-to-end real se completó durante el cierre de la Fase 4 con la API key local del propietario.
 
 ### Automatización
 
@@ -95,7 +106,7 @@
 
 ### Limitaciones verificables
 
-- No se usó una API key real, por lo que no se afirma que tiles, resultados de búsqueda o rutas de Lima hayan sido validados end-to-end.
+- La validación real de Geoapify se realizó en navegador local; no sustituye la prueba de red y WebView en iPhone/Android físicos.
 - GPS se implementó con `@capacitor/geolocation`, pero la señal, precisión y prompts requieren prueba en hardware.
 - Las atribuciones proceden del `style.json` de Geoapify; se verificarán visualmente cuando el mapa cargue con una clave válida.
 - Los proyectos nativos `ios/` y `android/` siguen diferidos al gate nativo.
