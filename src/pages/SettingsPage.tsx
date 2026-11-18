@@ -1,4 +1,4 @@
-import { ArrowRight, Bike, Check, Database, Download, Footprints, Moon, RotateCcw, ShieldCheck, Smartphone, Sun, Trash2, Upload, UserRound } from 'lucide-react';
+import { ArrowRight, Bike, Check, Database, Download, Footprints, LogOut, Moon, RotateCcw, ShieldCheck, Smartphone, Sun, Trash2, Upload, UserRound } from 'lucide-react';
 import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import type { EcoRutaDataExport, ImportStrategy } from '../data/types';
@@ -6,6 +6,8 @@ import { parseDataExportText } from '../data/validation';
 import { exportEcoRutaData } from '../services/platform/dataTransfer';
 import { useEcoRutaData } from '../state/DataContext';
 import { usePreferences, type DistanceUnitPreference, type PreferredMode, type ThemePreference } from '../state/PreferencesContext';
+import { useAuth } from '../state/AuthContext';
+import { getAuthErrorMessage } from '../services/auth/errors';
 
 const themeOptions: Array<{ value: ThemePreference; label: string; icon: typeof Sun }> = [
   { value: 'system', label: 'Automático', icon: Smartphone },
@@ -18,12 +20,14 @@ type DeleteAction = 'favorites' | 'trips' | 'all' | null;
 export function SettingsPage() {
   const { preferences, ready, updatePreferences, resetPreferences } = usePreferences();
   const data = useEcoRutaData();
+  const auth = useAuth();
   const [alias, setAlias] = useState(preferences.alias);
   const [confirmReset, setConfirmReset] = useState(false);
   const [deleteAction, setDeleteAction] = useState<DeleteAction>(null);
   const [pendingImport, setPendingImport] = useState<EcoRutaDataExport | null>(null);
   const [importStrategy, setImportStrategy] = useState<ImportStrategy>('merge');
   const [savedMessage, setSavedMessage] = useState('');
+  const [signingOut, setSigningOut] = useState(false);
 
   useEffect(() => {
     setAlias(preferences.alias);
@@ -87,6 +91,19 @@ export function SettingsPage() {
     notify(`Importación completada: ${summary.favorites} favoritos y ${summary.trips} recorridos.`);
   };
 
+  const closeSession = async () => {
+    if (signingOut) return;
+    setSigningOut(true);
+    try {
+      await auth.signOut();
+      notify('Sesión cerrada. Tus favoritos, historial y estadísticas permanecen en este dispositivo.');
+    } catch (error) {
+      notify(getAuthErrorMessage(error));
+    } finally {
+      setSigningOut(false);
+    }
+  };
+
   return (
     <div className="page settings-page">
       <header className="page-header page-header--compact">
@@ -97,9 +114,9 @@ export function SettingsPage() {
 
       <div className="settings-layout" aria-busy={!ready || !data.ready}>
         <section className="settings-card settings-card--account" aria-labelledby="account-settings-title">
-          <div className="settings-card__heading"><div><p className="kicker">Cuenta</p><h2 id="account-settings-title">EcoRuta funciona sin iniciar sesión</h2><p>Tus favoritos, historial y preferencias continúan guardados localmente. No hay una sesión activa ni datos enviados a un servicio de usuarios.</p></div><UserRound aria-hidden="true" /></div>
-          <div className="account-settings-status"><span aria-hidden="true" /><div><strong>Sin sesión</strong><small>Autenticación pendiente de proveedor</small></div></div>
-          <Link className="button button--quiet" to="/account">Ver experiencia de acceso <ArrowRight aria-hidden="true" /></Link>
+          <div className="settings-card__heading"><div><p className="kicker">Cuenta</p><h2 id="account-settings-title">{auth.user ? 'Tu cuenta EcoRuta' : 'EcoRuta funciona sin iniciar sesión'}</h2><p>{auth.user ? 'Firebase conserva tu sesión. La actividad de movilidad sigue almacenada únicamente en este dispositivo.' : 'Tus favoritos, historial y preferencias continúan guardados localmente. Puedes usar EcoRuta como invitado.'}</p></div><UserRound aria-hidden="true" /></div>
+          <div className={`account-settings-status${auth.user ? ' is-connected' : ''}`}><span aria-hidden="true" /><div><strong>{auth.user ? auth.user.displayName || auth.user.email || 'Sesión activa' : 'Sin sesión'}</strong><small>{auth.user ? auth.user.emailVerified ? 'Correo verificado' : 'Correo pendiente de verificación' : auth.configured ? 'Firebase disponible · acceso opcional' : 'Firebase pendiente de configuración'}</small></div></div>
+          {auth.user ? <button className="button button--quiet" type="button" onClick={() => void closeSession()} disabled={signingOut}><LogOut aria-hidden="true" /> {signingOut ? 'Cerrando sesión…' : 'Cerrar sesión'}</button> : <Link className="button button--quiet" to="/account">Acceder o crear cuenta <ArrowRight aria-hidden="true" /></Link>}
         </section>
         <section className="settings-card" aria-labelledby="profile-title">
           <div className="settings-card__heading"><div><p className="kicker">Personalización</p><h2 id="profile-title">Tu forma de moverte</h2></div></div>

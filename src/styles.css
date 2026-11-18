@@ -2033,6 +2033,39 @@ h3 {
   overflow-wrap: anywhere;
 }
 
+.account-pending--error,
+.auth-feedback--error {
+  color: var(--danger);
+}
+
+.auth-feedback {
+  margin: 2px 0 0;
+  font-size: .8rem;
+  line-height: 1.45;
+}
+
+.auth-feedback--success {
+  color: var(--brand-strong);
+}
+
+.account-setup {
+  display: grid;
+  gap: 5px;
+  margin-top: 12px;
+  padding: 12px 14px;
+  border: 1px solid color-mix(in srgb, var(--brand) 22%, var(--border));
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--brand-soft) 48%, var(--surface));
+  color: var(--text-muted);
+  font-size: .76rem;
+  line-height: 1.45;
+}
+
+.account-setup code {
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
 .account-status {
   max-width: 100%;
   flex-wrap: wrap;
@@ -2148,9 +2181,22 @@ h3 {
   background: var(--text-soft);
 }
 
+.account-settings-status.is-connected > span {
+  background: var(--brand);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand) 14%, transparent);
+}
+
+.account-settings-status > div {
+  min-width: 0;
+}
+
 .account-settings-status strong,
 .account-settings-status small {
   display: block;
+}
+
+.account-settings-status strong {
+  overflow-wrap: anywhere;
 }
 
 .account-settings-status small {

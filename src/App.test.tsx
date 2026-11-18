@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { App } from './App';
 import { PreferencesProvider } from './state/PreferencesContext';
 import { DataProvider } from './state/DataContext';
+import { AuthProvider } from './state/AuthContext';
 
 vi.mock('./config/geoapify', async () => {
   const actual = await vi.importActual<typeof import('./config/geoapify')>('./config/geoapify');
@@ -20,9 +21,11 @@ function renderApp(initialPath = '/') {
   return render(
     <MemoryRouter initialEntries={[initialPath]}>
       <PreferencesProvider>
-        <DataProvider>
-          <App />
-        </DataProvider>
+        <AuthProvider configuredOverride={false}>
+          <DataProvider>
+            <App />
+          </DataProvider>
+        </AuthProvider>
       </PreferencesProvider>
     </MemoryRouter>,
   );
@@ -96,7 +99,7 @@ describe('EcoRuta app shell', () => {
 
     expect(screen.getByRole('heading', { name: /qué bueno verte/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /iniciar sesión/i })).toBeDisabled();
-    expect(screen.getByText(/conexión pendiente/i)).toBeInTheDocument();
+    expect(screen.getByText(/firebase pendiente de configuración/i)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /volver/i })).toHaveAttribute('href', '/account');
   });
 
@@ -104,7 +107,7 @@ describe('EcoRuta app shell', () => {
     sessionStorage.removeItem('ecoruta.splash.seen');
     const { container } = render(
       <MemoryRouter>
-        <PreferencesProvider><DataProvider><App /></DataProvider></PreferencesProvider>
+        <PreferencesProvider><AuthProvider configuredOverride={false}><DataProvider><App /></DataProvider></AuthProvider></PreferencesProvider>
       </MemoryRouter>,
     );
 
