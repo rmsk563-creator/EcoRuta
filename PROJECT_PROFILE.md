@@ -42,7 +42,7 @@ Solo se muestran datos producidos por funciones reales. Sin API key, el planific
 
 ## Restricciones
 
-Sin Figma. `main` y GitHub Pages permanecen intactos hasta autorización expresa. No exponer credenciales privadas.
+Sin Figma. `main` y GitHub Pages permanecen intactos hasta autorización expresa. No exponer credenciales privadas. El logotipo maestro `assets/logo-ecoruta.png`, el icono iOS instalado y los splash nativos no pueden sustituirse ni rediseñarse.
 
 ## Estado actual
 

@@ -67,3 +67,10 @@
 - La publicación usa GitHub Actions con activación exclusivamente manual desde `develop/mobile-app`; hacer push no despliega por sí solo.
 - Geoapify web usa una clave independiente inyectada desde `GEOAPIFY_WEB_API_KEY`, restringida por referrer/origin y vigilada por separado de la clave móvil.
 - IndexedDB web y SQLite nativo no se sincronizan. Cada navegador o instalación conserva su propio conjunto local de favoritos e historial.
+
+## 2026-11-17 — Identidad visual protegida
+
+- `assets/logo-ecoruta.png` es la única fuente maestra del logotipo; su Git blob verificado es `fc3af985e8228aa7c74b016b9a4e4d4378851ecd`.
+- El icono iOS y los splash actuales se conservan como recursos aprobados derivados del original; no se regeneran, reemplazan ni rediseñan sin autorización expresa.
+- Las animaciones solo transforman el contenedor completo mediante escala, opacidad o movimiento suave. Los efectos de luz deben estar en capas separadas y no alterar el diseño del logo.
+- Cualquier futura pantalla de acceso, registro o identidad reutilizará el archivo maestro. Esta decisión no cambia el alcance actual sin autenticación.
