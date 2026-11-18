@@ -1,6 +1,6 @@
 # Instalación y prueba en iPhone
 
-El proyecto `ios/` ya existe, compila con Xcode y fue ejecutado en un simulador. La aprobación final requiere firma e instalación en un iPhone físico.
+El proyecto `ios/` ya existe, compila con Xcode y fue ejecutado en simulador y en un iPhone 15 Pro Max físico. La instalación física de la demo 0.6.0 (build 2) se realizó como actualización sobre `com.ecoruta.app`, sin desinstalar la versión anterior.
 
 ## Requisitos
 
@@ -64,7 +64,20 @@ No se solicita ni se implementa ubicación en segundo plano.
 
 El código no activa cifrado de base de datos en esta fase, pero el plugin enlaza SQLCipher incluso para bases no cifradas.
 
-## Lista de aceptación física
+## Estado físico de la demo 0.6.0
+
+Verificado el 18 de noviembre de 2026:
+
+- Xcode finalizó la compilación `Debug-iphoneos` con firma automática y `BUILD SUCCEEDED`.
+- El perfil pertenece al equipo `C3AMZ7K6T2`, contiene el UDID del iPhone conectado y vence el 25 de noviembre de 2026.
+- CoreDevice actualizó la instalación existente de 1.0 (build 1) a 0.6.0 (build 2), sin ejecutar una desinstalación.
+- La aplicación abrió y su proceso, WKWebView, red y GPU permanecieron activos después del arranque.
+- Capturas del dispositivo confirmaron el splash nativo original, el splash animado con el mismo logo, la bienvenida, el acceso sin cuenta, la navegación principal y el tema oscuro.
+- El mapa y la pantalla de planificación se renderizaron en el dispositivo.
+
+La automatización de Xcode no puede tocar la pantalla física ni conceder permisos en nombre del usuario. GPS real, escritura en buscadores, cálculo de rutas en esa ejecución, persistencia después de una edición, importación/exportación y enlaces externos deben completar la lista manual siguiente antes de declararlos aprobados en hardware.
+
+## Lista de aceptación física manual
 
 1. Abre el proyecto en Xcode y selecciona el equipo de firma.
 2. Selecciona el iPhone como destino y pulsa **Run**.

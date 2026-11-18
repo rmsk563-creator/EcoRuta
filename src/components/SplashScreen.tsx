@@ -1,32 +1,38 @@
+import { Capacitor } from '@capacitor/core';
 import { useEffect, useState } from 'react';
 import { Brand } from './Brand';
 import { usePreferences } from '../state/PreferencesContext';
 
-const SPLASH_KEY = 'ecoruta.splash.seen';
-
 export function SplashScreen() {
   const { preferences } = usePreferences();
-  const [visible, setVisible] = useState(() => sessionStorage.getItem(SPLASH_KEY) !== 'true');
+  const nativeRuntime = Capacitor.isNativePlatform() || window.location.protocol === 'capacitor:';
+  const [visible, setVisible] = useState(true);
+  const [started, setStarted] = useState(() => !nativeRuntime);
   const [leaving, setLeaving] = useState(false);
 
   useEffect(() => {
-    if (!visible) return;
-    const duration = preferences.reduceMotion ? 160 : 1540;
+    if (started) return;
+    const startTimer = window.setTimeout(() => setStarted(true), 520);
+    return () => window.clearTimeout(startTimer);
+  }, [started]);
+
+  useEffect(() => {
+    if (!visible || !started) return;
+    const duration = preferences.reduceMotion ? 160 : nativeRuntime ? 1900 : 1540;
     const leaveTimer = window.setTimeout(() => setLeaving(true), duration);
     const removeTimer = window.setTimeout(() => {
-      sessionStorage.setItem(SPLASH_KEY, 'true');
       setVisible(false);
     }, duration + (preferences.reduceMotion ? 30 : 300));
     return () => {
       window.clearTimeout(leaveTimer);
       window.clearTimeout(removeTimer);
     };
-  }, [preferences.reduceMotion, visible]);
+  }, [nativeRuntime, preferences.reduceMotion, started, visible]);
 
   if (!visible) return null;
 
   return (
-    <div className={`splash${leaving ? ' is-leaving' : ''}`} aria-hidden="true">
+    <div className={`splash${started ? '' : ' is-waiting'}${leaving ? ' is-leaving' : ''}`} aria-hidden="true">
       <span className="splash__halo" />
       <div className="splash__content">
         <Brand />

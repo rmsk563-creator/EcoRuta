@@ -17,7 +17,6 @@ vi.mock('./config/geoapify', async () => {
 });
 
 function renderApp(initialPath = '/') {
-  sessionStorage.setItem('ecoruta.splash.seen', 'true');
   return render(
     <MemoryRouter initialEntries={[initialPath]}>
       <PreferencesProvider>
@@ -99,12 +98,11 @@ describe('EcoRuta app shell', () => {
 
     expect(screen.getByRole('heading', { name: /qué bueno verte/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /iniciar sesión/i })).toBeDisabled();
-    expect(screen.getByText(/firebase pendiente de configuración/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/autenticación próximamente/i)).not.toHaveLength(0);
     expect(screen.getByRole('link', { name: /volver/i })).toHaveAttribute('href', '/account');
   });
 
   it('reuses the protected EcoRuta asset in the splash', () => {
-    sessionStorage.removeItem('ecoruta.splash.seen');
     const { container } = render(
       <MemoryRouter>
         <PreferencesProvider><AuthProvider configuredOverride={false}><DataProvider><App /></DataProvider></AuthProvider></PreferencesProvider>

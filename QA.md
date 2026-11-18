@@ -1,5 +1,33 @@
 # QA — EcoRuta
 
+## Demo universitaria 0.6.0
+
+**Ejecución:** 18 de noviembre de 2026.
+
+**Hardware:** iPhone 15 Pro Max físico, emparejado y autorizado; Bundle ID `com.ecoruta.app`; build 2.
+
+### Verificado en el dispositivo
+
+- ✅ `npm run typecheck`, 36 pruebas en 11 archivos y build Vite de producción aprobados antes de sincronizar el paquete nativo.
+- ✅ `npx cap sync ios` sincronizó los seis plugins y la compilación de simulador también terminó con `BUILD SUCCEEDED`.
+- ✅ Compilación `Debug-iphoneos` firmada automáticamente: `BUILD SUCCEEDED`.
+- ✅ Equipo de firma `C3AMZ7K6T2`; perfil con el UDID del iPhone y vigencia hasta el 25 de noviembre de 2026.
+- ✅ Actualización in-place desde 1.0 (build 1) a 0.6.0 (build 2); no se ejecutó desinstalación ni limpieza de datos.
+- ✅ Inicio del proceso y de WKWebView sin cierre durante la observación.
+- ✅ Splash nativo original y splash animado observados mediante capturas físicas temporizadas.
+- ✅ Bienvenida, acceso sin cuenta, navegación inferior, mapa/panel de planificación y tema oscuro observados en el iPhone.
+- ✅ Firebase permanece sin variables de configuración y las pantallas de acceso indican que la autenticación estará disponible próximamente.
+
+### Pendiente de interacción manual en el iPhone
+
+- 🟡 Conceder permiso y validar coordenadas/precisión del GPS real.
+- 🟡 Escribir una búsqueda y recibir rutas Geoapify a pie y en bicicleta durante esta instalación.
+- 🟡 Crear un favorito y un recorrido, terminar la app y confirmar la persistencia SQLite de esos cambios.
+- 🟡 Importar/exportar JSON mediante los selectores físicos y abrir los enlaces externos.
+- 🟡 Revisar teclado y gestos durante una interacción completa.
+
+Las funciones anteriores tienen cobertura previa en navegador o simulador, pero no se declaran aprobadas en hardware hasta completar estos gestos en el dispositivo.
+
 ## Fase 6
 
 **Ejecución:** 18 de noviembre de 2026.

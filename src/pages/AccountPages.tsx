@@ -2,13 +2,12 @@ import { ArrowLeft, ArrowRight, Check, KeyRound, LoaderCircle, LockKeyhole, Mail
 import { useState, type FormEvent, type ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Brand } from '../components/Brand';
-import { missingFirebaseVariables } from '../config/firebase';
 import { getAuthErrorMessage } from '../services/auth/errors';
 import { useAuth } from '../state/AuthContext';
 
 function AccountFrame({ children, title, lead }: { children: ReactNode; title: string; lead: string }) {
   const { configured, ready, user } = useAuth();
-  const status = !ready ? 'Comprobando sesión segura…' : user ? 'Sesión segura activa' : configured ? 'Firebase configurado' : 'Firebase pendiente de configuración';
+  const status = !ready ? 'Comprobando sesión segura…' : user ? 'Sesión segura activa' : configured ? 'Firebase configurado' : 'Vista previa · autenticación próximamente';
 
   return (
     <div className="page account-page">
@@ -34,7 +33,7 @@ function AuthAvailabilityNotice() {
   const { configured, initializationError } = useAuth();
   if (initializationError) return <p className="account-pending account-pending--error" role="alert"><LockKeyhole aria-hidden="true" /> {initializationError}</p>;
   if (configured) return <p className="account-pending"><LockKeyhole aria-hidden="true" /> Firebase gestiona la contraseña. Favoritos, historial y estadísticas permanecen únicamente en este dispositivo.</p>;
-  return <div className="account-setup" role="status"><LockKeyhole aria-hidden="true" /><p><strong>Falta la configuración pública de Firebase.</strong><span>Completa {missingFirebaseVariables.join(', ')} en <code>.env.local</code> y reinicia EcoRuta. No envíes esos valores por el chat.</span></p></div>;
+  return <div className="account-setup" role="status"><LockKeyhole aria-hidden="true" /><p><strong>Autenticación próximamente.</strong><span>Esta demo no crea cuentas ni inicia sesiones. Continúa como invitado para usar las funciones disponibles de EcoRuta.</span></p></div>;
 }
 
 function SubmitButton({ label, loading, disabled }: { label: string; loading: boolean; disabled: boolean }) {
