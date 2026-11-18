@@ -24,7 +24,7 @@ vi.mock('maplibre-gl', () => ({
   setWorkerUrl: vi.fn(),
 }));
 
-import { updateMarker } from './MapCanvas';
+import { getEndpointViewport, updateMarker } from './MapCanvas';
 
 describe('MapCanvas markers', () => {
   beforeEach(() => {
@@ -57,5 +57,28 @@ describe('MapCanvas markers', () => {
 
     expect(markerMock.calls).toEqual(['setLngLat']);
     expect(markerMock.marker.addTo).not.toHaveBeenCalled();
+  });
+
+  it('creates a camera target for a saved destination without a calculated route', () => {
+    const viewport = getEndpointViewport(null, {
+      id: 'saved-place',
+      label: 'Parque de la Reserva',
+      detail: 'Lima',
+      coordinates: { longitude: -77.0333, latitude: -12.0704 },
+    });
+
+    expect(viewport).toEqual({
+      key: '-77.033300,-12.070400',
+      positions: [[-77.0333, -12.0704]],
+    });
+  });
+
+  it('creates bounds for saved origin and destination points', () => {
+    const viewport = getEndpointViewport(
+      { id: 'origin', label: 'Origen', detail: 'Lima', coordinates: { longitude: -77.0428, latitude: -12.0464 } },
+      { id: 'destination', label: 'Destino', detail: 'Lima', coordinates: { longitude: -77.0282, latitude: -12.1183 } },
+    );
+
+    expect(viewport?.positions).toEqual([[-77.0428, -12.0464], [-77.0282, -12.1183]]);
   });
 });

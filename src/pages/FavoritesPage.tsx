@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { EmptyState } from '../components/EmptyState';
 import type { Favorite } from '../data/types';
-import type { MapNavigationState } from '../navigation/mapState';
+import { favoriteToMapNavigationState } from '../navigation/mapState';
 import { useEcoRutaData } from '../state/DataContext';
 
 type SortOption = 'recent' | 'name' | 'type';
@@ -34,10 +34,7 @@ export function FavoritesPage() {
   }, [favorites, query, sort]);
 
   const openOnMap = (favorite: Favorite) => {
-    const state: MapNavigationState = favorite.kind === 'place'
-      ? { destination: favorite.place, source: 'favorite' }
-      : { origin: favorite.origin, destination: favorite.destination, preferredMode: favorite.mode, source: 'favorite' };
-    navigate('/', { state });
+    navigate('/', { state: favoriteToMapNavigationState(favorite) });
   };
 
   const startEditing = (favorite: Favorite) => {

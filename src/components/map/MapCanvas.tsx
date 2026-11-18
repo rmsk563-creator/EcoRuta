@@ -94,6 +94,17 @@ function allRouteCoordinates(routes: RouteResult[]) {
   ));
 }
 
+export function getEndpointViewport(origin: PlaceSelection | null, destination: PlaceSelection | null) {
+  const positions = [origin, destination].flatMap((place) => place
+    ? [[place.coordinates.longitude, place.coordinates.latitude] as [number, number]]
+    : []);
+  if (positions.length === 0) return null;
+  return {
+    key: positions.map(([longitude, latitude]) => `${longitude.toFixed(6)},${latitude.toFixed(6)}`).join('|'),
+    positions,
+  };
+}
+
 export function MapCanvas(props: MapCanvasProps) {
   const container = useRef<HTMLDivElement>(null);
   const map = useRef<MapLibreMap | null>(null);
@@ -103,6 +114,7 @@ export function MapCanvas(props: MapCanvasProps) {
   const userMarker = useRef<Marker | null>(null);
   const selectHandler = useRef(props.onMapSelect);
   const errorHandler = useRef(props.onError);
+  const focusedEndpoints = useRef('');
 
   selectHandler.current = props.onMapSelect;
   errorHandler.current = props.onError;
@@ -169,6 +181,19 @@ export function MapCanvas(props: MapCanvasProps) {
           new maplibregl.LngLatBounds(coordinates[0] as [number, number], coordinates[0] as [number, number]),
         );
         instance.fitBounds(bounds, { padding: 72, maxZoom: 15, duration: 650 });
+      } else {
+        const viewport = getEndpointViewport(props.origin, props.destination);
+        if (!viewport) focusedEndpoints.current = '';
+        else if (viewport.key !== focusedEndpoints.current) {
+          focusedEndpoints.current = viewport.key;
+          if (viewport.positions.length === 1) {
+            instance.easeTo({ center: viewport.positions[0]!, zoom: Math.max(instance.getZoom(), 15), duration: 650 });
+          } else {
+            const bounds = new maplibregl.LngLatBounds(viewport.positions[0], viewport.positions[0]);
+            viewport.positions.slice(1).forEach((position) => bounds.extend(position));
+            instance.fitBounds(bounds, { padding: 72, maxZoom: 15, duration: 650 });
+          }
+        }
       }
     };
     if (loaded.current) update();

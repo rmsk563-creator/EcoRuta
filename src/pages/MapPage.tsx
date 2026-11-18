@@ -22,7 +22,7 @@ import { MapErrorBoundary } from '../components/map/MapErrorBoundary';
 import { isGeoapifyConfigured } from '../config/geoapify';
 import { createCompletedTrip, createFavoritePlace, createFavoriteRoute, toPlaceSelection } from '../data/factories';
 import { useDeviceLocation } from '../hooks/useDeviceLocation';
-import { isMapNavigationState } from '../navigation/mapState';
+import { getNavigationActiveEndpoint, isMapNavigationState } from '../navigation/mapState';
 import { calculateRoute, reverseGeocodeLima } from '../services/geoapify/client';
 import { getGeoapifyErrorMessage } from '../services/geoapify/errors';
 import type { Coordinates, EndpointRole, PlaceSelection, RouteMode, RouteResult } from '../services/geoapify/types';
@@ -73,15 +73,19 @@ export function MapPage() {
   }, []);
 
   useEffect(() => {
-    if (navigationApplied.current || !isMapNavigationState(routerLocation.state)) return;
+    if (navigationApplied.current || routerLocation.state === null || routerLocation.state === undefined) return;
     navigationApplied.current = true;
+    if (!isMapNavigationState(routerLocation.state)) {
+      setMessage('No pudimos abrir este elemento guardado porque le faltan coordenadas válidas. Vuelve a seleccionarlo o edítalo desde Favoritos.');
+      return;
+    }
     const state = routerLocation.state;
     if (state.origin) setOrigin(toPlaceSelection(state.origin));
     if (state.destination) setDestination(toPlaceSelection(state.destination));
     if (state.preferredMode) setSelectedMode(state.preferredMode);
-    if (state.origin || state.destination) {
-      setMessage('Puntos cargados desde tus datos locales. Pulsa “Comparar rutas” para obtener estimaciones actuales.');
-    }
+    setRoutes([]);
+    setMessage('');
+    setActiveEndpoint(getNavigationActiveEndpoint(state));
   }, [routerLocation.state]);
 
   useEffect(() => {
