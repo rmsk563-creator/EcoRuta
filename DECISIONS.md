@@ -101,3 +101,11 @@
 - Editar perfil no se ofrece hasta conectar y probar almacenamiento real para el cambio. Notificaciones se presentan únicamente como estado informativo: EcoRuta no las envía.
 - Las preferencias usan esquema v3 y migran v2/v1 sin borrar valores. El color predeterminado es Verde Eco; las variantes solo sustituyen tokens de interfaz y no alteran el logo, el estilo base del mapa ni los colores semánticos de rutas.
 - La app permanece utilizable sin cuenta. El acceso obligatorio y la redirección post-splash se difieren hasta validar Firebase real y recibir aprobación expresa.
+
+## 2026-11-18 — Validación móvil prioritaria
+
+- El iPhone 15 Pro Max físico conectado por USB-C es el entorno principal de validación; web queda como plataforma secundaria y Android se preparará después.
+- Las builds de desarrollo pueden instalarse sobre `com.ecoruta.app` sin autorización repetida, siempre como actualización y nunca mediante desinstalación.
+- SQLite, favoritos, historial, estadísticas y preferencias deben conservarse entre instalaciones. No se autorizan borrados, restablecimientos ni cambios sobre otras aplicaciones.
+- El propietario introduce contraseñas, confirma correos y acepta permisos personales. Esos datos no se solicitan ni se registran.
+- Tras cada instalación se comprueba apertura, autenticación y regresiones de las funciones principales antes de considerar aprobada la build.

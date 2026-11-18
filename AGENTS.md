@@ -8,3 +8,7 @@
 6. Mantener accesibilidad, temas, safe areas y movimiento reducido al añadir pantallas.
 7. Ejecutar `npm run typecheck`, `npm test` y `npm run build` antes de cada commit funcional.
 8. Actualizar `ROADMAP.md`, `QA.md` y `CHANGELOG.md` al cerrar una fase.
+9. Priorizar iOS físico sobre navegador: compilar, instalar y validar en el iPhone 15 Pro Max conectado cuando el cambio afecte la aplicación móvil.
+10. Las instalaciones autorizadas deben actualizar `com.ecoruta.app` sin desinstalarla ni borrar SQLite, IndexedDB, favoritos, historial o preferencias.
+11. Se permite instalar builds de desarrollo en el iPhone sin aprobación adicional. Credenciales, verificación de correo, permisos personales y cambios sensibles siempre requieren intervención del propietario.
+12. No borrar datos, restablecer el dispositivo, modificar otras aplicaciones ni cambiar configuraciones sensibles sin autorización específica.
