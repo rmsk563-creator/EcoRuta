@@ -83,3 +83,12 @@
 - Ajustes no muestra “Cerrar sesión” porque no existe una sesión real. Aparecerá únicamente al integrar un proveedor aprobado.
 - Firebase Authentication es la recomendación inicial para cuentas sin sincronización remota. Supabase queda como alternativa si se aprueba Postgres/RLS y sincronización.
 - La recomendación no selecciona ni autoriza un proveedor. Ningún SDK, clave, backend ni migración de datos se incorpora hasta decisión expresa.
+
+## 2026-11-18 — Firebase Authentication Fase 6B
+
+- Firebase Authentication queda aprobado para correo y contraseña; la integración usa el SDK JavaScript modular tanto en web como dentro de Capacitor.
+- La cuenta sigue siendo opcional. Mapa, rutas, favoritos, historial y estadísticas funcionan como invitado.
+- Firebase conserva únicamente identidad y sesión. Los datos de movilidad no se migran, sincronizan ni eliminan al cerrar sesión; permanecen en IndexedDB o SQLite.
+- La persistencia de sesión usa IndexedDB con almacenamiento local como alternativa. No se guardan contraseñas ni se registran credenciales o tokens.
+- Solo entra al cliente la configuración pública de una app Firebase Web. Se prohíben cuentas de servicio, claves administrativas y SDK Admin.
+- La integración real no se considera aprobada hasta probar registro, inicio, recuperación, persistencia y cierre con un proyecto Firebase configurado, en web y después en iOS.

@@ -17,7 +17,9 @@ La publicación no es automática. El workflow solo admite ejecución manual des
 
 EcoRuta usa `HashRouter`, por lo que las pantallas se abren como `/EcoRuta/#/map`, `/EcoRuta/#/favorites` o `/EcoRuta/#/statistics`. GitHub Pages siempre sirve el mismo `index.html` y la navegación interna no produce errores 404.
 
-## Clave web de Geoapify
+## Servicios públicos del cliente
+
+### Clave web de Geoapify
 
 Antes de publicar, crea una clave exclusiva para la web pública. No reutilices la clave móvil ni la de desarrollo.
 
@@ -37,6 +39,21 @@ GEOAPIFY_WEB_API_KEY
 
 El workflow lo transforma en `VITE_GEOAPIFY_API_KEY` solo durante el build. El valor no se confirma en Git, aunque cualquier clave usada por JavaScript seguirá siendo visible para quien use el navegador. Por eso debe estar restringida, monitorizada y separada por entorno.
 
+### Firebase Authentication
+
+Completa primero [`FIREBASE_SETUP.md`](./FIREBASE_SETUP.md) y añade `rmsk563-creator.github.io` a los dominios autorizados de Authentication. Después crea estos secretos de Actions con los valores públicos de la app Web registrada en Firebase:
+
+```text
+FIREBASE_WEB_API_KEY
+FIREBASE_WEB_AUTH_DOMAIN
+FIREBASE_WEB_PROJECT_ID
+FIREBASE_WEB_APP_ID
+FIREBASE_WEB_STORAGE_BUCKET
+FIREBASE_WEB_MESSAGING_SENDER_ID
+```
+
+Los cuatro primeros son obligatorios y el workflow se detiene si falta alguno. Los dos últimos son opcionales para Authentication. No añadas una cuenta de servicio, una clave Admin ni un archivo privado.
+
 ## Comprobar localmente sin publicar
 
 ```bash
@@ -49,7 +66,7 @@ Abre la URL indicada por Vite añadiendo `/EcoRuta/`. Este preview usa el conten
 ## Publicar cuando exista autorización
 
 1. Sincronizar `develop/mobile-app` después de revisar los commits.
-2. Crear `GEOAPIFY_WEB_API_KEY` en **Settings → Secrets and variables → Actions**.
+2. Crear `GEOAPIFY_WEB_API_KEY` y los secretos `FIREBASE_WEB_*` indicados arriba en **Settings → Secrets and variables → Actions**.
 3. En **Settings → Pages**, seleccionar **GitHub Actions** como fuente.
 4. En **Actions**, abrir **Deploy EcoRuta to GitHub Pages**.
 5. Seleccionar `develop/mobile-app` y pulsar **Run workflow**.
@@ -59,4 +76,4 @@ No ejecutar estos pasos hasta contar con autorización expresa para reemplazar l
 
 ## Persistencia web
 
-Favoritos, historial y estadísticas funcionan en GitHub Pages mediante IndexedDB. Permanecen en ese navegador y dispositivo. No se sincronizan con el SQLite del iPhone ni con otros navegadores porque EcoRuta no tiene cuenta ni backend.
+Favoritos, historial y estadísticas funcionan en GitHub Pages mediante IndexedDB. Permanecen en ese navegador y dispositivo. No se sincronizan con el SQLite del iPhone ni con otros navegadores. La cuenta de Firebase autentica identidad y sesión, pero no incorpora una base de datos ni sincronización de actividad.

@@ -4,7 +4,7 @@ Aplicación de movilidad sostenible para Lima, construida con React, TypeScript,
 
 ## Estado
 
-La Fase 6 incorpora un splash animado, transiciones accesibles y pantallas opcionales de cuenta sin conectar todavía autenticación. La Fase 5 mantiene el proyecto nativo iOS con permisos de ubicación, privacidad, SQLite, enlaces externos y exportación mediante la hoja de compartir. El planificador usa MapLibre, búsqueda limitada a Lima, GPS con permiso explícito y rutas Geoapify para caminar y bicicleta.
+La Fase 6B prepara Firebase Authentication real con correo y contraseña, sesión persistente, recuperación y cierre de sesión. La cuenta continúa siendo opcional y la validación contra Firebase permanece pendiente hasta configurar el proyecto. La Fase 5 mantiene el proyecto nativo iOS con permisos de ubicación, privacidad, SQLite, enlaces externos y exportación mediante la hoja de compartir. El planificador usa MapLibre, búsqueda limitada a Lima, GPS con permiso explícito y rutas Geoapify para caminar y bicicleta.
 
 El planificador solo se activa cuando existe una API key configurada. Sin clave, EcoRuta muestra instrucciones y no genera mapas, rutas, distancias ni tiempos ficticios. Una ruta consultada tampoco se guarda como realizada: el usuario debe confirmarla explícitamente.
 
@@ -34,6 +34,8 @@ Completa la variable sin comillas y reinicia Vite:
 ```dotenv
 VITE_GEOAPIFY_API_KEY=tu_clave_restringida
 ```
+
+Para activar las cuentas reales, completa también las variables públicas de Firebase siguiendo [`FIREBASE_SETUP.md`](./FIREBASE_SETUP.md). Sin ellas, los formularios explican que la configuración está pendiente y el acceso como invitado sigue funcionando.
 
 ```bash
 npm run dev
@@ -127,3 +129,4 @@ La salida se genera en `dist-pages/`; Capacitor continúa usando `dist/`. La pub
 - [`LOCAL_DATA.md`](./LOCAL_DATA.md)
 - [`GITHUB_PAGES.md`](./GITHUB_PAGES.md)
 - [`AUTH_EVALUATION.md`](./AUTH_EVALUATION.md)
+- [`FIREBASE_SETUP.md`](./FIREBASE_SETUP.md)

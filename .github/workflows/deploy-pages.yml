@@ -29,14 +29,24 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Verify Geoapify web key
+      - name: Verify public service configuration
         env:
           VITE_GEOAPIFY_API_KEY: ${{ secrets.GEOAPIFY_WEB_API_KEY }}
-        run: test -n "$VITE_GEOAPIFY_API_KEY"
+          VITE_FIREBASE_API_KEY: ${{ secrets.FIREBASE_WEB_API_KEY }}
+          VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_WEB_AUTH_DOMAIN }}
+          VITE_FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_WEB_PROJECT_ID }}
+          VITE_FIREBASE_APP_ID: ${{ secrets.FIREBASE_WEB_APP_ID }}
+        run: test -n "$VITE_GEOAPIFY_API_KEY" && test -n "$VITE_FIREBASE_API_KEY" && test -n "$VITE_FIREBASE_AUTH_DOMAIN" && test -n "$VITE_FIREBASE_PROJECT_ID" && test -n "$VITE_FIREBASE_APP_ID"
 
       - name: Build GitHub Pages artifact
         env:
           VITE_GEOAPIFY_API_KEY: ${{ secrets.GEOAPIFY_WEB_API_KEY }}
+          VITE_FIREBASE_API_KEY: ${{ secrets.FIREBASE_WEB_API_KEY }}
+          VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_WEB_AUTH_DOMAIN }}
+          VITE_FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_WEB_PROJECT_ID }}
+          VITE_FIREBASE_APP_ID: ${{ secrets.FIREBASE_WEB_APP_ID }}
+          VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_WEB_STORAGE_BUCKET }}
+          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_WEB_MESSAGING_SENDER_ID }}
         run: npm run build:pages
 
       - name: Configure GitHub Pages

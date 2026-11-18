@@ -2,7 +2,7 @@
 
 **Fecha de revisión:** 18 de noviembre de 2026.
 
-La Fase 6 prepara las pantallas, pero no conecta un proveedor, no transmite credenciales y no crea sesiones. EcoRuta continúa funcionando sin cuenta y conserva sus datos actuales en IndexedDB o SQLite.
+Firebase Authentication fue aprobado el 18 de noviembre de 2026. La Fase 6B conecta técnicamente correo y contraseña, pero los flujos reales siguen pendientes hasta que el proyecto Firebase se configure y se pruebe. EcoRuta continúa funcionando sin cuenta y conserva sus datos actuales en IndexedDB o SQLite.
 
 ## Comparación
 
