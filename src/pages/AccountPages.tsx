@@ -1,6 +1,6 @@
 import { ArrowLeft, ArrowRight, Check, KeyRound, LoaderCircle, LockKeyhole, Mail, ShieldCheck, UserRound } from 'lucide-react';
-import { useState, type FormEvent, type ReactNode } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useRef, useState, type FormEvent, type ReactNode } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Brand } from '../components/Brand';
 import { getAuthErrorMessage } from '../services/auth/errors';
 import { useAuth } from '../state/AuthContext';
@@ -75,13 +75,18 @@ export function SignInPage() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const submitting = useRef(false);
   const submit = async (event: FormEvent) => {
     event.preventDefault();
-    if (!configured || loading) return;
+    if (!configured || submitting.current) return;
+    submitting.current = true;
     setError(''); setLoading(true);
-    try { await signIn(email.trim(), password); navigate('/', { replace: true }); }
+    try {
+      const signedInUser = await signIn(email.trim(), password);
+      navigate(signedInUser.emailVerified ? '/' : '/account/verify', { replace: true });
+    }
     catch (caught) { setError(getAuthErrorMessage(caught)); }
-    finally { setLoading(false); }
+    finally { submitting.current = false; setLoading(false); }
   };
   return (
     <AccountFrame title="Qué bueno verte." lead="Inicia sesión con tu correo. Tus recorridos y favoritos no se suben a Firebase.">
@@ -108,15 +113,20 @@ export function RegisterPage() {
   const [confirmation, setConfirmation] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const submitting = useRef(false);
   const submit = async (event: FormEvent) => {
     event.preventDefault();
-    if (!configured || loading) return;
+    if (!configured || submitting.current) return;
     if (password.length < 8) { setError('Usa al menos 8 caracteres para la contraseña.'); return; }
     if (password !== confirmation) { setError('Las contraseñas no coinciden.'); return; }
+    submitting.current = true;
     setError(''); setLoading(true);
-    try { await register({ email: email.trim(), password, displayName: name.trim() }); navigate('/', { replace: true }); }
+    try {
+      const result = await register({ email: email.trim(), password, displayName: name.trim() });
+      navigate('/account/verify', { replace: true, state: { verificationSent: result.verificationSent } });
+    }
     catch (caught) { setError(getAuthErrorMessage(caught)); }
-    finally { setLoading(false); }
+    finally { submitting.current = false; setLoading(false); }
   };
   return (
     <AccountFrame title="Crea tu espacio." lead="Tu contraseña se envía directamente a Firebase mediante una conexión segura y no se guarda en EcoRuta.">
@@ -141,13 +151,15 @@ export function RecoverAccountPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const submitting = useRef(false);
   const submit = async (event: FormEvent) => {
     event.preventDefault();
-    if (!configured || loading) return;
+    if (!configured || submitting.current) return;
+    submitting.current = true;
     setError(''); setSuccess(''); setLoading(true);
     try { await sendPasswordReset(email.trim()); setSuccess('Si existe una cuenta con ese correo, Firebase enviará las instrucciones de recuperación.'); }
     catch (caught) { setError(getAuthErrorMessage(caught)); }
-    finally { setLoading(false); }
+    finally { submitting.current = false; setLoading(false); }
   };
   return (
     <AccountFrame title="Recupera tu acceso." lead="Recibirás un correo de Firebase para establecer una nueva contraseña.">
@@ -157,6 +169,70 @@ export function RecoverAccountPage() {
         <SubmitButton label="Enviar enlace seguro" loading={loading} disabled={!configured || !ready || loading || !email.trim()} />
       </form>
       <Link className="account-back" to="/account/sign-in"><ArrowLeft aria-hidden="true" /> Volver a iniciar sesión</Link>
+      <AuthAvailabilityNotice />
+    </AccountFrame>
+  );
+}
+
+export function VerifyEmailPage() {
+  const { configured, ready, user, resendEmailVerification, refreshUser } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const initialSent = Boolean((location.state as { verificationSent?: boolean } | null)?.verificationSent);
+  const [loadingAction, setLoadingAction] = useState<'resend' | 'refresh' | ''>('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(initialSent ? 'Te enviamos un correo de verificación. Revisa también la carpeta de spam.' : '');
+  const submitting = useRef(false);
+
+  const run = async (action: 'resend' | 'refresh') => {
+    if (!configured || !ready || !user || submitting.current) return;
+    submitting.current = true;
+    setLoadingAction(action);
+    setError('');
+    setSuccess('');
+    try {
+      if (action === 'resend') {
+        await resendEmailVerification();
+        setSuccess('Correo de verificación enviado. Revisa tu bandeja de entrada y spam.');
+      } else {
+        const refreshedUser = await refreshUser();
+        if (refreshedUser?.emailVerified) navigate('/', { replace: true });
+        else setError('El correo todavía no aparece verificado. Abre el enlace recibido y vuelve a comprobar.');
+      }
+    } catch (caught) {
+      setError(getAuthErrorMessage(caught));
+    } finally {
+      submitting.current = false;
+      setLoadingAction('');
+    }
+  };
+
+  return (
+    <AccountFrame title="Verifica tu correo." lead="Firebase necesita confirmar que la dirección te pertenece antes de completar la configuración de la cuenta.">
+      {user ? (
+        <div className="verify-email" aria-busy={Boolean(loadingAction)}>
+          <p className="verify-email__address"><Mail aria-hidden="true" /><span><small>Correo de la cuenta</small><strong>{user.email}</strong></span></p>
+          {user.emailVerified ? (
+            <><Feedback error="" success="Correo verificado correctamente." /><Link className="button button--primary" to="/">Continuar al mapa <ArrowRight aria-hidden="true" /></Link></>
+          ) : (
+            <>
+              <Feedback error={error} success={success} />
+              <button className="button button--primary" type="button" onClick={() => void run('refresh')} disabled={Boolean(loadingAction)}>
+                {loadingAction === 'refresh' ? <LoaderCircle className="spin" aria-hidden="true" /> : <ShieldCheck aria-hidden="true" />}
+                {loadingAction === 'refresh' ? 'Comprobando…' : 'Ya verifiqué mi correo'}
+              </button>
+              <button className="button button--quiet" type="button" onClick={() => void run('resend')} disabled={Boolean(loadingAction)}>
+                {loadingAction === 'resend' ? <LoaderCircle className="spin" aria-hidden="true" /> : <Mail aria-hidden="true" />}
+                {loadingAction === 'resend' ? 'Enviando…' : 'Reenviar correo'}
+              </button>
+              <Link className="account-skip" to="/">Continuar al mapa por ahora</Link>
+            </>
+          )}
+        </div>
+      ) : ready ? (
+        <div className="account-setup" role="status"><LockKeyhole aria-hidden="true" /><p><strong>No hay una sesión activa.</strong><span>Inicia sesión para verificar el correo asociado a tu cuenta.</span></p></div>
+      ) : <div className="route-loading" role="status">Comprobando la sesión…</div>}
+      {!user && ready ? <Link className="button button--primary" to="/account/sign-in">Iniciar sesión</Link> : null}
       <AuthAvailabilityNotice />
     </AccountFrame>
   );

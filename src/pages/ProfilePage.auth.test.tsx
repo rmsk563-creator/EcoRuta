@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import type { AuthService, EcoRutaAuthUser } from '../services/auth/types';
 import { AuthProvider } from '../state/AuthContext';
 import { ProfilePage } from './ProfilePage';
@@ -35,15 +35,20 @@ describe('Profile account isolation', () => {
       }),
       register: vi.fn(),
       signIn: vi.fn(),
+      resendEmailVerification: vi.fn(),
+      refreshUser: vi.fn(),
       sendPasswordReset: vi.fn(),
       signOut: vi.fn(async () => undefined),
     };
     const user = userEvent.setup();
 
     render(
-      <MemoryRouter>
+      <MemoryRouter initialEntries={['/profile']}>
         <AuthProvider configuredOverride serviceLoader={async () => service}>
-          <ProfilePage />
+          <Routes>
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/account" element={<h1>Acceso EcoRuta</h1>} />
+          </Routes>
         </AuthProvider>
       </MemoryRouter>,
     );
@@ -53,6 +58,6 @@ describe('Profile account isolation', () => {
     await user.click(screen.getByRole('button', { name: /cerrar sesión/i }));
 
     await waitFor(() => expect(service.signOut).toHaveBeenCalledOnce());
-    expect(screen.getByRole('status')).toHaveTextContent(/actividad local permanece/i);
+    expect(await screen.findByRole('heading', { name: /acceso ecoruta/i })).toBeInTheDocument();
   });
 });

@@ -6,6 +6,7 @@ import {
   getAuth,
   initializeAuth,
   onAuthStateChanged,
+  reload,
   sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
@@ -64,6 +65,17 @@ export async function loadFirebaseAuthService(): Promise<AuthService> {
     async signIn(email, password) {
       const credential = await signInWithEmailAndPassword(auth, email, password);
       return normalizeUser(credential.user);
+    },
+    async resendEmailVerification() {
+      const user = auth.currentUser;
+      if (!user) throw { code: 'auth/requires-recent-login' };
+      if (!user.emailVerified) await sendEmailVerification(user);
+    },
+    async refreshUser() {
+      const user = auth.currentUser;
+      if (!user) return null;
+      await reload(user);
+      return normalizeUser(user);
     },
     async sendPasswordReset(email) {
       await sendPasswordResetEmail(auth, email);

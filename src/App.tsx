@@ -4,7 +4,7 @@ import { AppShell } from './components/AppShell';
 import { AboutPage } from './pages/AboutPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { SettingsPage } from './pages/SettingsPage';
-import { AccountWelcomePage, RecoverAccountPage, RegisterPage, SignInPage } from './pages/AccountPages';
+import { AccountWelcomePage, RecoverAccountPage, RegisterPage, SignInPage, VerifyEmailPage } from './pages/AccountPages';
 
 const MapPage = lazy(() => import('./pages/MapPage').then((module) => ({ default: module.MapPage })));
 const ActivityPage = lazy(() => import('./pages/ActivityPage').then((module) => ({ default: module.ActivityPage })));
@@ -37,6 +37,7 @@ export function App() {
       <Route path="account/sign-in" element={<SignInPage />} />
       <Route path="account/register" element={<RegisterPage />} />
       <Route path="account/recover" element={<RecoverAccountPage />} />
+      <Route path="account/verify" element={<VerifyEmailPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

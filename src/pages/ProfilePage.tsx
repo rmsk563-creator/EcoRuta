@@ -9,27 +9,31 @@ import {
   SlidersHorizontal,
   UserRound,
 } from 'lucide-react';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { getAuthErrorMessage } from '../services/auth/errors';
 import { useAuth } from '../state/AuthContext';
 
 export function ProfilePage() {
   const auth = useAuth();
+  const navigate = useNavigate();
   const [signingOut, setSigningOut] = useState(false);
   const [message, setMessage] = useState('');
+  const signingOutRef = useRef(false);
   const displayName = auth.user?.displayName?.trim();
 
   const closeSession = async () => {
-    if (!auth.user || signingOut) return;
+    if (!auth.user || signingOutRef.current) return;
+    signingOutRef.current = true;
     setSigningOut(true);
     setMessage('');
     try {
       await auth.signOut();
-      setMessage('Sesión cerrada. La actividad local permanece en este dispositivo.');
+      navigate('/account', { replace: true });
     } catch (error) {
       setMessage(getAuthErrorMessage(error));
     } finally {
+      signingOutRef.current = false;
       setSigningOut(false);
     }
   };
@@ -44,6 +48,7 @@ export function ProfilePage() {
           <p className="kicker">Perfil</p>
           <h1>{auth.user ? displayName || 'Cuenta EcoRuta' : 'Tu espacio en EcoRuta'}</h1>
           <p>{auth.user?.email || 'Usas la aplicación sin una cuenta. Tus datos se guardan localmente.'}</p>
+          {auth.user ? <small className={`profile-verification ${auth.user.emailVerified ? 'is-verified' : ''}`}>{auth.user.emailVerified ? 'Correo verificado' : 'Correo pendiente de verificación'}</small> : null}
         </div>
       </header>
 
@@ -91,9 +96,12 @@ export function ProfilePage() {
           <p>{auth.user ? 'Firebase conserva la sesión. Favoritos, historial y estadísticas continúan en este dispositivo.' : 'El acceso con cuenta es opcional en esta instalación.'}</p>
         </div>
         {auth.user ? (
-          <button className="button button--quiet" type="button" onClick={() => void closeSession()} disabled={signingOut}>
-            <LogOut aria-hidden="true" /> {signingOut ? 'Cerrando sesión…' : 'Cerrar sesión'}
-          </button>
+          <div className="profile-account__actions">
+            {!auth.user.emailVerified ? <Link className="button button--quiet" to="/account/verify"><ShieldCheck aria-hidden="true" /> Verificar correo</Link> : null}
+            <button className="button button--quiet" type="button" onClick={() => void closeSession()} disabled={signingOut}>
+              <LogOut aria-hidden="true" /> {signingOut ? 'Cerrando sesión…' : 'Cerrar sesión'}
+            </button>
+          </div>
         ) : auth.configured ? (
           <Link className="button button--primary" to="/account"><LogIn aria-hidden="true" /> Acceder</Link>
         ) : null}

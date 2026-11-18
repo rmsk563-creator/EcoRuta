@@ -10,6 +10,8 @@ interface AuthContextValue {
   initializationError: string;
   register: (input: RegisterInput) => Promise<RegisterResult>;
   signIn: (email: string, password: string) => Promise<EcoRutaAuthUser>;
+  resendEmailVerification: () => Promise<void>;
+  refreshUser: () => Promise<EcoRutaAuthUser | null>;
   sendPasswordReset: (email: string) => Promise<void>;
   signOut: () => Promise<void>;
 }
@@ -74,10 +76,27 @@ export function AuthProvider({
     };
   }, [configured, getService]);
 
-  const register = useCallback(async (input: RegisterInput) => (await getService()).register(input), [getService]);
-  const signIn = useCallback(async (email: string, password: string) => (await getService()).signIn(email, password), [getService]);
+  const register = useCallback(async (input: RegisterInput) => {
+    const result = await (await getService()).register(input);
+    setUser(result.user);
+    return result;
+  }, [getService]);
+  const signIn = useCallback(async (email: string, password: string) => {
+    const nextUser = await (await getService()).signIn(email, password);
+    setUser(nextUser);
+    return nextUser;
+  }, [getService]);
+  const resendEmailVerification = useCallback(async () => (await getService()).resendEmailVerification(), [getService]);
+  const refreshUser = useCallback(async () => {
+    const nextUser = await (await getService()).refreshUser();
+    setUser(nextUser);
+    return nextUser;
+  }, [getService]);
   const sendPasswordReset = useCallback(async (email: string) => (await getService()).sendPasswordReset(email), [getService]);
-  const signOut = useCallback(async () => (await getService()).signOut(), [getService]);
+  const signOut = useCallback(async () => {
+    await (await getService()).signOut();
+    setUser(null);
+  }, [getService]);
 
   const value = useMemo<AuthContextValue>(() => ({
     configured,
@@ -86,9 +105,11 @@ export function AuthProvider({
     initializationError,
     register,
     signIn,
+    resendEmailVerification,
+    refreshUser,
     sendPasswordReset,
     signOut,
-  }), [configured, initializationError, ready, register, sendPasswordReset, signIn, signOut, user]);
+  }), [configured, initializationError, ready, refreshUser, register, resendEmailVerification, sendPasswordReset, signIn, signOut, user]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

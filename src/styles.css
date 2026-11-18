@@ -1033,6 +1033,22 @@ h3 {
   overflow-wrap: anywhere;
 }
 
+.profile-verification {
+  display: inline-flex;
+  margin-top: 9px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  color: var(--warning);
+  background: var(--warning-soft);
+  font-size: .7rem;
+  font-weight: 760;
+}
+
+.profile-verification.is-verified {
+  color: var(--brand-strong);
+  background: var(--brand-soft);
+}
+
 .profile-message {
   margin-bottom: 18px;
 }
@@ -1131,6 +1147,12 @@ h3 {
   color: var(--text-muted);
   font-size: .86rem;
   line-height: 1.55;
+}
+
+.profile-account__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
 }
 
 .segmented-control button,
@@ -2467,6 +2489,39 @@ h3 {
 
 .account-back svg {
   width: 16px;
+}
+
+.verify-email {
+  display: grid;
+  gap: 11px;
+  margin-top: 28px;
+}
+
+.verify-email__address {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 11px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background: var(--surface);
+}
+
+.verify-email__address > svg {
+  width: 20px;
+  color: var(--brand);
+}
+
+.verify-email__address small,
+.verify-email__address strong {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.verify-email__address small {
+  margin-bottom: 3px;
+  color: var(--text-muted);
 }
 
 .collection-card,

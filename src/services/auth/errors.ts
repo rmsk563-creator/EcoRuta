@@ -16,6 +16,8 @@ export function getAuthErrorMessage(error: unknown) {
       return 'Esta cuenta no está disponible. Contacta al responsable de EcoRuta.';
     case 'auth/too-many-requests':
       return 'Se hicieron demasiados intentos. Espera unos minutos antes de volver a probar.';
+    case 'auth/requires-recent-login':
+      return 'Vuelve a iniciar sesión para completar esta operación de seguridad.';
     case 'auth/network-request-failed':
       return 'No se pudo conectar con Firebase. Revisa tu conexión e inténtalo nuevamente.';
     case 'auth/operation-not-allowed':

@@ -20,6 +20,8 @@ export interface AuthService {
   subscribe: (listener: (user: EcoRutaAuthUser | null) => void) => () => void;
   register: (input: RegisterInput) => Promise<RegisterResult>;
   signIn: (email: string, password: string) => Promise<EcoRutaAuthUser>;
+  resendEmailVerification: () => Promise<void>;
+  refreshUser: () => Promise<EcoRutaAuthUser | null>;
   sendPasswordReset: (email: string) => Promise<void>;
   signOut: () => Promise<void>;
 }
