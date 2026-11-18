@@ -45,6 +45,19 @@
 - Firma, instalación, safe areas, teclado, rotación y ciclo de vida real deben validarse en el iPhone del propietario.
 - Android no se generó ni probó porque faltan Android Studio, JDK, SDK y ADB.
 
+### Instalación física y preparación web posterior
+
+- ✅ Xcode firmó `com.ecoruta.app` mediante firma automática y el equipo personal autorizado.
+- ✅ La compilación `Debug-iphoneos` finalizó con `BUILD SUCCEEDED`.
+- ✅ EcoRuta fue instalada por CoreDevice en un iPhone 15 Pro Max físico.
+- 🟡 El comando posterior de apertura automática fue bloqueado por la revisión de ejecución; no falló la instalación. El primer arranque se realizará de forma interactiva con **Run** en Xcode.
+- ✅ `npm run build:pages` generó `dist-pages/` con base `/EcoRuta/`.
+- ✅ `dist/index.html` conservó rutas `./assets/` para Capacitor; `dist-pages/index.html` usó exclusivamente `/EcoRuta/assets/`.
+- ✅ El worker diferido de MapLibre quedó referenciado bajo `/EcoRuta/assets/`.
+- ✅ Preview local: `/EcoRuta/`, `/EcoRuta/#/map` y el JavaScript principal respondieron HTTP 200.
+- ✅ TypeScript y 28 pruebas automatizadas continuaron aprobando después de separar ambos builds.
+- ⏸️ GitHub Pages no fue publicado; el workflow requiere ejecución manual y una clave web dedicada.
+
 ## Fase 4
 
 **Ejecución:** 17 de noviembre de 2026.

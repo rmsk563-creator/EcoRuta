@@ -42,11 +42,11 @@ Solo se muestran datos producidos por funciones reales. Sin API key, el planific
 
 ## Restricciones
 
-Sin Figma. `main` y GitHub Pages permanecen intactos. No publicar la rama de desarrollo. No exponer credenciales privadas.
+Sin Figma. `main` y GitHub Pages permanecen intactos hasta autorización expresa. No exponer credenciales privadas.
 
 ## Estado actual
 
-Fase 5 compilada y probada el 17-11-2026 en un simulador iPhone 18 Pro con iOS 27. MapLibre, Geoapify, permisos GPS, SQLite, persistencia tras reinicio, rutas reales y exportación nativa fueron observados en el simulador. La selección de un archivo para importar no pudo completarse mediante automatización y requiere interacción manual. El gate de iPhone físico y todo Android continúan pendientes.
+Fase 5 compilada y probada el 17-11-2026 en simulador. El build firmado fue instalado después en un iPhone 15 Pro Max físico, pero el primer arranque y las pruebas físicas siguen pendientes de **Run** interactivo en Xcode. La versión web React tiene un build GitHub Pages separado y manual preparado para `/EcoRuta/`; todavía no está publicada. Android continúa pendiente.
 
 ## Enlaces
 

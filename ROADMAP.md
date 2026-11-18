@@ -55,7 +55,17 @@
 - ✅ Tema oscuro conservado tras reiniciar la aplicación.
 - 🟡 Importación mediante el selector iOS preparada, pero pendiente de una selección manual real.
 - 🟡 Firma, instalación y lista completa de pruebas en iPhone físico pendientes del propietario.
+- ✅ Build firmado e instalación de `com.ecoruta.app` completados en un iPhone 15 Pro Max físico.
+- 🟡 Primer arranque y pruebas físicas pendientes mediante **Run** interactivo en Xcode; el lanzamiento por terminal fue bloqueado después de instalar.
 - ⏸️ Android no generado: este Mac no tiene Android Studio, JDK ni SDK/ADB instalados.
+
+## Preparación web pública
+
+- ✅ Build GitHub Pages separado con base `/EcoRuta/` y salida `dist-pages/`.
+- ✅ Navegación hash, assets y persistencia IndexedDB compatibles con el subdirectorio.
+- ✅ Workflow manual preparado; no se publica al hacer push.
+- 🟡 Clave Geoapify web dedicada y restricciones pendientes de configurar en el panel del propietario.
+- ⏸️ Publicación y smoke test remoto pendientes de autorización expresa.
 
 ## Fases 6–8
 

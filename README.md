@@ -100,6 +100,17 @@ La prueba en simulador confirmó SQLite, GPS simulado, mapas, rutas y exportaci�
 
 Android no fue generado porque este entorno todavía no dispone de Android Studio, JDK ni SDK/ADB. No hay pruebas Android aprobadas.
 
+## Preparar la versión web pública
+
+GitHub Pages usa un build independiente para el subdirectorio `/EcoRuta/`:
+
+```bash
+npm run build:pages
+npm run preview:pages
+```
+
+La salida se genera en `dist-pages/`; Capacitor continúa usando `dist/`. La publicación está preparada mediante un workflow manual y no se ejecuta al hacer push. Consulta [`GITHUB_PAGES.md`](./GITHUB_PAGES.md) para configurar la clave web, revisar localmente y publicar cuando exista autorización.
+
 ## Seguridad de Geoapify en iOS
 
 `.env.local` permanece fuera de Git. Sin embargo, cualquier variable `VITE_` se incorpora al paquete de la aplicación y debe considerarse pública. Usa una clave Geoapify distinta para móvil, controla cuota y uso, y rótala si detectas abuso. Las restricciones de origen/referrer del navegador no protegen de la misma forma una aplicación nativa; una protección fuerte requeriría un servicio backend autorizado.
@@ -114,3 +125,4 @@ Android no fue generado porque este entorno todavía no dispone de Android Studi
 - [`GEOAPIFY_SETUP.md`](./GEOAPIFY_SETUP.md)
 - [`NATIVE_TESTING.md`](./NATIVE_TESTING.md)
 - [`LOCAL_DATA.md`](./LOCAL_DATA.md)
+- [`GITHUB_PAGES.md`](./GITHUB_PAGES.md)

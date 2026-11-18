@@ -58,3 +58,12 @@
 - El manifiesto de privacidad declara `UserDefaults` con razón `CA92.1` y marcas de tiempo de archivos con `C617.1`. No se declara rastreo ni recolección por servidores propios.
 - Una clave `VITE_` queda incorporada al bundle y no es secreta en iOS. Se usará una clave Geoapify exclusiva para móvil, con cuota vigilada y rotación; para protección fuerte se necesitaría un backend proxy aprobado.
 - Android se difiere hasta disponer de Android Studio, JDK y SDK. No se declara generado ni probado.
+
+## 2026-11-17 — Build web para GitHub Pages
+
+- El build estándar conserva `base: './'`, salida `dist/` y compatibilidad con Capacitor.
+- El modo `github-pages` usa `base: '/EcoRuta/'` y salida independiente `dist-pages/`.
+- `HashRouter` se mantiene para que las rutas funcionen bajo un hosting estático sin reglas de reescritura.
+- La publicación usa GitHub Actions con activación exclusivamente manual desde `develop/mobile-app`; hacer push no despliega por sí solo.
+- Geoapify web usa una clave independiente inyectada desde `GEOAPIFY_WEB_API_KEY`, restringida por referrer/origin y vigilada por separado de la clave móvil.
+- IndexedDB web y SQLite nativo no se sincronizan. Cada navegador o instalación conserva su propio conjunto local de favoritos e historial.

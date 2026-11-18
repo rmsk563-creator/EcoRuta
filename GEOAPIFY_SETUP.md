@@ -40,6 +40,16 @@ http://localhost:5173
 http://IP_LOCAL_DE_TU_MAC:5173
 ```
 
+Para GitHub Pages usa una clave web diferente y configura:
+
+```text
+Allowed HTTP referrers: ^https://rmsk563-creator\.github\.io/EcoRuta(?:/.*)?$
+Allowed origins: https://rmsk563-creator.github.io
+CORS Access-Control-Allow-Origin: https://rmsk563-creator.github.io
+```
+
+Guarda esa clave como el secreto de GitHub Actions `GEOAPIFY_WEB_API_KEY`. El workflow falla si el secreto falta, de modo que no publica silenciosamente un mapa desactivado.
+
 Para las compilaciones Capacitor, WKWebView usa un origen local como:
 
 ```text
@@ -61,3 +71,5 @@ Con la clave configurada:
 6. Pulsa **Usar mi ubicación** y concede permiso solo durante la prueba.
 
 No compartas la clave, el archivo `.env.local`, capturas que la muestren ni URLs completas con `apiKey`.
+
+Consulta [`GITHUB_PAGES.md`](./GITHUB_PAGES.md) antes de publicar la versión web.

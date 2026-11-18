@@ -1,6 +1,6 @@
 # Evaluación de Geoapify
 
-**Verificado:** 16 de noviembre de 2026.
+**Verificado:** 17 de noviembre de 2026.
 
 ## Condiciones vigentes
 
@@ -30,9 +30,11 @@ Routing ofrece `walk`, `bicycle`, variantes de bicicleta e instrucciones giro a 
 
 ## Seguridad
 
-- La clave se configurará con `VITE_GEOAPIFY_API_KEY` y nunca se confirmará en Git.
-- En Geoapify debe restringirse por HTTP referrer/origin y CORS para web.
-- Antes de empaquetar iOS/Android se revisará si las restricciones disponibles protegen adecuadamente el uso móvil; si no, se añadirá un proxy mínimo.
+- La clave se configura con `VITE_GEOAPIFY_API_KEY` y nunca se confirma en Git.
+- La web pública debe usar una clave propia con restricciones de HTTP referrer y origin. CORS permite leer respuestas, pero no es una restricción de acceso.
+- Una clave compilada en iOS/Android es pública. Las restricciones de IP, referrer, origin y CORS no protegen de forma equivalente una app nativa; se requiere una clave móvil separada, vigilancia de cuota y rotación.
+- Si se necesita ocultar la clave usada por APIs distintas de tiles, la protección fuerte requiere un backend proxy aprobado.
+- Varias claves del mismo proyecto comparten la cuota; separarlas permite restricciones, estadísticas y rotación independientes.
 
 ## Comparación
 

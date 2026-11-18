@@ -11,6 +11,8 @@
 - Apertura nativa de enlaces HTTPS mediante Capacitor Browser.
 - Exportación JSON mediante Filesystem y la hoja nativa de compartir.
 - Pruebas de plataforma para enlaces seguros y limpieza del archivo de exportación.
+- Build separado para GitHub Pages bajo `/EcoRuta/`, sin interferir con `dist/` de Capacitor.
+- Workflow manual de Pages con clave Geoapify web suministrada mediante un secreto de Actions.
 
 ### Verificado en simulador
 
