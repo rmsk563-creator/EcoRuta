@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.6.0 — Fase 6 (visual, proveedor pendiente)
+
+### Añadido
+
+- Splash web profesional de duración breve con el logo original, halo separado y recorrido animado.
+- Pantallas opcionales de bienvenida, inicio, registro y recuperación sin autenticación simulada.
+- Estado de cuenta honesto en Ajustes y continuidad explícita sin iniciar sesión.
+- Transiciones accesibles para navegación, controles, panel de rutas, colecciones y estadísticas.
+- Evaluación documentada de Firebase Authentication y Supabase Auth.
+
+### Preservado
+
+- AppIcon, splash nativo, logo maestro y recursos aprobados sin cambios.
+- MapLibre, Geoapify, GPS, SQLite, IndexedDB, favoritos, historial, estadísticas e importación/exportación.
+- Datos existentes: no se añadió migración ni operación de limpieza.
+
+### Pendiente de decisión
+
+- Proveedor real de autenticación, configuración de correo/deep links y flujo de cierre de sesión.
+- Validación de rendimiento, teclado y recuperación en iPhone físico.
+
 ## 0.5.0 — Fase 5
 
 ### Añadido

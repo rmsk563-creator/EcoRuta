@@ -4,7 +4,7 @@ Aplicación de movilidad sostenible para Lima, construida con React, TypeScript,
 
 ## Estado
 
-La Fase 5 incorpora el proyecto nativo iOS con permisos de ubicación, privacidad, SQLite, enlaces externos y exportación mediante la hoja de compartir. La Fase 4 mantiene favoritos, historial de recorridos confirmados, estadísticas personales, impacto estimado y copias JSON manuales. El planificador usa MapLibre, búsqueda limitada a Lima, GPS con permiso explícito y rutas Geoapify para caminar y bicicleta.
+La Fase 6 incorpora un splash animado, transiciones accesibles y pantallas opcionales de cuenta sin conectar todavía autenticación. La Fase 5 mantiene el proyecto nativo iOS con permisos de ubicación, privacidad, SQLite, enlaces externos y exportación mediante la hoja de compartir. El planificador usa MapLibre, búsqueda limitada a Lima, GPS con permiso explícito y rutas Geoapify para caminar y bicicleta.
 
 El planificador solo se activa cuando existe una API key configurada. Sin clave, EcoRuta muestra instrucciones y no genera mapas, rutas, distancias ni tiempos ficticios. Una ruta consultada tampoco se guarda como realizada: el usuario debe confirmarla explícitamente.
 
@@ -126,3 +126,4 @@ La salida se genera en `dist-pages/`; Capacitor continúa usando `dist/`. La pub
 - [`NATIVE_TESTING.md`](./NATIVE_TESTING.md)
 - [`LOCAL_DATA.md`](./LOCAL_DATA.md)
 - [`GITHUB_PAGES.md`](./GITHUB_PAGES.md)
+- [`AUTH_EVALUATION.md`](./AUTH_EVALUATION.md)

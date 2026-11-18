@@ -67,7 +67,20 @@
 - 🟡 Clave Geoapify web dedicada y restricciones pendientes de configurar en el panel del propietario.
 - ⏸️ Publicación y smoke test remoto pendientes de autorización expresa.
 
-## Fases 6–8
+## Fase 6 — Experiencia premium y autenticación preparada
 
-- ⏳ Pruebas físicas, accesibilidad y calidad ampliada.
+- ✅ Splash React animado de 1,5–2 segundos reutilizando exclusivamente `assets/logo-ecoruta.png`.
+- ✅ Iluminación y línea de recorrido en capas separadas, sin alterar los píxeles del logotipo.
+- ✅ Movimiento reducido del sistema y preferencia local respetados.
+- ✅ Transiciones ligeras para navegación, panel de ruta, resultados, favoritos, indicadores y gráficos.
+- ✅ Pantallas visuales de bienvenida, inicio, registro y recuperación, siempre opcionales.
+- ✅ Ajustes informa “Sin sesión”; no existe cierre de sesión hasta conectar una sesión real.
+- ✅ Firebase Authentication y Supabase Auth evaluados con fuentes vigentes.
+- ✅ Build web, automatización y primera compilación/arranque en simulador completados.
+- 🟡 Elección e integración del proveedor detenidas hasta aprobación del propietario.
+- 🟡 Rendimiento táctil, teclado y flujo visual completo pendientes de iPhone físico.
+
+## Fases 7–8
+
+- ⏳ Autenticación real, solo después de elegir proveedor y alcance de sincronización.
 - ⏳ Preparación de distribución y tiendas, solo después de aprobar hardware real.

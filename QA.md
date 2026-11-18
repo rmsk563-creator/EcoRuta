@@ -1,5 +1,46 @@
 # QA — EcoRuta
 
+## Fase 6
+
+**Ejecución:** 18 de noviembre de 2026.
+
+**Entorno:** Chrome local a 390, 768 y 1440 px; Xcode 27.0, runtime iOS 27 y simulador iPhone 18 Pro. La prueba no equivale a hardware físico.
+
+### Automatización
+
+- ✅ `npm run typecheck`.
+- ✅ `npm test`: 30 pruebas aprobadas en 8 archivos.
+- ✅ Regresión: el splash importa la fuente maestra mediante `Brand.tsx`.
+- ✅ Regresión: inicio de sesión permanece deshabilitado y marcado como conexión pendiente.
+- ✅ `npm run build`: build Vite de producción generado.
+- ✅ `npx cap sync ios`: seis plugins sincronizados sin cambios versionados inesperados.
+- ✅ `xcodebuild`: build Debug para `iphonesimulator` finalizado con `BUILD SUCCEEDED`.
+- ✅ `git diff --check`: sin errores de espacios.
+
+### Revisión visual y movimiento
+
+- Splash React observado en simulador: fondo ecológico, logo original, halo separado y recorrido progresivo.
+- Pantalla inicial observada después de la transición; safe area y navegación inferior se conservaron.
+- Pantallas de bienvenida, inicio y registro revisadas en tamaños móvil, tableta y escritorio.
+- No hay animaciones aplicadas a `.map-canvas` ni a la página de mapa; el panel y los resultados se animan por separado.
+- Movimiento reducido elimina prácticamente todas las duraciones y muestra el recorrido sin revelado animado.
+- Chrome headless informó avisos gráficos `CVDisplayLink` propios del entorno sin GPU; no hubo excepción de la aplicación.
+
+### Identidad y datos
+
+- SHA-256 de `assets/logo-ecoruta.png`: `b98778630a9be90e11f5f3d96b429f4afdf05eccc7bb6e7b5ba6980fe32fdb06` antes de cerrar la fase.
+- AppIcon, Splash nativo y `assets/logo.png` no fueron modificados.
+- No se ejecutó borrado, migración ni reinicialización de IndexedDB o SQLite.
+- No se instaló SDK de autenticación, no se transmitieron credenciales y no se creó sesión ficticia.
+
+### Limitaciones
+
+- El primer fotograma capturado en el simulador corresponde al launch screen nativo existente; el splash React aparece cuando WKWebView termina de cargar. No se modificó el recurso nativo por la protección de marca.
+- Xcode mantiene el aviso preexistente de tres hijos no asignados en `Splash.imageset`; `BUILD SUCCEEDED` y el recurso se conserva intacto.
+- No se midieron FPS o energía en Instruments ni en iPhone físico. La revisión de rendimiento de esta fase es estructural y visual.
+- La clave Geoapify local permitió empaquetar el mapa, pero no se repitieron solicitudes reales de rutas en esta fase porque no se modificó el motor y las pruebas reales anteriores continúan separadas.
+- Teclado, gestos, recuperación, deep links y cierre de sesión requieren proveedor real y prueba física posterior.
+
 ## Fase 5
 
 **Ejecución:** 17 de noviembre de 2026.

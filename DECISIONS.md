@@ -74,3 +74,12 @@
 - El icono iOS y los splash actuales se conservan como recursos aprobados derivados del original; no se regeneran, reemplazan ni rediseñan sin autorización expresa.
 - Las animaciones solo transforman el contenedor completo mediante escala, opacidad o movimiento suave. Los efectos de luz deben estar en capas separadas y no alterar el diseño del logo.
 - Cualquier futura pantalla de acceso, registro o identidad reutilizará el archivo maestro. Esta decisión no cambia el alcance actual sin autenticación.
+
+## 2026-11-18 — Presentación de acceso Fase 6
+
+- El splash web dura aproximadamente 1,84 segundos incluyendo salida y reutiliza `Brand.tsx`; el logo solo recibe transformaciones de contenedor.
+- La línea de recorrido se revela mediante `clip-path`; no se anima el trazo SVG ni se aplican filtros o transformaciones al lienzo MapLibre.
+- Las pantallas de cuenta son una presentación visual opcional. Sus acciones de envío permanecen deshabilitadas y explican que la conexión está pendiente.
+- Ajustes no muestra “Cerrar sesión” porque no existe una sesión real. Aparecerá únicamente al integrar un proveedor aprobado.
+- Firebase Authentication es la recomendación inicial para cuentas sin sincronización remota. Supabase queda como alternativa si se aprueba Postgres/RLS y sincronización.
+- La recomendación no selecciona ni autoriza un proveedor. Ningún SDK, clave, backend ni migración de datos se incorpora hasta decisión expresa.
