@@ -92,3 +92,12 @@
 - La persistencia de sesión usa IndexedDB con almacenamiento local como alternativa. No se guardan contraseñas ni se registran credenciales o tokens.
 - Solo entra al cliente la configuración pública de una app Firebase Web. Se prohíben cuentas de servicio, claves administrativas y SDK Admin.
 - La integración real no se considera aprobada hasta probar registro, inicio, recuperación, persistencia y cierre con un proyecto Firebase configurado, en web y después en iOS.
+
+## 2026-11-18 — Navegación y personalización Fase 7
+
+- El planificador de mapas ocupa la ruta principal `/`; `/map` se conserva únicamente como redirección compatible.
+- La navegación persistente expone solo Mapa y Actividad. Perfil se abre desde el encabezado y Ajustes vive bajo `/profile/settings`.
+- Perfil no inventa nombres, correos ni avatares. La identidad aparece solo desde una sesión real; sin sesión comunica acceso local sin cuenta.
+- Editar perfil no se ofrece hasta conectar y probar almacenamiento real para el cambio. Notificaciones se presentan únicamente como estado informativo: EcoRuta no las envía.
+- Las preferencias usan esquema v3 y migran v2/v1 sin borrar valores. El color predeterminado es Verde Eco; las variantes solo sustituyen tokens de interfaz y no alteran el logo, el estilo base del mapa ni los colores semánticos de rutas.
+- La app permanece utilizable sin cuenta. El acceso obligatorio y la redirección post-splash se difieren hasta validar Firebase real y recibir aprobación expresa.

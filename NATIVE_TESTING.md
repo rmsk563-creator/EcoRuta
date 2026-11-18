@@ -2,6 +2,8 @@
 
 El proyecto `ios/` ya existe, compila con Xcode y fue ejecutado en simulador y en un iPhone 15 Pro Max físico. La instalación física de la demo 0.6.0 (build 2) se realizó como actualización sobre `com.ecoruta.app`, sin desinstalar la versión anterior.
 
+La versión 0.7.0 (build 3) de la Fase 7 se compiló y abrió únicamente en el simulador. No se instaló sobre el iPhone físico; el dispositivo conserva 0.6.0 y sus datos hasta autorizar una actualización posterior.
+
 ## Requisitos
 
 - Mac con Xcode actualizado.

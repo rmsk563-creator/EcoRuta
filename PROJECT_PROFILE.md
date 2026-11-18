@@ -2,7 +2,7 @@
 
 ## Identidad
 
-EcoRuta · aplicación de movilidad sostenible · Production path · v0.5 · Fase 5 compilada y verificada en simulador iOS.
+EcoRuta · aplicación de movilidad sostenible · Production path · v0.7 · Fase 7 visual compilada y verificada en simulador iOS.
 
 ## Objetivo
 
@@ -34,7 +34,9 @@ Clara, urbana, serena, confiable y táctil. Verde profundo como marca, teal para
 - Fase 3: mapa, GPS, búsqueda, selección de puntos y comparación caminar/bicicleta integrados detrás de una API key.
 - Fase 4: favoritos, historial explícito, estadísticas, impacto estimado, exportación/importación y borrado local.
 - Fase 5: proyecto iOS, permisos, privacidad, SQLite, exportación nativa y apertura segura de enlaces.
-- Fuera de alcance inicial: cuentas, contraseñas, sincronización y ubicación en segundo plano.
+- Fase 6: splash, animaciones y autenticación Firebase preparada pero no configurada.
+- Fase 7: mapa principal, Perfil, Actividad y personalización cromática persistente.
+- Fuera del alcance activo: sincronización, notificaciones, Android y ubicación en segundo plano.
 
 ## Datos y realidad
 
@@ -46,7 +48,7 @@ Sin Figma. `main` y GitHub Pages permanecen intactos hasta autorización expresa
 
 ## Estado actual
 
-Fase 5 compilada y probada el 17-11-2026 en simulador. El build firmado fue instalado después en un iPhone 15 Pro Max físico, pero el primer arranque y las pruebas físicas siguen pendientes de **Run** interactivo en Xcode. La versión web React tiene un build GitHub Pages separado y manual preparado para `/EcoRuta/`; todavía no está publicada. Android continúa pendiente.
+La versión 0.6.0 fue instalada y abierta en un iPhone 15 Pro Max físico. La versión 0.7.0 reorganiza navegación, Perfil y apariencia; fue compilada y abierta solo en simulador para proteger los datos del iPhone hasta aprobar la validación. Firebase continúa sin variables locales y el acceso con cuenta no está activo. La versión web React mantiene un build GitHub Pages separado y manual para `/EcoRuta/`; todavía no está publicada. Android continúa pendiente.
 
 ## Enlaces
 

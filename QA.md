@@ -1,5 +1,37 @@
 # QA — EcoRuta
 
+## Fase 7 — navegación, perfil y apariencia
+
+**Ejecución:** 18 de noviembre de 2026.
+
+**Entorno:** Chrome local, medición CDP a 390 px, Xcode 27.0, runtime iOS 27 y simulador iPhone 18 Pro. La versión 0.7.0 no fue instalada en el iPhone físico.
+
+### Automatización y compilación
+
+- ✅ `npm run typecheck`.
+- ✅ `npm test -- --run`: 38 pruebas aprobadas en 11 archivos.
+- ✅ Regresiones: mapa como ruta principal, Perfil sin identidad ficticia, cierre de sesión aislado y cinco colores persistentes.
+- ✅ `npm run build`: build Vite de producción generado.
+- ✅ `npx cap sync ios`: seis plugins sincronizados.
+- ✅ `xcodebuild` Debug para `iphonesimulator`: `BUILD SUCCEEDED`.
+
+### Revisión visual
+
+- Mapa observado como primera pantalla después del splash en el simulador.
+- Perfil circular visible en la esquina superior derecha y navegación inferior reducida a Mapa/Actividad.
+- Perfil y Apariencia revisados en navegador; a 390 px `innerWidth` y `scrollWidth` fueron ambos 390, sin desbordamiento horizontal.
+- Vista de escritorio revisada a 1440 px con sidebar simplificado y Perfil en el encabezado.
+- MapLibre no se rediseñó: estilos, trazados y atribuciones mantienen sus colores independientes de la personalización.
+
+### Datos, identidad y límites
+
+- Preferencias v3 leen y migran v2/v1; no se ejecutó operación sobre SQLite, IndexedDB, favoritos, historial o estadísticas.
+- `assets/logo-ecoruta.png`, AppIcon, splash nativo y Bundle ID no fueron modificados.
+- `.env.local` sigue ignorado; no existen variables Firebase configuradas y no se realizó ninguna solicitud de autenticación real.
+- Chrome headless no ofrece WebGL2 en este entorno; el mapa mostró su recuperación localizada. El mapa real ya había sido validado en WKWebView y su motor no cambió en esta fase.
+- El log del runtime iOS 27 mostró avisos del simulador sobre teclado, preferencias administradas y resolución del usuario `mobile`; la app permaneció abierta y no se observó una excepción JavaScript ni cierre del proceso.
+- Pendiente: configurar Firebase, probar todos los flujos reales en web/simulador y aprobar el acceso obligatorio antes de instalar 0.7.0 en el iPhone físico.
+
 ## Demo universitaria 0.6.0
 
 **Ejecución:** 18 de noviembre de 2026.

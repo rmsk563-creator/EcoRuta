@@ -80,7 +80,19 @@
 - 🟡 Elección e integración del proveedor detenidas hasta aprobación del propietario.
 - 🟡 Rendimiento táctil, teclado y flujo visual completo pendientes de iPhone físico.
 
-## Fases 7–8
+## Fase 7 — Navegación, perfil y acceso
 
-- ⏳ Autenticación real, solo después de elegir proveedor y alcance de sincronización.
-- ⏳ Preparación de distribución y tiendas, solo después de aprobar hardware real.
+- ✅ Mapa convertido en pantalla principal.
+- ✅ Navegación principal simplificada a Mapa y Actividad.
+- ✅ Perfil añadido al encabezado; Ajustes, privacidad, datos y ayuda reorganizados dentro de Perfil.
+- ✅ Favoritos, historial y estadísticas conservados dentro de Actividad.
+- ✅ Temas claro, oscuro y automático combinados con cinco colores de énfasis persistentes.
+- ✅ Preferencias migradas de v1/v2 a v3 sin tocar SQLite, IndexedDB ni actividad.
+- ✅ Textos visibles de demo, versión de prueba y desarrollo retirados.
+- ✅ Build web y build iOS de simulador verificados; no se instaló 0.7.0 en el iPhone físico.
+- 🟡 Firebase preparado pero sin configuración real. Registro, inicio, recuperación, persistencia y cierre requieren intervención del propietario.
+- ⏸️ Flujo obligatorio Splash → acceso → mapa diferido hasta aprobar Firebase real; mientras tanto el mapa continúa disponible sin cuenta.
+
+## Fase 8
+
+- ⏳ Preparación de distribución y tiendas, solo después de aprobar hardware real y autenticación.

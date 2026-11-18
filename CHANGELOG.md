@@ -1,6 +1,28 @@
 # Changelog
 
-## 0.6.0 — Fase 6 (visual, proveedor pendiente)
+## 0.7.0 — Fase 7 (navegación y perfil)
+
+### Cambiado
+
+- El mapa pasa a ser la pantalla principal de EcoRuta.
+- La navegación principal se reduce a Mapa y Actividad; Ajustes deja de ser una pestaña.
+- Perfil se abre desde un control circular en el encabezado y concentra apariencia, privacidad, soporte y cuenta.
+- Favoritos, historial y estadísticas permanecen organizados dentro de Actividad.
+
+### Añadido
+
+- Pantalla Perfil sin identidades inventadas: muestra nombre y correo únicamente cuando Firebase entrega un usuario real.
+- Cinco colores de énfasis accesibles: Verde Eco, Azul Océano, Turquesa, Morado y Naranja.
+- Migración transparente de preferencias v1/v2 a v3, conservando tema, alias, modalidad, unidades y privacidad.
+- Accesos internos desde Perfil a apariencia, preferencias de ruta, privacidad, datos y ayuda.
+
+### Preservado
+
+- Logo maestro, AppIcon, splash nativo, Bundle ID, mapas, GPS y colores del trazado MapLibre.
+- SQLite, IndexedDB, favoritos, historial, estadísticas y archivos de usuario; no se ejecuta ninguna limpieza.
+- Firebase permanece inactivo hasta configurar y probar un proyecto real.
+
+## 0.6.0 — Fase 6
 
 ### Añadido
 

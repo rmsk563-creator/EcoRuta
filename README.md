@@ -4,7 +4,7 @@ Aplicación de movilidad sostenible para Lima, construida con React, TypeScript,
 
 ## Estado
 
-La Fase 6B prepara Firebase Authentication real con correo y contraseña, sesión persistente, recuperación y cierre de sesión. La cuenta continúa siendo opcional y la validación contra Firebase permanece pendiente hasta configurar el proyecto. La Fase 5 mantiene el proyecto nativo iOS con permisos de ubicación, privacidad, SQLite, enlaces externos y exportación mediante la hoja de compartir. El planificador usa MapLibre, búsqueda limitada a Lima, GPS con permiso explícito y rutas Geoapify para caminar y bicicleta.
+La Fase 7 convierte el mapa en la pantalla principal, concentra configuración y cuenta dentro de Perfil, organiza favoritos, historial y estadísticas en Actividad y añade cinco colores de énfasis persistentes. Firebase Authentication está preparado para correo, contraseña, recuperación y cierre, pero continúa inactivo hasta configurar y probar un proyecto real. El proyecto iOS mantiene permisos de ubicación, privacidad, SQLite, enlaces externos y exportación mediante la hoja de compartir.
 
 El planificador solo se activa cuando existe una API key configurada. Sin clave, EcoRuta muestra instrucciones y no genera mapas, rutas, distancias ni tiempos ficticios. Una ruta consultada tampoco se guarda como realizada: el usuario debe confirmarla explícitamente.
 
@@ -35,7 +35,7 @@ Completa la variable sin comillas y reinicia Vite:
 VITE_GEOAPIFY_API_KEY=tu_clave_restringida
 ```
 
-Para activar las cuentas reales, completa también las variables públicas de Firebase siguiendo [`FIREBASE_SETUP.md`](./FIREBASE_SETUP.md). Sin ellas, los formularios explican que la configuración está pendiente y el acceso como invitado sigue funcionando.
+Para activar las cuentas reales, completa también las variables públicas de Firebase siguiendo [`FIREBASE_SETUP.md`](./FIREBASE_SETUP.md). Sin ellas, el acceso al mapa y los datos locales continúa funcionando sin cuenta y los formularios no se ofrecen como una función disponible.
 
 ```bash
 npm run dev
@@ -65,7 +65,7 @@ src/
 ├── data/          repositorios, esquemas, migraciones, validación y estadísticas
 ├── hooks/         geolocalización con Capacitor
 ├── navigation/    estado tipado para reutilizar favoritos e historial
-├── pages/         Inicio, Mapa, Favoritos, Historial, Estadísticas, Acerca y Ajustes
+├── pages/         Mapa, Actividad, Perfil, Ajustes internos, colecciones y cuenta
 ├── services/      adaptador Geoapify y control de solicitudes
 ├── state/         preferencias y datos locales persistentes
 ├── test/          entorno de pruebas
@@ -82,7 +82,7 @@ Consulta [`GEOAPIFY_SETUP.md`](./GEOAPIFY_SETUP.md) para crear y restringir la c
 
 ## Datos locales
 
-La web usa IndexedDB mediante `idb`. En un contenedor Capacitor nativo, el repositorio selecciona SQLite mediante `@capacitor-community/sqlite`. Capacitor Preferences se reserva para alias, tema, movimiento, modalidad, unidades y privacidad.
+La web usa IndexedDB mediante `idb`. En un contenedor Capacitor nativo, el repositorio selecciona SQLite mediante `@capacitor-community/sqlite`. Capacitor Preferences se reserva para alias, tema, color, movimiento, modalidad, unidades y privacidad.
 
 Consulta [`LOCAL_DATA.md`](./LOCAL_DATA.md) para conocer el esquema, los datos enviados a Geoapify, la importación/exportación y la metodología ambiental.
 

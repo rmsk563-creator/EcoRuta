@@ -68,11 +68,11 @@ npm run dev
 
 Prueba en este orden:
 
-1. **Continuar a EcoRuta** sin cuenta: mapa y datos locales deben seguir disponibles.
+1. **Continuar al mapa** sin cuenta: mapa y datos locales deben seguir disponibles.
 2. Crear una cuenta de prueba con un correo real accesible y contraseña de 8 o más caracteres.
 3. Confirmar que llega el correo de verificación.
 4. Cerrar y volver a abrir el navegador: la sesión debe persistir.
-5. Cerrar sesión desde Ajustes: favoritos, historial y estadísticas deben permanecer.
+5. Cerrar sesión desde Perfil: favoritos, historial y estadísticas deben permanecer.
 6. Iniciar sesión otra vez.
 7. Solicitar recuperación y completar el cambio desde el correo.
 8. Verificar en Firebase Console → Authentication → Users que existe únicamente la cuenta de prueba creada por ti.
