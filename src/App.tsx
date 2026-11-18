@@ -11,6 +11,8 @@ const ActivityPage = lazy(() => import('./pages/ActivityPage').then((module) => 
 const FavoritesPage = lazy(() => import('./pages/FavoritesPage').then((module) => ({ default: module.FavoritesPage })));
 const HistoryPage = lazy(() => import('./pages/HistoryPage').then((module) => ({ default: module.HistoryPage })));
 const StatisticsPage = lazy(() => import('./pages/StatisticsPage').then((module) => ({ default: module.StatisticsPage })));
+const ExplorePage = lazy(() => import('./pages/ExplorePage').then((module) => ({ default: module.ExplorePage })));
+const EcoAiPage = lazy(() => import('./pages/EcoAiPage').then((module) => ({ default: module.EcoAiPage })));
 
 const loading = <div className="route-loading" role="status">Preparando la pantalla…</div>;
 
@@ -28,6 +30,8 @@ export function App() {
         <Route path="favorites" element={<Suspense fallback={loading}><FavoritesPage /></Suspense>} />
         <Route path="history" element={<Suspense fallback={loading}><HistoryPage /></Suspense>} />
         <Route path="statistics" element={<Suspense fallback={loading}><StatisticsPage /></Suspense>} />
+        <Route path="explore" element={<Suspense fallback={loading}><ExplorePage /></Suspense>} />
+        <Route path="eco-ai" element={<Suspense fallback={loading}><EcoAiPage /></Suspense>} />
         <Route path="about" element={<AboutPage />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="profile/settings" element={<SettingsPage />} />

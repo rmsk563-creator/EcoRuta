@@ -1,9 +1,10 @@
 import { geoapifyApiKey, LIMA_BOUNDS, LIMA_CENTER } from '../../config/geoapify';
 import { GeoapifyError } from './errors';
 import { geoapifyRequestManager } from './requestManager';
-import type { Coordinates, PlaceSelection, RouteGeometry, RouteMode, RouteResult } from './types';
+import type { Coordinates, ExploreCategory, ExplorePlace, PlaceSelection, RouteGeometry, RouteMode, RouteResult } from './types';
 
 const API_BASE_URL = 'https://api.geoapify.com/v1';
+const PLACES_API_BASE_URL = 'https://api.geoapify.com/v2';
 const REQUEST_TIMEOUT_MS = 12_000;
 const CACHE_TTL_MS = 10 * 60 * 1000;
 
@@ -16,6 +17,7 @@ const cache = new Map<string, CacheEntry<unknown>>();
 
 interface GeoapifyPlace {
   place_id?: string;
+  name?: string;
   formatted?: string;
   address_line1?: string;
   address_line2?: string;
@@ -39,6 +41,23 @@ interface RoutingResponse {
   features?: RouteFeature[];
 }
 
+interface PlacesFeature {
+  properties?: GeoapifyPlace & {
+    categories?: string[];
+    distance?: number;
+  };
+}
+
+interface PlacesFeatureCollection {
+  features?: PlacesFeature[];
+}
+
+const EXPLORE_CATEGORIES: Record<ExploreCategory, string> = {
+  parks: 'leisure.park',
+  culture: 'entertainment.culture,entertainment.museum',
+  destinations: 'tourism.attraction,tourism.sights',
+};
+
 function getCached<T>(key: string) {
   const entry = cache.get(key) as CacheEntry<T> | undefined;
   if (!entry) return undefined;
@@ -61,7 +80,7 @@ function linkAbortSignal(source: AbortSignal | undefined, target: AbortControlle
   return () => source.removeEventListener('abort', abort);
 }
 
-async function requestJson<T>(path: string, parameters: URLSearchParams, signal?: AbortSignal): Promise<T> {
+async function requestJson<T>(path: string, parameters: URLSearchParams, signal?: AbortSignal, baseUrl = API_BASE_URL): Promise<T> {
   if (!geoapifyApiKey) {
     throw new GeoapifyError('configuration', 'Geoapify todavía no está configurado en este dispositivo.');
   }
@@ -73,7 +92,7 @@ async function requestJson<T>(path: string, parameters: URLSearchParams, signal?
   parameters.set('apiKey', geoapifyApiKey);
 
   try {
-    const response = await fetch(`${API_BASE_URL}${path}?${parameters.toString()}`, {
+    const response = await fetch(`${baseUrl}${path}?${parameters.toString()}`, {
       headers: { Accept: 'application/json' },
       signal: controller.signal,
     });
@@ -102,6 +121,49 @@ async function requestJson<T>(path: string, parameters: URLSearchParams, signal?
     window.clearTimeout(timeout);
     unlink();
   }
+}
+
+export async function exploreLimaPlaces(
+  category: ExploreCategory,
+  userLocation?: Coordinates | null,
+  signal?: AbortSignal,
+) {
+  const locationKey = userLocation
+    ? `${userLocation.latitude.toFixed(3)},${userLocation.longitude.toFixed(3)}`
+    : 'lima';
+  const cacheKey = `explore:${category}:${locationKey}`;
+  const cached = getCached<ExplorePlace[]>(cacheKey);
+  if (cached) return cached;
+
+  const parameters = new URLSearchParams({
+    categories: EXPLORE_CATEGORIES[category],
+    lang: 'es',
+    limit: '20',
+  });
+  if (userLocation) {
+    const proximity = `${userLocation.longitude},${userLocation.latitude}`;
+    parameters.set('filter', `circle:${proximity},12000`);
+    parameters.set('bias', `proximity:${proximity}`);
+  } else {
+    parameters.set('filter', `rect:${LIMA_BOUNDS.west},${LIMA_BOUNDS.south},${LIMA_BOUNDS.east},${LIMA_BOUNDS.north}`);
+    parameters.set('bias', `proximity:${LIMA_CENTER.longitude},${LIMA_CENTER.latitude}`);
+  }
+
+  const response = await requestJson<PlacesFeatureCollection>('/places', parameters, signal, PLACES_API_BASE_URL);
+  const places = (response.features ?? []).flatMap((feature) => {
+    const properties = feature.properties;
+    if (!properties?.name?.trim()) return [];
+    const place = toPlace(properties);
+    if (!place) return [];
+    return [{
+      ...place,
+      label: properties.name.trim(),
+      categories: properties.categories ?? [],
+      ...(userLocation && typeof properties.distance === 'number' ? { distanceMeters: properties.distance } : {}),
+    } satisfies ExplorePlace];
+  });
+  setCached(cacheKey, places);
+  return places;
 }
 
 function toPlace(place: GeoapifyPlace): PlaceSelection | null {

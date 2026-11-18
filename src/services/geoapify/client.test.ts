@@ -85,4 +85,33 @@ describe('Geoapify client', () => {
       'walk',
     )).rejects.toMatchObject({ code: 'no_route' });
   });
+
+  it('loads real Places API results and exposes distance only from a user location', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(jsonResponse({
+      features: [{
+        properties: {
+          place_id: 'park-1',
+          name: 'Parque de prueba',
+          address_line1: 'Parque de prueba',
+          address_line2: 'Lima, Perú',
+          formatted: 'Parque de prueba, Lima, Perú',
+          lat: -12.1,
+          lon: -77.03,
+          categories: ['leisure.park'],
+          distance: 820,
+        },
+      }],
+    }));
+    vi.stubGlobal('fetch', fetchMock);
+    const { exploreLimaPlaces } = await import('./client');
+
+    const places = await exploreLimaPlaces('parks', { latitude: -12.11, longitude: -77.04 });
+
+    expect(places[0]).toMatchObject({ label: 'Parque de prueba', distanceMeters: 820, categories: ['leisure.park'] });
+    const url = new URL(String(fetchMock.mock.calls[0]?.[0]));
+    expect(url.pathname).toBe('/v2/places');
+    expect(url.searchParams.get('categories')).toBe('leisure.park');
+    expect(url.searchParams.get('filter')).toBe('circle:-77.04,-12.11,12000');
+    expect(url.searchParams.get('bias')).toBe('proximity:-77.04,-12.11');
+  });
 });

@@ -37,6 +37,8 @@ describe('EcoRuta app shell', () => {
     expect(await screen.findByRole('heading', { name: /conecta geoapify/i })).toBeInTheDocument();
     expect(screen.getAllByRole('link', { name: 'Mapa' })).not.toHaveLength(0);
     expect(screen.getAllByRole('link', { name: 'Actividad' })).not.toHaveLength(0);
+    expect(screen.getAllByRole('link', { name: 'Explorar' })).not.toHaveLength(0);
+    expect(screen.getAllByRole('link', { name: 'Eco IA' })).not.toHaveLength(0);
     expect(screen.getByRole('link', { name: /abrir perfil/i })).toHaveAttribute('href', '/profile');
     expect(screen.queryByRole('link', { name: 'Ajustes' })).not.toBeInTheDocument();
   });
@@ -124,5 +126,14 @@ describe('EcoRuta app shell', () => {
     );
 
     expect(container.querySelector('.splash .brand__mark img')).toHaveAttribute('src', expect.stringContaining('logo-ecoruta'));
+  });
+
+  it('presents Eco IA honestly while no secure backend is configured', async () => {
+    renderApp('/eco-ai');
+
+    expect(await screen.findByRole('heading', { name: 'Eco IA' })).toBeInTheDocument();
+    expect(screen.getByText(/servicio no conectado/i)).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: /mensaje para eco ia/i })).toBeDisabled();
+    expect(screen.getByRole('button', { name: /enviar mensaje/i })).toBeDisabled();
   });
 });

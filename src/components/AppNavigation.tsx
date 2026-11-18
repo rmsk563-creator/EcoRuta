@@ -1,4 +1,4 @@
-import { LayoutGrid, Map, type LucideIcon } from 'lucide-react';
+import { Compass, LayoutGrid, Map, MessageCircleMore, type LucideIcon } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
 interface NavigationItem {
@@ -11,11 +11,15 @@ interface NavigationItem {
 const desktopItems: NavigationItem[] = [
   { to: '/', label: 'Mapa', icon: Map, end: true },
   { to: '/activity', label: 'Actividad', icon: LayoutGrid },
+  { to: '/explore', label: 'Explorar', icon: Compass },
+  { to: '/eco-ai', label: 'Eco IA', icon: MessageCircleMore },
 ];
 
 const mobileItems: NavigationItem[] = [
   { to: '/', label: 'Mapa', icon: Map, end: true },
   { to: '/activity', label: 'Actividad', icon: LayoutGrid },
+  { to: '/explore', label: 'Explorar', icon: Compass },
+  { to: '/eco-ai', label: 'Eco IA', icon: MessageCircleMore },
 ];
 
 export function AppNavigation({ mobile = false }: { mobile?: boolean }) {

@@ -10,6 +10,13 @@ export interface PlaceSelection {
   coordinates: Coordinates;
 }
 
+export interface ExplorePlace extends PlaceSelection {
+  categories: string[];
+  distanceMeters?: number;
+}
+
+export type ExploreCategory = 'parks' | 'culture' | 'destinations';
+
 export type RouteMode = 'walk' | 'bicycle';
 
 export interface RouteGeometry {
