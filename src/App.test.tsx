@@ -90,4 +90,24 @@ describe('EcoRuta app shell', () => {
 
     await waitFor(() => expect(screen.getByRole('radio', { name: /automático/i })).toHaveAttribute('aria-checked', 'true'));
   });
+
+  it('keeps account access optional and does not simulate authentication', () => {
+    renderApp('/account/sign-in');
+
+    expect(screen.getByRole('heading', { name: /qué bueno verte/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /iniciar sesión/i })).toBeDisabled();
+    expect(screen.getByText(/conexión pendiente/i)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /volver/i })).toHaveAttribute('href', '/account');
+  });
+
+  it('reuses the protected EcoRuta asset in the splash', () => {
+    sessionStorage.removeItem('ecoruta.splash.seen');
+    const { container } = render(
+      <MemoryRouter>
+        <PreferencesProvider><DataProvider><App /></DataProvider></PreferencesProvider>
+      </MemoryRouter>,
+    );
+
+    expect(container.querySelector('.splash .brand__mark img')).toHaveAttribute('src', expect.stringContaining('logo-ecoruta'));
+  });
 });

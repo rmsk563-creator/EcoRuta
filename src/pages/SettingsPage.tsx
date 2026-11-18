@@ -1,5 +1,6 @@
-import { Bike, Check, Database, Download, Footprints, Moon, RotateCcw, ShieldCheck, Smartphone, Sun, Trash2, Upload } from 'lucide-react';
+import { ArrowRight, Bike, Check, Database, Download, Footprints, Moon, RotateCcw, ShieldCheck, Smartphone, Sun, Trash2, Upload, UserRound } from 'lucide-react';
 import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
+import { Link } from 'react-router-dom';
 import type { EcoRutaDataExport, ImportStrategy } from '../data/types';
 import { parseDataExportText } from '../data/validation';
 import { exportEcoRutaData } from '../services/platform/dataTransfer';
@@ -95,6 +96,11 @@ export function SettingsPage() {
       </header>
 
       <div className="settings-layout" aria-busy={!ready || !data.ready}>
+        <section className="settings-card settings-card--account" aria-labelledby="account-settings-title">
+          <div className="settings-card__heading"><div><p className="kicker">Cuenta</p><h2 id="account-settings-title">EcoRuta funciona sin iniciar sesión</h2><p>Tus favoritos, historial y preferencias continúan guardados localmente. No hay una sesión activa ni datos enviados a un servicio de usuarios.</p></div><UserRound aria-hidden="true" /></div>
+          <div className="account-settings-status"><span aria-hidden="true" /><div><strong>Sin sesión</strong><small>Autenticación pendiente de proveedor</small></div></div>
+          <Link className="button button--quiet" to="/account">Ver experiencia de acceso <ArrowRight aria-hidden="true" /></Link>
+        </section>
         <section className="settings-card" aria-labelledby="profile-title">
           <div className="settings-card__heading"><div><p className="kicker">Personalización</p><h2 id="profile-title">Tu forma de moverte</h2></div></div>
           <form className="field-form" onSubmit={(event) => void saveAlias(event)}>
