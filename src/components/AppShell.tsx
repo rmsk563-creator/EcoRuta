@@ -1,5 +1,5 @@
 import { UserRound } from 'lucide-react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { AppNavigation } from './AppNavigation';
 import { Brand } from './Brand';
 import { SplashScreen } from './SplashScreen';
@@ -7,6 +7,8 @@ import { useAuth } from '../state/AuthContext';
 
 export function AppShell() {
   const { user } = useAuth();
+  const location = useLocation();
+  const mapIsActive = location.pathname === '/';
 
   return (
     <div className="app-shell">
@@ -26,15 +28,15 @@ export function AppShell() {
         </div>
       </aside>
 
-      <div className="app-frame">
-        <header className="topbar">
+      <div className={`app-frame${mapIsActive ? ' app-frame--map' : ''}`}>
+        <header className={`topbar${mapIsActive ? ' topbar--map' : ''}`}>
           <Brand />
           <NavLink className="profile-trigger" to="/profile" aria-label="Abrir perfil">
             <span aria-hidden="true">{user?.displayName?.trim().charAt(0).toLocaleUpperCase('es') || <UserRound />}</span>
           </NavLink>
         </header>
 
-        <main id="main-content" className="main-content" tabIndex={-1}>
+        <main id="main-content" className={`main-content${mapIsActive ? ' main-content--map' : ''}`} tabIndex={-1}>
           <Outlet />
         </main>
 

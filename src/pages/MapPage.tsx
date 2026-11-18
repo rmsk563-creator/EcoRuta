@@ -19,6 +19,7 @@ import { useLocation as useRouterLocation } from 'react-router-dom';
 import { ExternalLinkAnchor } from '../components/ExternalLinkAnchor';
 import { PlaceSearchField } from '../components/map/PlaceSearchField';
 import { MapErrorBoundary } from '../components/map/MapErrorBoundary';
+import { RouteSheet, type RouteSheetState } from '../components/map/RouteSheet';
 import { isGeoapifyConfigured } from '../config/geoapify';
 import { createCompletedTrip, createFavoritePlace, createFavoriteRoute, toPlaceSelection } from '../data/factories';
 import { useDeviceLocation } from '../hooks/useDeviceLocation';
@@ -53,6 +54,7 @@ export function MapPage() {
   const [saving, setSaving] = useState(false);
   const [recordConfirmation, setRecordConfirmation] = useState(false);
   const [wouldReplaceCar, setWouldReplaceCar] = useState(false);
+  const [sheetState, setSheetState] = useState<RouteSheetState>('compact');
   const request = useRef<AbortController | null>(null);
   const navigationApplied = useRef(false);
 
@@ -105,6 +107,10 @@ export function MapPage() {
 
   useEffect(() => () => request.current?.abort(), []);
 
+  useEffect(() => {
+    if (destination) setSheetState((current) => current === 'compact' ? 'medium' : current);
+  }, [destination]);
+
   const selectFromMap = useCallback(async (coordinates: Coordinates) => {
     request.current?.abort();
     const controller = new AbortController();
@@ -141,6 +147,7 @@ export function MapPage() {
     const available = results.flatMap((result) => result.status === 'fulfilled' ? [result.value] : []);
     const failures = results.flatMap((result) => result.status === 'rejected' ? [getGeoapifyErrorMessage(result.reason)] : []);
     setRoutes(available);
+    if (available.length > 0) setSheetState('expanded');
     if (available.length > 0 && !available.some((route) => route.mode === selectedMode)) setSelectedMode(available[0]!.mode);
     if (available.length === 0) setMessage(failures[0] || 'No se encontraron rutas sostenibles entre los puntos elegidos.');
     else if (failures.length > 0) setMessage(`Se calculó ${available.length === 1 ? 'una modalidad' : 'parte de la comparación'}. ${failures[0]}`);
@@ -208,40 +215,82 @@ export function MapPage() {
   }
 
   return (
-    <div className="page map-page">
-      <header className="map-page__header">
-        <div>
-          <p className="eyebrow"><MapPinned aria-hidden="true" /> Lima, Perú</p>
-          <h1>Encuentra tu EcoRuta.</h1>
-          <p>Busca lugares o toca el mapa. Las distancias y tiempos provienen directamente de Geoapify.</p>
-        </div>
-        <button
-          type="button"
-          className={`button ${location.status === 'tracking' ? 'button--quiet' : 'button--primary'}`}
-          onClick={() => location.status === 'tracking' ? void location.stop() : void location.start()}
-          disabled={location.status === 'requesting'}
-        >
-          {location.status === 'requesting' ? <LoaderCircle className="spin" aria-hidden="true" /> : location.status === 'tracking' ? <Square aria-hidden="true" /> : <LocateFixed aria-hidden="true" />}
-          {location.status === 'requesting' ? 'Solicitando permiso' : location.status === 'tracking' ? 'Detener GPS' : 'Usar mi ubicación'}
-        </button>
-      </header>
-
-      {(location.error || message) && (
-        <div className="map-alert" role="alert">
-          <AlertCircle aria-hidden="true" />
-          <p>{location.error || message}</p>
-          {message && <button type="button" onClick={() => setMessage('')} aria-label="Cerrar aviso">Cerrar</button>}
-        </div>
-      )}
-
+    <div className={`page map-page map-page--sheet-${sheetState}`}>
       <div className="route-planner">
-        <aside className="route-panel" aria-label="Planificador de ruta">
+        <section className="map-panel" aria-label="Selección sobre el mapa">
+          <MapErrorBoundary>
+            <Suspense fallback={<div className="map-loading" role="status"><LoaderCircle className="spin" aria-hidden="true" /> Cargando mapa de Lima…</div>}>
+              <MapCanvas
+                theme={isDark ? 'dark' : 'light'}
+                origin={origin}
+                destination={destination}
+                userLocation={location.position}
+                routes={routes}
+                selectedMode={selectedMode}
+                activeEndpoint={activeEndpoint}
+                onMapSelect={(coordinates) => void selectFromMap(coordinates)}
+                onError={setMessage}
+              />
+            </Suspense>
+          </MapErrorBoundary>
+
+          <div className="map-floating-search">
+            <PlaceSearchField
+              label="Destino"
+              placeholder="¿A dónde quieres ir?"
+              selection={destination}
+              onChange={(place) => changeEndpoint('destination', place)}
+              onError={setMessage}
+            />
+          </div>
+
+          <button
+            type="button"
+            className={`map-gps-button${location.status === 'tracking' ? ' is-active' : ''}`}
+            onClick={() => location.status === 'tracking' ? void location.stop() : void location.start()}
+            disabled={location.status === 'requesting'}
+            aria-label={location.status === 'tracking' ? 'Detener ubicación en tiempo real' : 'Usar mi ubicación actual'}
+          >
+            {location.status === 'requesting' ? <LoaderCircle className="spin" aria-hidden="true" /> : location.status === 'tracking' ? <Square aria-hidden="true" /> : <LocateFixed aria-hidden="true" />}
+          </button>
+
+          {(location.error || message) && (
+            <div className="map-alert" role="alert">
+              <AlertCircle aria-hidden="true" />
+              <p>{location.error || message}</p>
+              {message && <button type="button" onClick={() => setMessage('')} aria-label="Cerrar aviso">Cerrar</button>}
+            </div>
+          )}
+
+          {pointLoading && <div className="map-progress" role="status"><LoaderCircle className="spin" aria-hidden="true" /> Identificando el punto…</div>}
+          {location.status === 'tracking' && (
+            <div className="gps-status" role="status"><Navigation aria-hidden="true" /> GPS activo{location.accuracy ? ` · ±${Math.round(location.accuracy)} m` : ''}</div>
+          )}
+        </section>
+
+        <RouteSheet
+          state={sheetState}
+          onStateChange={setSheetState}
+          title={destination?.label ?? 'Planifica tu EcoRuta'}
+          detail={origin
+            ? `Desde ${origin.label}`
+            : destination
+              ? 'Elige un origen para comparar rutas'
+              : 'Busca un destino o selecciónalo en el mapa'}
+        >
           <div className="endpoint-selector" role="radiogroup" aria-label="Punto que se seleccionará en el mapa">
             <button type="button" role="radio" aria-checked={activeEndpoint === 'origin'} className={activeEndpoint === 'origin' ? 'is-active' : ''} onClick={() => setActiveEndpoint('origin')}>Origen</button>
             <button type="button" role="radio" aria-checked={activeEndpoint === 'destination'} className={activeEndpoint === 'destination' ? 'is-active' : ''} onClick={() => setActiveEndpoint('destination')}>Destino</button>
           </div>
 
           <PlaceSearchField label="Origen" placeholder="Calle, dirección o lugar" selection={origin} onChange={(place) => changeEndpoint('origin', place)} onError={setMessage} />
+          <div className={`route-sheet__destination${destination ? ' has-selection' : ''}`}>
+            <MapPinned aria-hidden="true" />
+            <span>
+              <small>Destino</small>
+              <strong>{destination?.label ?? 'Busca un destino en el mapa'}</strong>
+            </span>
+          </div>
           <button
             className="swap-button"
             type="button"
@@ -254,7 +303,6 @@ export function MapPage() {
           >
             <RefreshCw aria-hidden="true" /> Intercambiar origen y destino
           </button>
-          <PlaceSearchField label="Destino" placeholder="¿A dónde quieres ir?" selection={destination} onChange={(place) => changeEndpoint('destination', place)} onError={setMessage} />
 
           <button type="button" className="button button--primary calculate-button" disabled={!origin || !destination || routeLoading || pointLoading} onClick={() => void compareRoutes()}>
             {routeLoading ? <LoaderCircle className="spin" aria-hidden="true" /> : <Route aria-hidden="true" />}
@@ -296,29 +344,7 @@ export function MapPage() {
               <p className="route-disclaimer">Estimaciones de Geoapify según su red disponible; las condiciones reales pueden variar.</p>
             </section>
           )}
-        </aside>
-
-        <section className="map-panel" aria-label="Selección sobre el mapa">
-          <MapErrorBoundary>
-            <Suspense fallback={<div className="map-loading" role="status"><LoaderCircle className="spin" aria-hidden="true" /> Cargando mapa de Lima…</div>}>
-              <MapCanvas
-                theme={isDark ? 'dark' : 'light'}
-                origin={origin}
-                destination={destination}
-                userLocation={location.position}
-                routes={routes}
-                selectedMode={selectedMode}
-                activeEndpoint={activeEndpoint}
-                onMapSelect={(coordinates) => void selectFromMap(coordinates)}
-                onError={setMessage}
-              />
-            </Suspense>
-          </MapErrorBoundary>
-          {pointLoading && <div className="map-progress" role="status"><LoaderCircle className="spin" aria-hidden="true" /> Identificando el punto…</div>}
-          {location.status === 'tracking' && (
-            <div className="gps-status" role="status"><Navigation aria-hidden="true" /> GPS activo{location.accuracy ? ` · ±${Math.round(location.accuracy)} m` : ''}</div>
-          )}
-        </section>
+        </RouteSheet>
       </div>
     </div>
   );

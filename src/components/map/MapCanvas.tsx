@@ -129,9 +129,10 @@ export function MapCanvas(props: MapCanvasProps) {
       minZoom: 9,
       maxZoom: 20,
       maxBounds: [[LIMA_BOUNDS.west, LIMA_BOUNDS.south], [LIMA_BOUNDS.east, LIMA_BOUNDS.north]],
-      attributionControl: { compact: true },
+      attributionControl: false,
     });
     map.current = instance;
+    instance.addControl(new maplibregl.AttributionControl({ compact: true }), 'top-left');
     instance.addControl(new maplibregl.NavigationControl({ showCompass: true }), 'top-right');
     instance.on('load', () => {
       loaded.current = true;
