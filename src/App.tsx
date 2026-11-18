@@ -2,7 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { AppShell } from './components/AppShell';
 import { AboutPage } from './pages/AboutPage';
-import { HomePage } from './pages/HomePage';
+import { ProfilePage } from './pages/ProfilePage';
 import { SettingsPage } from './pages/SettingsPage';
 import { AccountWelcomePage, RecoverAccountPage, RegisterPage, SignInPage } from './pages/AccountPages';
 
@@ -18,18 +18,20 @@ export function App() {
   return (
     <Routes>
       <Route element={<AppShell />}>
-        <Route index element={<HomePage />} />
-        <Route path="map" element={(
+        <Route index element={(
           <Suspense fallback={loading}>
             <MapPage />
           </Suspense>
         )} />
+        <Route path="map" element={<Navigate to="/" replace />} />
         <Route path="activity" element={<Suspense fallback={loading}><ActivityPage /></Suspense>} />
         <Route path="favorites" element={<Suspense fallback={loading}><FavoritesPage /></Suspense>} />
         <Route path="history" element={<Suspense fallback={loading}><HistoryPage /></Suspense>} />
         <Route path="statistics" element={<Suspense fallback={loading}><StatisticsPage /></Suspense>} />
         <Route path="about" element={<AboutPage />} />
-        <Route path="settings" element={<SettingsPage />} />
+        <Route path="profile" element={<ProfilePage />} />
+        <Route path="profile/settings" element={<SettingsPage />} />
+        <Route path="settings" element={<Navigate to="/profile/settings" replace />} />
       </Route>
       <Route path="account" element={<AccountWelcomePage />} />
       <Route path="account/sign-in" element={<SignInPage />} />

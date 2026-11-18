@@ -1,4 +1,4 @@
-import { BarChart3, Clock3, Heart, House, Info, LayoutGrid, Map, SlidersHorizontal, type LucideIcon } from 'lucide-react';
+import { LayoutGrid, Map, type LucideIcon } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
 interface NavigationItem {
@@ -9,20 +9,13 @@ interface NavigationItem {
 }
 
 const desktopItems: NavigationItem[] = [
-  { to: '/', label: 'Inicio', icon: House, end: true },
-  { to: '/map', label: 'Mapa', icon: Map },
-  { to: '/favorites', label: 'Favoritos', icon: Heart },
-  { to: '/history', label: 'Historial', icon: Clock3 },
-  { to: '/statistics', label: 'Estadísticas', icon: BarChart3 },
-  { to: '/about', label: 'Acerca', icon: Info },
-  { to: '/settings', label: 'Ajustes', icon: SlidersHorizontal },
+  { to: '/', label: 'Mapa', icon: Map, end: true },
+  { to: '/activity', label: 'Actividad', icon: LayoutGrid },
 ];
 
 const mobileItems: NavigationItem[] = [
-  { to: '/', label: 'Inicio', icon: House, end: true },
-  { to: '/map', label: 'Mapa', icon: Map },
+  { to: '/', label: 'Mapa', icon: Map, end: true },
   { to: '/activity', label: 'Actividad', icon: LayoutGrid },
-  { to: '/settings', label: 'Ajustes', icon: SlidersHorizontal },
 ];
 
 export function AppNavigation({ mobile = false }: { mobile?: boolean }) {

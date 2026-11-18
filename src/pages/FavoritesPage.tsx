@@ -37,7 +37,7 @@ export function FavoritesPage() {
     const state: MapNavigationState = favorite.kind === 'place'
       ? { destination: favorite.place, source: 'favorite' }
       : { origin: favorite.origin, destination: favorite.destination, preferredMode: favorite.mode, source: 'favorite' };
-    navigate('/map', { state });
+    navigate('/', { state });
   };
 
   const startEditing = (favorite: Favorite) => {
@@ -68,7 +68,7 @@ export function FavoritesPage() {
       {(error || message) && <div className="inline-notice" role="status"><p>{error || message}</p><button type="button" onClick={() => { clearError(); setMessage(''); }}>Cerrar</button></div>}
 
       {!ready ? <div className="data-loading" role="status">Cargando favoritos locales…</div> : favorites.length === 0 ? (
-        <EmptyState icon={Heart} title="Aún no tienes favoritos" description="Guarda un lugar o una ruta después de calcularla en el mapa." actionLabel="Abrir el mapa" actionTo="/map" />
+        <EmptyState icon={Heart} title="Aún no tienes favoritos" description="Guarda un lugar o una ruta después de calcularla en el mapa." actionLabel="Abrir el mapa" actionTo="/" />
       ) : (
         <>
           <div className="collection-toolbar">

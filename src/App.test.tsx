@@ -31,22 +31,29 @@ function renderApp(initialPath = '/') {
 }
 
 describe('EcoRuta app shell', () => {
-  it('shows the implemented destinations', () => {
+  it('uses the map as the main destination and keeps settings inside profile', async () => {
     renderApp();
 
-    expect(screen.getByRole('heading', { name: /tu forma de moverte/i })).toBeInTheDocument();
-    expect(screen.getAllByRole('link', { name: 'Inicio' })).not.toHaveLength(0);
+    expect(await screen.findByRole('heading', { name: /conecta geoapify/i })).toBeInTheDocument();
     expect(screen.getAllByRole('link', { name: 'Mapa' })).not.toHaveLength(0);
-    expect(screen.getAllByRole('link', { name: 'Favoritos' })).not.toHaveLength(0);
-    expect(screen.getAllByRole('link', { name: 'Historial' })).not.toHaveLength(0);
-    expect(screen.getAllByRole('link', { name: 'Estadísticas' })).not.toHaveLength(0);
     expect(screen.getAllByRole('link', { name: 'Actividad' })).not.toHaveLength(0);
-    expect(screen.getAllByRole('link', { name: 'Acerca' })).not.toHaveLength(0);
-    expect(screen.getAllByRole('link', { name: 'Ajustes' })).not.toHaveLength(0);
+    expect(screen.getByRole('link', { name: /abrir perfil/i })).toHaveAttribute('href', '/profile');
+    expect(screen.queryByRole('link', { name: 'Ajustes' })).not.toBeInTheDocument();
+  });
+
+  it('opens profile from the header and exposes real settings routes', async () => {
+    const user = userEvent.setup();
+    renderApp();
+
+    await user.click(screen.getByRole('link', { name: /abrir perfil/i }));
+
+    expect(await screen.findByRole('heading', { name: /tu espacio en ecoruta/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /apariencia/i })).toHaveAttribute('href', '/profile/settings#appearance');
+    expect(screen.getByText(/ecoruta no envía notificaciones/i)).toBeInTheDocument();
   });
 
   it('explains how to configure Geoapify when the API key is absent', async () => {
-    renderApp('/map');
+    renderApp('/');
 
     expect(await screen.findByRole('heading', { name: /conecta geoapify/i })).toBeInTheDocument();
     expect(screen.getByText('VITE_GEOAPIFY_API_KEY')).toBeInTheDocument();
@@ -59,10 +66,7 @@ describe('EcoRuta app shell', () => {
   });
 
   it('navigates to the official social links', async () => {
-    const user = userEvent.setup();
-    renderApp();
-
-    await user.click(screen.getAllByRole('link', { name: 'Acerca' })[0]);
+    renderApp('/about');
 
     expect(screen.getByRole('link', { name: /facebook/i })).toHaveAttribute(
       'href',
@@ -74,7 +78,7 @@ describe('EcoRuta app shell', () => {
 
   it('applies and persists the dark theme selection', async () => {
     const user = userEvent.setup();
-    renderApp('/settings');
+    renderApp('/profile/settings');
 
     await user.click(screen.getByRole('radio', { name: /oscuro/i }));
 
@@ -82,9 +86,19 @@ describe('EcoRuta app shell', () => {
     expect(screen.getByRole('radio', { name: /oscuro/i })).toHaveAttribute('aria-checked', 'true');
   });
 
+  it('applies the selected color accent without changing the theme', async () => {
+    const user = userEvent.setup();
+    renderApp('/profile/settings');
+
+    await user.click(screen.getByRole('radio', { name: /morado/i }));
+
+    await waitFor(() => expect(document.documentElement).toHaveAttribute('data-accent', 'purple'));
+    expect(screen.getByRole('radio', { name: /morado/i })).toHaveAttribute('aria-checked', 'true');
+  });
+
   it('restores default settings after confirmation', async () => {
     const user = userEvent.setup();
-    renderApp('/settings');
+    renderApp('/profile/settings');
 
     await user.click(screen.getByRole('radio', { name: /oscuro/i }));
     await user.click(screen.getByRole('button', { name: /restablecer configuración/i }));
@@ -98,7 +112,7 @@ describe('EcoRuta app shell', () => {
 
     expect(screen.getByRole('heading', { name: /qué bueno verte/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /iniciar sesión/i })).toBeDisabled();
-    expect(screen.getAllByText(/autenticación próximamente/i)).not.toHaveLength(0);
+    expect(screen.getAllByText(/acceso con cuenta no disponible/i)).not.toHaveLength(0);
     expect(screen.getByRole('link', { name: /volver/i })).toHaveAttribute('href', '/account');
   });
 

@@ -17,7 +17,7 @@ export function HomePage() {
             Busca lugares en Lima y compara recorridos reales para caminar o usar bicicleta, sin crear una cuenta.
           </p>
           <div className="hero-panel__actions">
-            <Link className="button button--primary" to="/map">
+            <Link className="button button--primary" to="/">
               Planificar una ruta <ArrowRight aria-hidden="true" />
             </Link>
             <Link className="button button--quiet" to="/about">Conocer el proyecto</Link>
@@ -44,7 +44,7 @@ export function HomePage() {
             <p className="kicker">Tu EcoRuta</p>
             <h2 id="your-ecoruta-title">Preferencias que ya están activas</h2>
           </div>
-          <Link className="text-link" to="/settings">Editar <ArrowRight aria-hidden="true" /></Link>
+          <Link className="text-link" to="/profile/settings">Editar <ArrowRight aria-hidden="true" /></Link>
         </div>
 
         <div className="preference-grid">

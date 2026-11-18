@@ -34,7 +34,7 @@ function renderFlow(path: string, service: AuthService) {
           <Route path="account/sign-in" element={<SignInPage />} />
           <Route path="account/register" element={<RegisterPage />} />
           <Route path="account/recover" element={<RecoverAccountPage />} />
-          <Route path="settings" element={<h1>Ajustes con sesión</h1>} />
+          <Route path="/" element={<h1>Mapa principal</h1>} />
         </Routes>
       </AuthProvider>
     </MemoryRouter>,
@@ -52,7 +52,7 @@ describe('Firebase account flows', () => {
     await user.click(screen.getByRole('button', { name: /iniciar sesión/i }));
 
     await waitFor(() => expect(service.signIn).toHaveBeenCalledWith('persona@example.com', 'Segura123'));
-    expect(await screen.findByRole('heading', { name: /ajustes con sesión/i })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /mapa principal/i })).toBeInTheDocument();
   });
 
   it('validates confirmation and submits registration without persisting the password', async () => {
@@ -68,7 +68,7 @@ describe('Firebase account flows', () => {
 
     await waitFor(() => expect(service.register).toHaveBeenCalledWith({ email: 'persona@example.com', password: 'Segura123', displayName: 'Persona' }));
     expect(localStorage.getItem('Segura123')).toBeNull();
-    expect(await screen.findByRole('heading', { name: /ajustes con sesión/i })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /mapa principal/i })).toBeInTheDocument();
   });
 
   it('uses a non-enumerating success message for password recovery', async () => {

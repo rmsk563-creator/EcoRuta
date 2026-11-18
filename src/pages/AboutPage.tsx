@@ -1,4 +1,4 @@
-import { Check, ExternalLink, GraduationCap, HeartHandshake, Leaf, MapPinned, ShieldCheck } from 'lucide-react';
+import { ExternalLink, HeartHandshake, Leaf, MapPinned, ShieldCheck } from 'lucide-react';
 import { SiFacebook, SiTiktok, SiYoutube } from 'react-icons/si';
 import { ExternalLinkAnchor } from '../components/ExternalLinkAnchor';
 
@@ -46,34 +46,11 @@ export function AboutPage() {
         </div>
       </section>
 
-      <section className="demo-panel" aria-labelledby="demo-title">
-        <div className="demo-panel__heading">
-          <span className="demo-panel__icon"><GraduationCap aria-hidden="true" /></span>
-          <div>
-            <p className="kicker">Versión de presentación</p>
-            <h2 id="demo-title">Demo universitaria 0.6.0</h2>
-            <p>Build de desarrollo para demostrar las funciones implementadas. No es una publicación de App Store ni TestFlight.</p>
-          </div>
-        </div>
-        <div className="demo-panel__grid">
-          <div>
-            <h3>Disponible en esta demo</h3>
-            <p><Check aria-hidden="true" /> Mapas, GPS, búsqueda y rutas reales con Geoapify.</p>
-            <p><Check aria-hidden="true" /> Favoritos, historial, estadísticas y temas guardados en el dispositivo.</p>
-          </div>
-          <div>
-            <h3>Próximas mejoras</h3>
-            <p>Autenticación real con Firebase y sincronización entre dispositivos.</p>
-            <p>Aplicación Android, navegación avanzada y funciones futuras.</p>
-          </div>
-        </div>
-      </section>
-
       <section className="values-grid" aria-label="Valores de EcoRuta">
         <article>
           <ShieldCheck aria-hidden="true" />
           <h2>Privacidad por diseño</h2>
-          <p>La interfaz actual guarda únicamente tema, movimiento y modalidades preferidas en este dispositivo.</p>
+          <p>EcoRuta guarda el tema, el color, el movimiento y las modalidades preferidas en este dispositivo.</p>
         </article>
         <article>
           <HeartHandshake aria-hidden="true" />

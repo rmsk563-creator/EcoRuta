@@ -1,19 +1,12 @@
-import { Moon, Sun } from 'lucide-react';
-import { Outlet } from 'react-router-dom';
+import { UserRound } from 'lucide-react';
+import { NavLink, Outlet } from 'react-router-dom';
 import { AppNavigation } from './AppNavigation';
 import { Brand } from './Brand';
 import { SplashScreen } from './SplashScreen';
-import { usePreferences } from '../state/PreferencesContext';
+import { useAuth } from '../state/AuthContext';
 
 export function AppShell() {
-  const { preferences, updatePreferences } = usePreferences();
-  const isDark = preferences.theme === 'dark' || (
-    preferences.theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches
-  );
-
-  const toggleTheme = () => {
-    void updatePreferences({ theme: isDark ? 'light' : 'dark' });
-  };
+  const { user } = useAuth();
 
   return (
     <div className="app-shell">
@@ -28,17 +21,17 @@ export function AppShell() {
         </div>
         <AppNavigation />
         <div className="sidebar__footer">
-          <p>Preferencias locales</p>
-          <span>Sin cuenta · datos en el dispositivo</span>
+          <p>Privacidad local</p>
+          <span>Tu actividad permanece en el dispositivo</span>
         </div>
       </aside>
 
       <div className="app-frame">
         <header className="topbar">
           <Brand />
-          <button className="icon-button" type="button" onClick={toggleTheme} aria-label={isDark ? 'Usar tema claro' : 'Usar tema oscuro'}>
-            {isDark ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}
-          </button>
+          <NavLink className="profile-trigger" to="/profile" aria-label="Abrir perfil">
+            <span aria-hidden="true">{user?.displayName?.trim().charAt(0).toLocaleUpperCase('es') || <UserRound />}</span>
+          </NavLink>
         </header>
 
         <main id="main-content" className="main-content" tabIndex={-1}>

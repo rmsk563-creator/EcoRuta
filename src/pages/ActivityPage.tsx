@@ -9,7 +9,7 @@ export function ActivityPage() {
       <header className="page-header page-header--compact">
         <p className="eyebrow">Actividad local</p>
         <h1>Tu movilidad, bajo tu control.</h1>
-        <p>Consulta lo que guardaste en este dispositivo. EcoRuta no crea una cuenta ni sincroniza estos datos.</p>
+        <p>Consulta lo que guardaste en este dispositivo. Esta actividad no se sincroniza con una cuenta.</p>
       </header>
       <div className="activity-grid">
         <Link className="activity-card" to="/favorites">

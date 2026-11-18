@@ -7,7 +7,7 @@ import { useAuth } from '../state/AuthContext';
 
 function AccountFrame({ children, title, lead }: { children: ReactNode; title: string; lead: string }) {
   const { configured, ready, user } = useAuth();
-  const status = !ready ? 'Comprobando sesión segura…' : user ? 'Sesión segura activa' : configured ? 'Firebase configurado' : 'Vista previa · autenticación próximamente';
+  const status = !ready ? 'Comprobando sesión segura…' : user ? 'Sesión segura activa' : configured ? 'Acceso seguro con Firebase' : 'Acceso sin cuenta';
 
   return (
     <div className="page account-page">
@@ -33,7 +33,7 @@ function AuthAvailabilityNotice() {
   const { configured, initializationError } = useAuth();
   if (initializationError) return <p className="account-pending account-pending--error" role="alert"><LockKeyhole aria-hidden="true" /> {initializationError}</p>;
   if (configured) return <p className="account-pending"><LockKeyhole aria-hidden="true" /> Firebase gestiona la contraseña. Favoritos, historial y estadísticas permanecen únicamente en este dispositivo.</p>;
-  return <div className="account-setup" role="status"><LockKeyhole aria-hidden="true" /><p><strong>Autenticación próximamente.</strong><span>Esta demo no crea cuentas ni inicia sesiones. Continúa como invitado para usar las funciones disponibles de EcoRuta.</span></p></div>;
+  return <div className="account-setup" role="status"><LockKeyhole aria-hidden="true" /><p><strong>Acceso con cuenta no disponible.</strong><span>Puedes usar el mapa, las rutas y la actividad local sin iniciar sesión.</span></p></div>;
 }
 
 function SubmitButton({ label, loading, disabled }: { label: string; loading: boolean; disabled: boolean }) {
@@ -47,16 +47,16 @@ function Feedback({ error, success }: { error: string; success?: string }) {
 }
 
 export function AccountWelcomePage() {
-  const { user } = useAuth();
+  const { configured, user } = useAuth();
   return (
-    <AccountFrame title={user ? `Hola${user.displayName ? `, ${user.displayName}` : ''}.` : 'Bienvenido a EcoRuta.'} lead={user ? 'Tu sesión está activa. La actividad de movilidad continúa guardándose solo en este dispositivo.' : 'Puedes identificarte para conservar el acceso a tu cuenta o continuar usando todas las funciones como invitado.'}>
+    <AccountFrame title={user ? `Hola${user.displayName ? `, ${user.displayName}` : ''}.` : 'Bienvenido a EcoRuta.'} lead={user ? 'Tu sesión está activa. La actividad de movilidad continúa guardándose solo en este dispositivo.' : configured ? 'Identifícate con tu cuenta o continúa usando todas las funciones sin iniciar sesión.' : 'Usa mapas, rutas y actividad local sin iniciar sesión.'}>
       <div className="account-benefits" aria-label="Características de la cuenta">
         <p><Check aria-hidden="true" /><span><strong>Acceso opcional</strong><small>Mapa, rutas y actividad local siguen disponibles sin cuenta.</small></span></p>
-        <p><Check aria-hidden="true" /><span><strong>Recuperación segura</strong><small>Firebase gestiona credenciales y recuperación; EcoRuta no guarda contraseñas.</small></span></p>
+        {configured ? <p><Check aria-hidden="true" /><span><strong>Recuperación segura</strong><small>Firebase gestiona credenciales y recuperación; EcoRuta no guarda contraseñas.</small></span></p> : <p><Check aria-hidden="true" /><span><strong>Datos locales</strong><small>Favoritos, historial y estadísticas permanecen en este dispositivo.</small></span></p>}
       </div>
       <div className="account-actions">
-        {user ? <Link className="button button--primary" to="/settings">Administrar cuenta <ArrowRight aria-hidden="true" /></Link> : <><Link className="button button--primary" to="/account/sign-in">Iniciar sesión <ArrowRight aria-hidden="true" /></Link><Link className="button button--quiet" to="/account/register">Crear cuenta</Link></>}
-        <Link className="account-skip" to="/">Continuar a EcoRuta</Link>
+        {user ? <Link className="button button--primary" to="/profile">Ver perfil <ArrowRight aria-hidden="true" /></Link> : configured ? <><Link className="button button--primary" to="/account/sign-in">Iniciar sesión <ArrowRight aria-hidden="true" /></Link><Link className="button button--quiet" to="/account/register">Crear cuenta</Link></> : null}
+        <Link className="account-skip" to="/">Continuar al mapa</Link>
       </div>
       <AuthAvailabilityNotice />
     </AccountFrame>
@@ -79,7 +79,7 @@ export function SignInPage() {
     event.preventDefault();
     if (!configured || loading) return;
     setError(''); setLoading(true);
-    try { await signIn(email.trim(), password); navigate('/settings', { replace: true }); }
+    try { await signIn(email.trim(), password); navigate('/', { replace: true }); }
     catch (caught) { setError(getAuthErrorMessage(caught)); }
     finally { setLoading(false); }
   };
@@ -114,7 +114,7 @@ export function RegisterPage() {
     if (password.length < 8) { setError('Usa al menos 8 caracteres para la contraseña.'); return; }
     if (password !== confirmation) { setError('Las contraseñas no coinciden.'); return; }
     setError(''); setLoading(true);
-    try { await register({ email: email.trim(), password, displayName: name.trim() }); navigate('/settings', { replace: true }); }
+    try { await register({ email: email.trim(), password, displayName: name.trim() }); navigate('/', { replace: true }); }
     catch (caught) { setError(getAuthErrorMessage(caught)); }
     finally { setLoading(false); }
   };

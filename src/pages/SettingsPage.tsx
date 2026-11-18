@@ -1,13 +1,11 @@
-import { ArrowRight, Bike, Check, Database, Download, Footprints, LogOut, Moon, RotateCcw, ShieldCheck, Smartphone, Sun, Trash2, Upload, UserRound } from 'lucide-react';
+import { ArrowLeft, Bike, Check, Database, Download, Footprints, Moon, RotateCcw, ShieldCheck, Smartphone, Sun, Trash2, Upload } from 'lucide-react';
 import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import type { EcoRutaDataExport, ImportStrategy } from '../data/types';
 import { parseDataExportText } from '../data/validation';
 import { exportEcoRutaData } from '../services/platform/dataTransfer';
 import { useEcoRutaData } from '../state/DataContext';
-import { usePreferences, type DistanceUnitPreference, type PreferredMode, type ThemePreference } from '../state/PreferencesContext';
-import { useAuth } from '../state/AuthContext';
-import { getAuthErrorMessage } from '../services/auth/errors';
+import { usePreferences, type AccentPreference, type DistanceUnitPreference, type PreferredMode, type ThemePreference } from '../state/PreferencesContext';
 
 const themeOptions: Array<{ value: ThemePreference; label: string; icon: typeof Sun }> = [
   { value: 'system', label: 'Automático', icon: Smartphone },
@@ -15,23 +13,41 @@ const themeOptions: Array<{ value: ThemePreference; label: string; icon: typeof 
   { value: 'dark', label: 'Oscuro', icon: Moon },
 ];
 
+const accentOptions: Array<{ value: AccentPreference; label: string }> = [
+  { value: 'eco', label: 'Verde Eco' },
+  { value: 'ocean', label: 'Azul Océano' },
+  { value: 'turquoise', label: 'Turquesa' },
+  { value: 'purple', label: 'Morado' },
+  { value: 'orange', label: 'Naranja' },
+];
+
 type DeleteAction = 'favorites' | 'trips' | 'all' | null;
 
 export function SettingsPage() {
+  const routerLocation = useLocation();
   const { preferences, ready, updatePreferences, resetPreferences } = usePreferences();
   const data = useEcoRutaData();
-  const auth = useAuth();
   const [alias, setAlias] = useState(preferences.alias);
   const [confirmReset, setConfirmReset] = useState(false);
   const [deleteAction, setDeleteAction] = useState<DeleteAction>(null);
   const [pendingImport, setPendingImport] = useState<EcoRutaDataExport | null>(null);
   const [importStrategy, setImportStrategy] = useState<ImportStrategy>('merge');
   const [savedMessage, setSavedMessage] = useState('');
-  const [signingOut, setSigningOut] = useState(false);
 
   useEffect(() => {
     setAlias(preferences.alias);
   }, [preferences.alias]);
+
+  useEffect(() => {
+    if (!routerLocation.hash) return;
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById(routerLocation.hash.slice(1))?.scrollIntoView({
+        behavior: preferences.reduceMotion ? 'auto' : 'smooth',
+        block: 'start',
+      });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [preferences.reduceMotion, routerLocation.hash]);
 
   const notify = (message: string) => {
     setSavedMessage(message);
@@ -91,34 +107,17 @@ export function SettingsPage() {
     notify(`Importación completada: ${summary.favorites} favoritos y ${summary.trips} recorridos.`);
   };
 
-  const closeSession = async () => {
-    if (signingOut) return;
-    setSigningOut(true);
-    try {
-      await auth.signOut();
-      notify('Sesión cerrada. Tus favoritos, historial y estadísticas permanecen en este dispositivo.');
-    } catch (error) {
-      notify(getAuthErrorMessage(error));
-    } finally {
-      setSigningOut(false);
-    }
-  };
-
   return (
     <div className="page settings-page">
       <header className="page-header page-header--compact">
-        <p className="eyebrow">Ajustes</p>
-        <h1>Una experiencia a tu medida.</h1>
+        <Link className="back-link" to="/profile"><ArrowLeft aria-hidden="true" /> Perfil</Link>
+        <p className="eyebrow">Configuración</p>
+        <h1>EcoRuta a tu medida.</h1>
         <p>Las preferencias y tu actividad permanecen en este dispositivo. Puedes exportarlas o eliminarlas cuando quieras.</p>
       </header>
 
       <div className="settings-layout" aria-busy={!ready || !data.ready}>
-        <section className="settings-card settings-card--account" aria-labelledby="account-settings-title">
-          <div className="settings-card__heading"><div><p className="kicker">Cuenta</p><h2 id="account-settings-title">{auth.user ? 'Tu cuenta EcoRuta' : 'EcoRuta funciona sin iniciar sesión'}</h2><p>{auth.user ? 'Firebase conserva tu sesión. La actividad de movilidad sigue almacenada únicamente en este dispositivo.' : 'Tus favoritos, historial y preferencias continúan guardados localmente. Puedes usar EcoRuta como invitado.'}</p></div><UserRound aria-hidden="true" /></div>
-          <div className={`account-settings-status${auth.user ? ' is-connected' : ''}`}><span aria-hidden="true" /><div><strong>{auth.user ? auth.user.displayName || auth.user.email || 'Sesión activa' : 'Sin sesión'}</strong><small>{auth.user ? auth.user.emailVerified ? 'Correo verificado' : 'Correo pendiente de verificación' : auth.configured ? 'Firebase disponible · acceso opcional' : 'Firebase pendiente de configuración'}</small></div></div>
-          {auth.user ? <button className="button button--quiet" type="button" onClick={() => void closeSession()} disabled={signingOut}><LogOut aria-hidden="true" /> {signingOut ? 'Cerrando sesión…' : 'Cerrar sesión'}</button> : <Link className="button button--quiet" to="/account">Acceder o crear cuenta <ArrowRight aria-hidden="true" /></Link>}
-        </section>
-        <section className="settings-card" aria-labelledby="profile-title">
+        <section className="settings-card" id="mobility" aria-labelledby="profile-title">
           <div className="settings-card__heading"><div><p className="kicker">Personalización</p><h2 id="profile-title">Tu forma de moverte</h2></div></div>
           <form className="field-form" onSubmit={(event) => void saveAlias(event)}>
             <label htmlFor="alias">Nombre o alias opcional</label>
@@ -131,7 +130,7 @@ export function SettingsPage() {
           <label className="select-control settings-select"><span>Unidades de distancia</span><select value={preferences.distanceUnit} onChange={(event) => void save({ distanceUnit: event.target.value as DistanceUnitPreference }, 'Unidades guardadas.')}><option value="adaptive">Metros y kilómetros</option><option value="kilometers">Siempre kilómetros</option></select></label>
         </section>
 
-        <section className="settings-card" aria-labelledby="appearance-title">
+        <section className="settings-card" id="appearance" aria-labelledby="appearance-title">
           <div className="settings-card__heading"><div><p className="kicker">Apariencia</p><h2 id="appearance-title">Tema de la interfaz</h2></div></div>
           <div className="segmented-control" role="radiogroup" aria-label="Tema">
             {themeOptions.map(({ value, label, icon: Icon }) => {
@@ -139,10 +138,19 @@ export function SettingsPage() {
               return <button type="button" role="radio" aria-checked={selected} className={selected ? 'is-selected' : ''} onClick={() => void save({ theme: value }, `Tema ${label.toLowerCase()} guardado.`)} key={value}><Icon aria-hidden="true" /><span>{label}</span>{selected && <Check className="segmented-control__check" aria-hidden="true" />}</button>;
             })}
           </div>
+          <fieldset className="accent-fieldset">
+            <legend>Color de énfasis</legend>
+            <div className="accent-options" role="radiogroup" aria-label="Color de énfasis">
+              {accentOptions.map(({ value, label }) => {
+                const selected = preferences.accent === value;
+                return <button key={value} type="button" role="radio" aria-checked={selected} className={`accent-option accent-option--${value}${selected ? ' is-selected' : ''}`} onClick={() => void save({ accent: value }, `Color ${label.toLowerCase()} guardado.`)}><span className="accent-option__swatch" aria-hidden="true" /><span>{label}</span>{selected && <Check aria-hidden="true" />}</button>;
+              })}
+            </div>
+          </fieldset>
           <label className="setting-row" htmlFor="reduce-motion"><span><strong>Reducir movimiento</strong><small>Limita transiciones y entradas visuales.</small></span><span className="switch"><input id="reduce-motion" type="checkbox" checked={preferences.reduceMotion} onChange={(event) => void save({ reduceMotion: event.target.checked }, 'Preferencia de movimiento guardada.')} /><span aria-hidden="true" /></span></label>
         </section>
 
-        <section className="settings-card" aria-labelledby="privacy-title">
+        <section className="settings-card" id="privacy" aria-labelledby="privacy-title">
           <div className="settings-card__heading"><div><p className="kicker">Privacidad</p><h2 id="privacy-title">Datos bajo tu control</h2><p>Favoritos e historial se guardan en {data.engine === 'sqlite' ? 'SQLite dentro de la aplicación' : 'IndexedDB del navegador'}. No se envían a servidores de EcoRuta.</p></div><ShieldCheck aria-hidden="true" /></div>
           <label className="setting-row" htmlFor="allow-history"><span><strong>Permitir registrar recorridos</strong><small>Cuando está desactivado, el mapa no muestra la acción para añadir actividades al historial.</small></span><span className="switch"><input id="allow-history" type="checkbox" checked={preferences.allowTripStorage} onChange={(event) => void save({ allowTripStorage: event.target.checked }, 'Preferencia de privacidad guardada.')} /><span aria-hidden="true" /></span></label>
           <div className="privacy-explainer"><Database aria-hidden="true" /><p>Geoapify recibe las consultas de búsqueda y las coordenadas necesarias para mapas, geocodificación y rutas. EcoRuta no le envía tu historial completo ni tus favoritos.</p></div>

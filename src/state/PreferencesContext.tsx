@@ -2,11 +2,13 @@ import { Preferences } from '@capacitor/preferences';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 
 export type ThemePreference = 'system' | 'light' | 'dark';
+export type AccentPreference = 'eco' | 'ocean' | 'turquoise' | 'purple' | 'orange';
 export type PreferredMode = 'walk' | 'bicycle';
 export type DistanceUnitPreference = 'adaptive' | 'kilometers';
 
 export interface AppPreferences {
   theme: ThemePreference;
+  accent: AccentPreference;
   reduceMotion: boolean;
   alias: string;
   preferredMode: PreferredMode;
@@ -14,10 +16,12 @@ export interface AppPreferences {
   allowTripStorage: boolean;
 }
 
-const STORAGE_KEY = 'ecoruta.preferences.v2';
+const STORAGE_KEY = 'ecoruta.preferences.v3';
+const PREVIOUS_STORAGE_KEY = 'ecoruta.preferences.v2';
 const LEGACY_STORAGE_KEY = 'ecoruta.preferences.v1';
 const defaults: AppPreferences = {
   theme: 'system',
+  accent: 'eco',
   reduceMotion: false,
   alias: '',
   preferredMode: 'walk',
@@ -40,6 +44,9 @@ function parsePreferences(value: unknown): AppPreferences | null {
   if (!['system', 'light', 'dark'].includes(candidate.theme ?? '') || typeof candidate.reduceMotion !== 'boolean') return null;
   return {
     theme: candidate.theme as ThemePreference,
+    accent: ['eco', 'ocean', 'turquoise', 'purple', 'orange'].includes(candidate.accent ?? '')
+      ? candidate.accent as AccentPreference
+      : 'eco',
     reduceMotion: candidate.reduceMotion,
     alias: typeof candidate.alias === 'string' ? candidate.alias.slice(0, 60) : '',
     preferredMode: ['walk', 'bicycle'].includes(candidate.preferredMode ?? '') ? candidate.preferredMode as PreferredMode : 'walk',
@@ -59,15 +66,19 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let active = true;
-    Promise.all([Preferences.get({ key: STORAGE_KEY }), Preferences.get({ key: LEGACY_STORAGE_KEY })])
-      .then(async ([current, legacy]) => {
+    Promise.all([
+      Preferences.get({ key: STORAGE_KEY }),
+      Preferences.get({ key: PREVIOUS_STORAGE_KEY }),
+      Preferences.get({ key: LEGACY_STORAGE_KEY }),
+    ])
+      .then(async ([current, previous, legacy]) => {
         if (!active) return;
-        const raw = current.value ?? legacy.value;
+        const raw = current.value ?? previous.value ?? legacy.value;
         if (!raw) return;
         const parsed = parsePreferences(JSON.parse(raw) as unknown);
         if (!parsed) return;
         setPreferences(parsed);
-        if (!current.value && legacy.value) await Preferences.set({ key: STORAGE_KEY, value: JSON.stringify(parsed) });
+        if (!current.value) await Preferences.set({ key: STORAGE_KEY, value: JSON.stringify(parsed) });
       })
       .catch(() => undefined)
       .finally(() => {
@@ -83,6 +94,7 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     const applyTheme = () => {
       const resolved = resolveTheme(preferences.theme);
       document.documentElement.dataset.theme = resolved;
+      document.documentElement.dataset.accent = preferences.accent;
       document.documentElement.style.colorScheme = resolved;
       document.documentElement.dataset.reduceMotion = String(preferences.reduceMotion);
       let themeColor = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]:not([media])');
@@ -96,7 +108,7 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     applyTheme();
     media.addEventListener('change', applyTheme);
     return () => media.removeEventListener('change', applyTheme);
-  }, [preferences.reduceMotion, preferences.theme]);
+  }, [preferences.accent, preferences.reduceMotion, preferences.theme]);
 
   const persist = useCallback(async (next: AppPreferences) => {
     setPreferences(next);
@@ -109,7 +121,11 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
   );
 
   const resetPreferences = useCallback(async () => {
-    await Promise.all([Preferences.remove({ key: STORAGE_KEY }), Preferences.remove({ key: LEGACY_STORAGE_KEY })]);
+    await Promise.all([
+      Preferences.remove({ key: STORAGE_KEY }),
+      Preferences.remove({ key: PREVIOUS_STORAGE_KEY }),
+      Preferences.remove({ key: LEGACY_STORAGE_KEY }),
+    ]);
     setPreferences(defaults);
   }, []);
 

@@ -34,7 +34,7 @@ export function HistoryPage() {
       preferredMode: trip.mode,
       source: 'history',
     };
-    navigate('/map', { state });
+    navigate('/', { state });
   };
 
   const confirmDelete = async (id: string) => {
@@ -53,7 +53,7 @@ export function HistoryPage() {
       {(error || message) && <div className="inline-notice" role="status"><p>{error || message}</p><button type="button" onClick={() => { clearError(); setMessage(''); }}>Cerrar</button></div>}
 
       {!ready ? <div className="data-loading" role="status">Cargando historial local…</div> : trips.length === 0 ? (
-        <EmptyState icon={Clock3} title="Todavía no hay recorridos realizados" description="Calcula una ruta y regístrala solo después de haberla realizado." actionLabel="Planificar una ruta" actionTo="/map" />
+        <EmptyState icon={Clock3} title="Todavía no hay recorridos realizados" description="Calcula una ruta y regístrala solo después de haberla realizado." actionLabel="Planificar una ruta" actionTo="/" />
       ) : (
         <>
           <div className="collection-toolbar collection-toolbar--filters">
