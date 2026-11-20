@@ -1,5 +1,19 @@
 # QA — EcoRuta
 
+## Fase 8C — preparación local de Eco IA
+
+**Estado:** backend preparado y verificable localmente; Gemini real, despliegue e iPhone no probados porque no existe clave ni autorización para crear recursos externos.
+
+- ✅ TypeScript del Worker sin errores.
+- ✅ 11 pruebas en 4 archivos: mensaje único, rechazo de datos extra, claims Firebase, límites y propuesta de destino.
+- ✅ `wrangler deploy --dry-run`: paquete de 49,58 KiB / 13,80 KiB gzip, sin despliegue.
+- ✅ `npm audit --audit-level=high`: 0 vulnerabilidades conocidas en el Worker.
+- ✅ Smoke local: `/health` 200, solicitud sin sesión 401 y origen no autorizado 403.
+- ✅ `.env.local` y `.dev.vars` ignorados; ningún secreto real añadido.
+- 🟡 Firma Firebase real pendiente de un Worker configurado y una sesión de prueba.
+- ⏸️ Gemini real pendiente de aceptar las condiciones del nivel gratuito y crear la clave sin facturación.
+- ⏸️ Conexión de Eco IA, confirmación hacia Mapa e instalación iOS pendientes; la interfaz actual continúa honesta y desactivada.
+
 ## Fase 7 — navegación, perfil y apariencia
 
 **Ejecución:** 18 de noviembre de 2026.

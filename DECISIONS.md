@@ -109,3 +109,13 @@
 - SQLite, favoritos, historial, estadísticas y preferencias deben conservarse entre instalaciones. No se autorizan borrados, restablecimientos ni cambios sobre otras aplicaciones.
 - El propietario introduce contraseñas, confirma correos y acepta permisos personales. Esos datos no se solicitan ni se registran.
 - Tras cada instalación se comprueba apertura, autenticación y regresiones de las funciones principales antes de considerar aprobada la build.
+
+## 2026-11-20 — Preparación segura de Eco IA
+
+- Eco IA se prepara detrás de un Cloudflare Worker; ninguna clave de modelo entra en React, Capacitor, `.env.local` ni el repositorio.
+- El Worker verifica tokens ID de Firebase mediante firma RS256, emisor, audiencia, vigencia, UID y correo verificado. No requiere cuenta de servicio ni clave administrativa.
+- Un Durable Object SQLite limita el uso por UID anonimizado. El contrato acepta únicamente el mensaje actual y rechaza coordenadas, historial, correo y cualquier campo adicional.
+- Gemini solo puede proponer un `destinationQuery`. Abrirlo en el mapa requerirá confirmación explícita; Geoapify seguirá siendo la única fuente de geocodificación, rutas, tiempos y distancias.
+- El backend no guarda conversaciones. El historial permanece desactivado por defecto y todavía no existe integración cliente-servidor.
+- El nivel gratuito de Gemini queda bloqueado para activación hasta una decisión expresa: sus términos permiten usar entradas y salidas para mejorar productos, contemplan revisión humana, prohíben enviar información personal/sensible/confidencial y restringen los API Clients probablemente accesibles por menores de 18 años.
+- No se creó cuenta, recurso, secreto remoto ni despliegue. La preparación local no autoriza Cloud Billing, Workers Paid ni consumo facturable.

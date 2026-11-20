@@ -2,7 +2,7 @@
 
 ## Identidad
 
-EcoRuta · aplicación de movilidad sostenible · Production path · v0.7 · Fase 7 visual compilada y verificada en simulador iOS.
+EcoRuta · aplicación de movilidad sostenible · Production path · v0.7 · build 6 instalada y verificada en iPhone físico.
 
 ## Objetivo
 
@@ -36,6 +36,7 @@ Clara, urbana, serena, confiable y táctil. Verde profundo como marca, teal para
 - Fase 5: proyecto iOS, permisos, privacidad, SQLite, exportación nativa y apertura segura de enlaces.
 - Fase 6: splash, animaciones y autenticación Firebase preparada pero no configurada.
 - Fase 7: mapa principal, Perfil, Actividad y personalización cromática persistente.
+- Fase 8: navegación ampliada, Explorar real, panel premium y Eco IA preparada detrás de un backend seguro todavía no desplegado.
 - Fuera del alcance activo: sincronización, notificaciones, Android y ubicación en segundo plano.
 
 ## Datos y realidad
@@ -48,7 +49,7 @@ Sin Figma. `main` y GitHub Pages permanecen intactos hasta autorización expresa
 
 ## Estado actual
 
-La versión 0.6.0 fue instalada y abierta en un iPhone 15 Pro Max físico. La versión 0.7.0 reorganiza navegación, Perfil y apariencia; fue compilada y abierta solo en simulador para proteger los datos del iPhone hasta aprobar la validación. Firebase continúa sin variables locales y el acceso con cuenta no está activo. La versión web React mantiene un build GitHub Pages separado y manual para `/EcoRuta/`; todavía no está publicada. Android continúa pendiente.
+EcoRuta 0.7.0 build 6 está instalada en un iPhone 15 Pro Max físico con Firebase real, navegación de cuatro secciones, Explorar mediante Geoapify y el mapa premium. Eco IA sigue visible como servicio no conectado. Su Worker está preparado y probado solo localmente; no existe recurso Cloudflare, clave Gemini ni despliegue. La versión web React mantiene un build GitHub Pages separado y manual para `/EcoRuta/`; todavía no está publicada. Android continúa pendiente.
 
 ## Enlaces
 

@@ -93,6 +93,12 @@
 - 🟡 Firebase preparado pero sin configuración real. Registro, inicio, recuperación, persistencia y cierre requieren intervención del propietario.
 - ⏸️ Flujo obligatorio Splash → acceso → mapa diferido hasta aprobar Firebase real; mientras tanto el mapa continúa disponible sin cuenta.
 
-## Fase 8
+## Fase 8 — Experiencia móvil y Eco IA
 
-- ⏳ Preparación de distribución y tiendas, solo después de aprobar hardware real y autenticación.
+- ✅ Navegación de cuatro secciones, Explorar real con Geoapify y presentación honesta de Eco IA preparadas en build 6.
+- ✅ Backend Cloudflare Worker preparado localmente con Firebase, salida estructurada, límites por usuario y secreto Gemini aislado.
+- ✅ Contrato de privacidad que rechaza ubicación precisa, datos personales, historial y campos adicionales.
+- ✅ Compilación local de Wrangler y pruebas unitarias del backend completadas sin desplegar recursos.
+- 🟡 Activación de Gemini Free detenida por sus condiciones de uso de datos y restricción para menores; requiere decisión expresa del propietario.
+- ⏸️ Cuenta Cloudflare, clave Gemini, despliegue HTTPS, conexión del cliente y pruebas reales pendientes; no se ha activado facturación.
+- ⏳ Preparación de distribución y tiendas, solo después de aprobar hardware real, autenticación y Eco IA.

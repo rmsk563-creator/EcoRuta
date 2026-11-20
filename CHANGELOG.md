@@ -1,5 +1,22 @@
 # Changelog
 
+## Fase 8C — Backend Eco IA preparado, no activado
+
+### Añadido
+
+- Proyecto aislado `workers/eco-ai` para Cloudflare Workers con configuración Free-compatible y Durable Objects SQLite.
+- Verificación criptográfica de tokens ID de Firebase sin cuenta de servicio.
+- Límites conservadores por usuario, UID anonimizado, CORS estricto, timeout y errores comprensibles.
+- Contrato de mensaje único y respuesta estructurada para proponer destinos con confirmación posterior en el mapa.
+- Pruebas de validación, autenticación, límites y normalización de respuestas.
+
+### Seguridad y privacidad
+
+- La clave Gemini se declara exclusivamente como secreto requerido del Worker; `.dev.vars` queda ignorado por Git.
+- No se aceptan coordenadas, historial, correo ni campos adicionales y no existe almacenamiento remoto de conversaciones.
+- Gemini no puede aportar rutas, tiempos, distancias o CO2 como datos reales; esas operaciones permanecen en Geoapify y en el cálculo transparente de EcoRuta.
+- Despliegue y conexión detenidos por las condiciones de datos del nivel gratuito de Gemini. No se creó ningún recurso externo ni se activó facturación.
+
 ## 0.7.0 — Fase 7 (navegación y perfil)
 
 ### Cambiado
