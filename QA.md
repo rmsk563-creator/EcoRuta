@@ -1,18 +1,22 @@
 # QA — EcoRuta
 
-## Fase 8C — preparación local de Eco IA
+## Fase 8C — preparación local de Workers AI
 
-**Estado:** backend preparado y verificable localmente; Gemini real, despliegue e iPhone no probados porque no existe clave ni autorización para crear recursos externos.
+**Estado:** backend y cliente preparados localmente; inferencia real, despliegue e iPhone no probados porque la cuenta Cloudflare Free aún requiere intervención del propietario.
 
 - ✅ TypeScript del Worker sin errores.
-- ✅ 11 pruebas en 4 archivos: mensaje único, rechazo de datos extra, claims Firebase, límites y propuesta de destino.
-- ✅ `wrangler deploy --dry-run`: paquete de 49,58 KiB / 13,80 KiB gzip, sin despliegue.
+- ✅ 13 pruebas del Worker en 4 archivos: mensaje único, rechazo de datos extra, claims Firebase, límites, JSON Mode y errores de capacidad.
+- ✅ TypeScript, 70 pruebas en 19 archivos y build de producción de la aplicación.
+- ✅ Flujo automatizado: respuesta en español, propuesta de Parque Kennedy, confirmación y búsqueda posterior mediante Geoapify.
+- ✅ Historial remoto inexistente; persistencia local desactivada por defecto y cuerpo limitado al mensaje actual.
+- ✅ `wrangler deploy --dry-run`: paquete de 49,75 KiB / 13,91 KiB gzip, binding `env.AI` reconocido, sin despliegue.
 - ✅ `npm audit --audit-level=high`: 0 vulnerabilidades conocidas en el Worker.
-- ✅ Smoke local: `/health` 200, solicitud sin sesión 401 y origen no autorizado 403.
-- ✅ `.env.local` y `.dev.vars` ignorados; ningún secreto real añadido.
-- 🟡 Firma Firebase real pendiente de un Worker configurado y una sesión de prueba.
-- ⏸️ Gemini real pendiente de aceptar las condiciones del nivel gratuito y crear la clave sin facturación.
-- ⏸️ Conexión de Eco IA, confirmación hacia Mapa e instalación iOS pendientes; la interfaz actual continúa honesta y desactivada.
+- ✅ `npx cap sync ios`: recursos web y seis plugins sincronizados sin instalar la aplicación.
+- ✅ `xcodebuild` Debug para `iphonesimulator`: `BUILD SUCCEEDED`; solo se observaron advertencias de dependencias nativas.
+- ✅ `.env.local`, `.wrangler` y archivos locales sensibles permanecen ignorados.
+- 🟡 Firma Firebase real contra el Worker pendiente de una URL desplegada y una sesión de prueba.
+- ⏸️ Inferencia real de Workers AI pendiente: incluso `wrangler dev` consume la asignación de la cuenta.
+- ⏸️ Instalación iOS pendiente hasta aprobar la cuenta, el primer despliegue y las pruebas reales.
 
 ## Fase 7 — navegación, perfil y apariencia
 

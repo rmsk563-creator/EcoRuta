@@ -1,8 +1,7 @@
 export interface Env {
-  GEMINI_API_KEY: string;
+  AI: Ai;
   FIREBASE_PROJECT_ID: string;
   ALLOWED_ORIGINS: string;
-  GEMINI_MODEL: string;
   RATE_LIMIT_PER_MINUTE: string;
   RATE_LIMIT_PER_DAY: string;
   RATE_LIMITER: DurableObjectNamespace;

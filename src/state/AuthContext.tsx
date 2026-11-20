@@ -12,6 +12,7 @@ interface AuthContextValue {
   signIn: (email: string, password: string) => Promise<EcoRutaAuthUser>;
   resendEmailVerification: () => Promise<void>;
   refreshUser: () => Promise<EcoRutaAuthUser | null>;
+  getIdToken: () => Promise<string>;
   sendPasswordReset: (email: string) => Promise<void>;
   signOut: () => Promise<void>;
 }
@@ -93,6 +94,7 @@ export function AuthProvider({
     return nextUser;
   }, [getService]);
   const sendPasswordReset = useCallback(async (email: string) => (await getService()).sendPasswordReset(email), [getService]);
+  const getIdToken = useCallback(async () => (await getService()).getIdToken(), [getService]);
   const signOut = useCallback(async () => {
     await (await getService()).signOut();
     setUser(null);
@@ -107,9 +109,10 @@ export function AuthProvider({
     signIn,
     resendEmailVerification,
     refreshUser,
+    getIdToken,
     sendPasswordReset,
     signOut,
-  }), [configured, initializationError, ready, refreshUser, register, resendEmailVerification, sendPasswordReset, signIn, signOut, user]);
+  }), [configured, getIdToken, initializationError, ready, refreshUser, register, resendEmailVerification, sendPasswordReset, signIn, signOut, user]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

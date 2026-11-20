@@ -4,15 +4,14 @@
   "main": "src/index.ts",
   "compatibility_date": "2026-11-20",
   "workers_dev": true,
+  "ai": {
+    "binding": "AI"
+  },
   "vars": {
     "FIREBASE_PROJECT_ID": "ecoruta-web-90b6d",
     "ALLOWED_ORIGINS": "capacitor://localhost,http://localhost,https://rmsk563-creator.github.io",
-    "GEMINI_MODEL": "gemini-2.5-flash-lite",
     "RATE_LIMIT_PER_MINUTE": "6",
     "RATE_LIMIT_PER_DAY": "40"
-  },
-  "secrets": {
-    "required": ["GEMINI_API_KEY"]
   },
   "durable_objects": {
     "bindings": [

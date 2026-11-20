@@ -22,6 +22,7 @@ function createService() {
     signIn: vi.fn(async () => ({ ...testUser, emailVerified: true })),
     resendEmailVerification: vi.fn(async () => undefined),
     refreshUser: vi.fn(async () => ({ ...testUser, emailVerified: true })),
+    getIdToken: vi.fn(async () => 'firebase-id-token'),
     sendPasswordReset: vi.fn(async () => undefined),
     signOut: vi.fn(async () => undefined),
   };

@@ -22,6 +22,7 @@ export interface AuthService {
   signIn: (email: string, password: string) => Promise<EcoRutaAuthUser>;
   resendEmailVerification: () => Promise<void>;
   refreshUser: () => Promise<EcoRutaAuthUser | null>;
+  getIdToken: () => Promise<string>;
   sendPasswordReset: (email: string) => Promise<void>;
   signOut: () => Promise<void>;
 }

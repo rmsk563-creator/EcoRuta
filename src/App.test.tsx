@@ -132,7 +132,7 @@ describe('EcoRuta app shell', () => {
     renderApp('/eco-ai');
 
     expect(await screen.findByRole('heading', { name: 'Eco IA' })).toBeInTheDocument();
-    expect(screen.getByText(/servicio no conectado/i)).toBeInTheDocument();
+    expect(screen.getByText(/pendiente de despliegue seguro/i)).toBeInTheDocument();
     expect(screen.getByRole('textbox', { name: /mensaje para eco ia/i })).toBeDisabled();
     expect(screen.getByRole('button', { name: /enviar mensaje/i })).toBeDisabled();
   });

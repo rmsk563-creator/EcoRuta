@@ -1,8 +1,8 @@
 import { authenticateRequest, AuthenticationError } from './auth';
-import { askGemini, ProviderError } from './gemini';
 import { UserRateLimiter } from './rateLimiter';
 import { parseChatRequest, RequestValidationError } from './request';
 import type { Env, RateLimitResult } from './types';
+import { askWorkersAi, ProviderError } from './workersAi';
 
 export { UserRateLimiter };
 
@@ -106,7 +106,7 @@ export default {
         );
       }
 
-      const answer = await askGemini(payload.message, env.GEMINI_API_KEY, env.GEMINI_MODEL);
+      const answer = await askWorkersAi(payload.message, env.AI);
       return json({ answer }, 200, origin, rateHeaders);
     } catch (error) {
       if (error instanceof AuthenticationError) return json({ error: error.message }, 401, origin);

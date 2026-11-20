@@ -77,6 +77,11 @@ export async function loadFirebaseAuthService(): Promise<AuthService> {
       await reload(user);
       return normalizeUser(user);
     },
+    async getIdToken() {
+      const user = auth.currentUser;
+      if (!user) throw { code: 'auth/requires-recent-login' };
+      return user.getIdToken();
+    },
     async sendPasswordReset(email) {
       await sendPasswordResetEmail(auth, email);
     },

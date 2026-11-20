@@ -96,9 +96,10 @@
 ## Fase 8 — Experiencia móvil y Eco IA
 
 - ✅ Navegación de cuatro secciones, Explorar real con Geoapify y presentación honesta de Eco IA preparadas en build 6.
-- ✅ Backend Cloudflare Worker preparado localmente con Firebase, salida estructurada, límites por usuario y secreto Gemini aislado.
+- ✅ Backend adaptado a Workers AI con Firebase, JSON Mode validado y límites por usuario.
 - ✅ Contrato de privacidad que rechaza ubicación precisa, datos personales, historial y campos adicionales.
-- ✅ Compilación local de Wrangler y pruebas unitarias del backend completadas sin desplegar recursos.
-- 🟡 Activación de Gemini Free detenida por sus condiciones de uso de datos y restricción para menores; requiere decisión expresa del propietario.
-- ⏸️ Cuenta Cloudflare, clave Gemini, despliegue HTTPS, conexión del cliente y pruebas reales pendientes; no se ha activado facturación.
+- ✅ Cliente React preparado para conversación, errores, historial local opcional y confirmación de destinos mediante Geoapify.
+- ✅ Compilación local de Wrangler, pruebas del backend y regresión completa completadas sin desplegar recursos.
+- 🟡 Cuenta Cloudflare Free, revisión de facturación y autorización OAuth requieren intervención del propietario.
+- ⏸️ Primer despliegue, inferencias reales, URL del cliente e instalación iOS pendientes de confirmación expresa.
 - ⏳ Preparación de distribución y tiendas, solo después de aprobar hardware real, autenticación y Eco IA.

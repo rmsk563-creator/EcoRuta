@@ -37,6 +37,7 @@ describe('Profile account isolation', () => {
       signIn: vi.fn(),
       resendEmailVerification: vi.fn(),
       refreshUser: vi.fn(),
+      getIdToken: vi.fn(),
       sendPasswordReset: vi.fn(),
       signOut: vi.fn(async () => undefined),
     };
