@@ -31,6 +31,58 @@ describe('sendEcoAiMessage', () => {
     await expect(sendEcoAiMessage('https://eco-ai.example.workers.dev', 'Hola', 'token')).rejects.toMatchObject({ code: 'limit' });
   });
 
+  it('reports an expired Firebase session as authentication, not connectivity', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(Response.json(
+      { error: 'La sesión venció. Inicia sesión nuevamente.' },
+      { status: 401 },
+    )));
+    await expect(sendEcoAiMessage('https://eco-ai.example.workers.dev', 'Hola', 'token')).rejects.toMatchObject({
+      code: 'authentication',
+      status: 401,
+    });
+  });
+
+  it('preserves an authorization error returned by the Worker', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(Response.json(
+      { error: 'Origen no autorizado.' },
+      { status: 403 },
+    )));
+    await expect(sendEcoAiMessage('https://eco-ai.example.workers.dev', 'Hola', 'token')).rejects.toMatchObject({
+      code: 'authorization',
+      status: 403,
+      message: 'Origen no autorizado.',
+    });
+  });
+
+  it('does not describe an opaque CORS or service failure as a confirmed internet outage', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new TypeError('Failed to fetch')));
+    await expect(sendEcoAiMessage('https://eco-ai.example.workers.dev', 'Hola', 'token')).rejects.toMatchObject({
+      code: 'network',
+      message: expect.stringContaining('conexión segura'),
+    });
+  });
+
+  it('reports a confirmed offline browser separately', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new TypeError('Failed to fetch')));
+    vi.spyOn(window.navigator, 'onLine', 'get').mockReturnValue(false);
+    await expect(sendEcoAiMessage('https://eco-ai.example.workers.dev', 'Hola', 'token')).rejects.toMatchObject({
+      code: 'network',
+      message: expect.stringContaining('no tiene conexión a Internet'),
+    });
+    vi.restoreAllMocks();
+  });
+
+  it('reports a non-JSON server failure as service unavailable', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('<html>Error 1027</html>', {
+      status: 503,
+      headers: { 'Content-Type': 'text/html' },
+    })));
+    await expect(sendEcoAiMessage('https://eco-ai.example.workers.dev', 'Hola', 'token')).rejects.toMatchObject({
+      code: 'service',
+      status: 503,
+    });
+  });
+
   it('rejects malformed assistant output', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(Response.json({ answer: { reply: 'incompleta' } })));
     await expect(sendEcoAiMessage('https://eco-ai.example.workers.dev', 'Hola', 'token')).rejects.toMatchObject({ code: 'invalid-response' });

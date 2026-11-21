@@ -1,5 +1,39 @@
 # QA — EcoRuta
 
+## Fase 8C — Eco IA real y optimización móvil
+
+**Ejecución:** 20 de noviembre de 2026.
+
+**Entorno:** Worker `ecoruta-eco-ai` en Cloudflare Workers Free, navegador local autenticado con Firebase e iPhone 15 Pro Max físico. Aplicación 0.7.0 (build 8), Bundle ID `com.ecoruta.app`.
+
+### Flujo real verificado
+
+- ✅ El propietario confirmó respuestas reales en español para CO₂ evitado y «Quiero ir al Parque Kennedy caminando».
+- ✅ La propuesta mostró «Parque Kennedy, Lima, Perú» y exigió confirmación antes de consultar Geoapify.
+- ✅ «Ver en el mapa» consultó Geoapify, resolvió `Parque John F. Kennedy`, abrió el mapa, centró el destino y mostró su marcador.
+- ✅ Con `Plaza Mayor de Lima` como origen real, Geoapify devolvió y trazó dos alternativas actuales: caminar 9,1 km / 2 h 15 min y bicicleta 10,1 km / 37 min.
+- ✅ No se guardó ni contabilizó el recorrido durante la verificación.
+
+### Automatización y compilación
+
+- ✅ TypeScript de la aplicación y del Worker sin errores.
+- ✅ Aplicación: 78 pruebas aprobadas en 20 archivos.
+- ✅ Worker: 15 pruebas aprobadas en 5 archivos.
+- ✅ Build Vite de producción y `npx cap sync ios` completados.
+- ✅ Build física firmada con el equipo `C3AMZ7K6T2`; metadatos comprobados: `com.ecoruta.app`, 0.7.0, build 8.
+- ✅ Actualización instalada sobre la aplicación existente sin ejecutar desinstalación ni limpieza; la aplicación abrió y el mapa real cargó en el dispositivo.
+
+### Interfaz móvil
+
+- Chat adaptado a `100dvh`, conversación con desplazamiento interno, encabezado compacto y compositor de 16 px.
+- A 390 × 844 no existe desbordamiento horizontal y la conversación dispone de 511 px antes de abrir el teclado.
+- Con el compositor enfocado se ocultan temporalmente encabezado secundario, tarjetas informativas y navegación inferior para reservar espacio al teclado, respetando las safe areas.
+
+### Pendiente manual en el dispositivo
+
+- Abrir Eco IA, enfocar el compositor y confirmar visualmente la distribución final con el teclado físico de iOS.
+- Enviar una conversación autenticada desde la build 8 y repetir «Ver en el mapa»; el backend, el flujo web real y el mapa físico están verificados por separado, pero el gesto completo aún requiere interacción del propietario en el iPhone.
+
 ## Fase 8C — preparación local de Workers AI
 
 **Estado:** backend y cliente preparados localmente; inferencia real, despliegue e iPhone no probados porque la cuenta Cloudflare Free aún requiere intervención del propietario.

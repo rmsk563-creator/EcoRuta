@@ -55,6 +55,7 @@ export function EcoAiPage({ apiUrlOverride }: { apiUrlOverride?: string } = {}) 
   const [pendingDestination, setPendingDestination] = useState<string | null>(null);
   const inFlight = useRef(false);
   const activeGeocoding = useRef<AbortController | null>(null);
+  const conversationRef = useRef<HTMLDivElement | null>(null);
 
   const authenticated = Boolean(user?.emailVerified);
   const canChat = Boolean(apiUrl) && authenticated;
@@ -65,6 +66,11 @@ export function EcoAiPage({ apiUrlOverride }: { apiUrlOverride?: string } = {}) 
   }, [keepHistory, messages]);
 
   useEffect(() => () => activeGeocoding.current?.abort(), []);
+
+  useEffect(() => {
+    const conversation = conversationRef.current;
+    if (conversation) conversation.scrollTop = conversation.scrollHeight;
+  }, [messages, pendingDestination, submitting, error]);
 
   const updateHistoryPreference = (enabled: boolean) => {
     setKeepHistory(enabled);
@@ -161,7 +167,7 @@ export function EcoAiPage({ apiUrlOverride }: { apiUrlOverride?: string } = {}) 
           <span className="eco-chat__secure"><LockKeyhole aria-hidden="true" /> Sin historial remoto</span>
         </div>
 
-        <div className={`eco-chat__conversation${messages.length ? ' has-messages' : ''}`} aria-live="polite" aria-busy={submitting}>
+        <div ref={conversationRef} className={`eco-chat__conversation${messages.length ? ' has-messages' : ''}`} aria-live="polite" aria-busy={submitting}>
           {messages.length === 0 && (
             <div className="eco-chat__empty">
               <span aria-hidden="true"><Bot /></span>

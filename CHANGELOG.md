@@ -1,5 +1,20 @@
 # Changelog
 
+## Fase 8C — Eco IA conectada y optimizada para iPhone
+
+### Cambiado
+
+- Eco IA utiliza el Worker real de Cloudflare Workers AI con autenticación Firebase y errores diferenciados de autenticación, cuota, validación, servidor y conectividad.
+- El flujo confirmado de destino abre el mapa y delega búsqueda, rutas, tiempos y distancias exclusivamente a Geoapify.
+- La interfaz móvil del chat reduce encabezados, amplía la conversación y adapta el contenido al teclado y las safe areas de iOS.
+- La compilación iOS avanza a 0.7.0 (build 8), manteniendo `com.ecoruta.app`.
+
+### Seguridad y preservación
+
+- CORS permite únicamente los orígenes web y Capacitor aprobados; no utiliza comodines.
+- La URL pública del Worker se configura localmente y `.env.local` permanece fuera de Git.
+- La instalación física se realiza como actualización, sin desinstalar ni ejecutar operaciones de limpieza sobre SQLite, favoritos, historial o preferencias.
+
 ## Fase 8C — Workers AI preparado, no desplegado
 
 ### Añadido

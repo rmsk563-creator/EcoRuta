@@ -7,7 +7,7 @@ export interface EcoAiAnswer {
   requiresMapConfirmation: boolean;
 }
 
-export type EcoAiErrorCode = 'authentication' | 'limit' | 'configuration' | 'timeout' | 'network' | 'service' | 'invalid-response';
+export type EcoAiErrorCode = 'authentication' | 'authorization' | 'validation' | 'limit' | 'configuration' | 'timeout' | 'network' | 'service' | 'invalid-response';
 
 export class EcoAiError extends Error {
   constructor(readonly code: EcoAiErrorCode, message: string, readonly status?: number) {

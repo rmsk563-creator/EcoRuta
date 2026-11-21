@@ -16,6 +16,10 @@ vi.mock('./config/geoapify', async () => {
   };
 });
 
+vi.mock('./config/ecoAi', () => ({
+  ecoAiApiUrl: 'https://eco-ai.example.workers.dev',
+}));
+
 function renderApp(initialPath = '/') {
   return render(
     <MemoryRouter initialEntries={[initialPath]}>
@@ -128,11 +132,11 @@ describe('EcoRuta app shell', () => {
     expect(container.querySelector('.splash .brand__mark img')).toHaveAttribute('src', expect.stringContaining('logo-ecoruta'));
   });
 
-  it('presents Eco IA honestly while no secure backend is configured', async () => {
+  it('requires a Firebase session before enabling the configured Eco IA backend', async () => {
     renderApp('/eco-ai');
 
     expect(await screen.findByRole('heading', { name: 'Eco IA' })).toBeInTheDocument();
-    expect(screen.getByText(/pendiente de despliegue seguro/i)).toBeInTheDocument();
+    expect(screen.getByText(/inicia sesión para conversar/i)).toBeInTheDocument();
     expect(screen.getByRole('textbox', { name: /mensaje para eco ia/i })).toBeDisabled();
     expect(screen.getByRole('button', { name: /enviar mensaje/i })).toBeDisabled();
   });

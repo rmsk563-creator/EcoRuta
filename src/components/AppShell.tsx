@@ -9,6 +9,7 @@ export function AppShell() {
   const { user } = useAuth();
   const location = useLocation();
   const mapIsActive = location.pathname === '/';
+  const ecoAiIsActive = location.pathname === '/eco-ai';
 
   return (
     <div className="app-shell">
@@ -28,7 +29,7 @@ export function AppShell() {
         </div>
       </aside>
 
-      <div className={`app-frame${mapIsActive ? ' app-frame--map' : ''}`}>
+      <div className={`app-frame${mapIsActive ? ' app-frame--map' : ''}${ecoAiIsActive ? ' app-frame--eco-ai' : ''}`}>
         <header className={`topbar${mapIsActive ? ' topbar--map' : ''}`}>
           <Brand />
           <NavLink className="profile-trigger" to="/profile" aria-label="Abrir perfil">
@@ -36,7 +37,7 @@ export function AppShell() {
           </NavLink>
         </header>
 
-        <main id="main-content" className={`main-content${mapIsActive ? ' main-content--map' : ''}`} tabIndex={-1}>
+        <main id="main-content" className={`main-content${mapIsActive ? ' main-content--map' : ''}${ecoAiIsActive ? ' main-content--eco-ai' : ''}`} tabIndex={-1}>
           <Outlet />
         </main>
 

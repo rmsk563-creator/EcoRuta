@@ -51,6 +51,18 @@ function renderEcoAi(service = authService()) {
   );
 }
 
+function renderEcoAiWithoutBackend(service = authService()) {
+  return render(
+    <MemoryRouter initialEntries={['/eco-ai']}>
+      <AuthProvider configuredOverride serviceLoader={async () => service}>
+        <Routes>
+          <Route path="/eco-ai" element={<EcoAiPage apiUrlOverride="" />} />
+        </Routes>
+      </AuthProvider>
+    </MemoryRouter>,
+  );
+}
+
 beforeEach(() => {
   localStorage.clear();
   vi.clearAllMocks();
@@ -59,6 +71,14 @@ beforeEach(() => {
 afterEach(() => vi.unstubAllGlobals());
 
 describe('EcoAiPage secure flow', () => {
+  it('stays disabled and explains the state when no secure backend is configured', async () => {
+    renderEcoAiWithoutBackend();
+
+    expect(await screen.findByText(/pendiente de despliegue seguro/i)).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: /mensaje para eco ia/i })).toBeDisabled();
+    expect(screen.getByRole('button', { name: /enviar mensaje/i })).toBeDisabled();
+  });
+
   it('sends one Spanish message, keeps history off, and asks before opening Geoapify', async () => {
     const user = userEvent.setup();
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(Response.json({

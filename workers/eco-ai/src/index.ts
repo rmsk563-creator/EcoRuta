@@ -24,7 +24,7 @@ function json(body: unknown, status: number, origin?: string, extraHeaders?: Hea
   });
 }
 
-function allowedOrigin(request: Request, configuredOrigins: string): string | undefined {
+export function allowedOrigin(request: Request, configuredOrigins: string): string | undefined {
   const origin = request.headers.get('Origin');
   if (!origin) return undefined;
   const allowed = configuredOrigins.split(',').map((item) => item.trim()).filter(Boolean);

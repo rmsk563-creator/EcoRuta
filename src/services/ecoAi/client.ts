@@ -20,6 +20,17 @@ function linkAbortSignal(source: AbortSignal | undefined, target: AbortControlle
   return () => source.removeEventListener('abort', abort);
 }
 
+async function readPayload(response: Response): Promise<{ answer?: unknown; error?: unknown }> {
+  const text = await response.text();
+  if (!text) return {};
+  try {
+    return JSON.parse(text) as { answer?: unknown; error?: unknown };
+  } catch {
+    if (!response.ok) return {};
+    throw new EcoAiError('invalid-response', 'Eco IA recibió una respuesta que no pudo interpretar.');
+  }
+}
+
 export async function sendEcoAiMessage(apiUrl: string, message: string, idToken: string, signal?: AbortSignal): Promise<EcoAiAnswer> {
   if (!apiUrl) throw new EcoAiError('configuration', 'Eco IA todavía no está conectada en este dispositivo.');
   const controller = new AbortController();
@@ -37,10 +48,14 @@ export async function sendEcoAiMessage(apiUrl: string, message: string, idToken:
       body: JSON.stringify({ message }),
       signal: controller.signal,
     });
-    const payload = await response.json() as { answer?: unknown; error?: unknown };
+    const payload = await readPayload(response);
     const serverMessage = typeof payload.error === 'string' ? payload.error : '';
 
+    if (response.status === 400 || response.status === 413) {
+      throw new EcoAiError('validation', serverMessage || 'El mensaje no pudo procesarse. Revísalo e inténtalo nuevamente.', response.status);
+    }
     if (response.status === 401) throw new EcoAiError('authentication', serverMessage || 'Tu sesión venció. Inicia sesión nuevamente.', 401);
+    if (response.status === 403) throw new EcoAiError('authorization', serverMessage || 'Esta versión de EcoRuta no está autorizada para usar Eco IA.', 403);
     if (response.status === 429) throw new EcoAiError('limit', serverMessage || 'Eco IA alcanzó temporalmente el límite gratuito.', 429);
     if (response.status >= 500) throw new EcoAiError('service', serverMessage || 'Eco IA no está disponible en este momento.', response.status);
     if (!response.ok) throw new EcoAiError('service', serverMessage || 'Eco IA no pudo procesar el mensaje.', response.status);
@@ -52,7 +67,10 @@ export async function sendEcoAiMessage(apiUrl: string, message: string, idToken:
       if (signal?.aborted) throw error;
       throw new EcoAiError('timeout', 'Eco IA tardó demasiado. Comprueba tu conexión e inténtalo nuevamente.');
     }
-    throw new EcoAiError('network', 'No se pudo conectar con Eco IA. Comprueba tu conexión.');
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+      throw new EcoAiError('network', 'Tu dispositivo no tiene conexión a Internet. Conéctate e inténtalo nuevamente.');
+    }
+    throw new EcoAiError('network', 'Eco IA no pudo establecer una conexión segura. El servicio puede estar temporalmente inaccesible o esta versión puede necesitar una actualización.');
   } finally {
     window.clearTimeout(timeout);
     unlink();
