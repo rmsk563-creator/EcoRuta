@@ -54,6 +54,16 @@ FIREBASE_WEB_MESSAGING_SENDER_ID
 
 Los cuatro primeros son obligatorios y el workflow se detiene si falta alguno. Los dos últimos son opcionales para Authentication. No añadas una cuenta de servicio, una clave Admin ni un archivo privado.
 
+### Eco IA
+
+El build de Pages configura únicamente la URL pública del Worker mediante `.env.github-pages`:
+
+```text
+https://ecoruta-eco-ai.rmsk563.workers.dev
+```
+
+La URL no es una credencial. Las solicitudes siguen requiriendo una sesión Firebase válida y correo verificado; la inferencia y los límites permanecen en Cloudflare Workers Free. El Worker permite el origen exacto `https://rmsk563-creator.github.io` y no utiliza un comodín CORS.
+
 ## Comprobar localmente sin publicar
 
 ```bash
